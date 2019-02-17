@@ -2,7 +2,7 @@
 <phpunit>
 	<testsuites>
 		<testsuite name="date-dan">
-			<!--file>UserTest.php</file-->
+			<file>UserTest.php</file>
 			<!--file>DeepDiveDatingAppTest.php</file-->
 			<!--file>QuestionTest.php</file-->
 			<!--file>AnswerTest.php</file-->
