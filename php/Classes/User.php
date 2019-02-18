@@ -578,6 +578,36 @@ class User implements \JsonSerializable {
 		return ($user);
 	}
 	//todo write getAllUsers
+
+	/**
+	 * gets all Users
+	 *
+	 * @param \PDO $pdo PDO Connection object
+	 * @return \SplFixedArray SplFixedArray of Users found or null if not found
+	 * @throws \PDOException when MySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 */
+	public static function getAllUsers(\PDO $pdo) : \SPLFixedArray {
+			//create query template
+			$query = " SELECT user.userId, user.userActivationToken, user.userAgent, user.userAvatarUrl, user.userBlocked, user.userEmail, user.userHandle, user.userHash, user.userIpAddress FROM `user`";
+			$statement = $pdo->prepare($query);
+			$statement->execute();
+
+			//build an array of users
+			$users = new \SplFixedArray($statement->rowCount());
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			while(($row = $statement->fetch()) !== false) {
+					try {
+						$user = new User($row["userId"], $row["userActivationToken"], $row["userAgent"], $row["userAvatarUrl"], $row["userBlocked"], $row["userEmail"], $row["userHandle"], $row["userHash"], $row["userIpAddress"]);
+						$users[$users->key()] = $users;
+						$users->next();
+					} catch(\Exception $exception) {
+						// if row couldn't be converted, rethrow it
+						throw(new \PDOException($exception->getMessage(), 0, $exception));
+					}
+			}
+			return ($users);
+}
 	/**
 	 * formats the state variables for the JSON serialization
 	 *
