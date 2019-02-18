@@ -111,7 +111,7 @@ class UserTest extends DeepDiveDatingAppTest {
 			}
 
 	/**
-			 * preform the actual insert method and enforce that it meets expectations I.E corrupted data is worth nothing
+			 * preform the actual insert method and then enforce that it meets expectations I.E corrupted data is worth nothing
 			 */
 
 			public function testValidUserInsert() {
