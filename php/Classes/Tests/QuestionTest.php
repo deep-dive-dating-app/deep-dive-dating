@@ -43,7 +43,7 @@ protected $VALID_QUESTIONID;
 	public final function setUp()  : void {
 		// create and insert a Profile to own the test Tweet
 		$this->question = new Question(generateUuidV4(), null, "1", $this->VALID_QUESTIONID, "+1212555121212121");
-		$this->answer->insert($this->getPDO());
+		$this->question->insert($this->getPDO());
 	}
 	/**
 	 * perform the actual insert method and enforce that is meets expectations i.e, corrupted data is worth nothing
