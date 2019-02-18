@@ -2,7 +2,7 @@
 namespace DeepDiveDatingApp\DeepDiveDating\Tests;
 
 
-use DeepDiveDatingApp\DeepDiveDating\Report\Report;
+use DeepDiveDatingApp\DeepDiveDating\Report;
 
 require_once(dirname(__DIR__) . "/autoload.php");
 
@@ -16,6 +16,11 @@ require_once(dirname(__DIR__, 2) . "/lib/uuid.php");
  */
 
 class ReportTest extends DeepDiveDatingAppTest {
+	/**
+	 * protected constant for initial report value
+	 * @var Report report
+	 **/
+	protected $report = null;
 	/**
 	 * protect Constant for the actual Report Agent that is used for the test
 	 * @var string $VALID_REPORT_AGENT value of test user agent info
@@ -63,6 +68,19 @@ class ReportTest extends DeepDiveDatingAppTest {
 	 * @var string $VALID_REPORT_IP1 actual value for test Ip
 	 **/
 	protected $VALID_REPORT_IP1 = "192.0.2.7";
+
+	/**
+	 * create dependent objects before running each test
+	 **/
+	public final function setUp()  : void {
+		// run the default setUp() method first
+		parent::setUp();
+
+		// create and insert a Profile to own the test Tweet
+		$this->report = new Report(generateUuidV4(), generateUuidV4(),"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.106 Safari/537.36 OPR/38.0.2220.41", "I hate him so much", $this->VALID_REPORT_DATE, "192.0.2.9");
+		$this->report->insert($this->getPDO());
+
+	}
 
 	/**
 	 * Create Report Object, insert into database, enforce the expectations

@@ -43,7 +43,6 @@ class MatchTest extends DeepDiveDatingAppTest {
 		// create and insert a Profile to own the test Tweet
 		$this->match = new Match(generateUuidV4(), generateUuidV4(),"0");
 		$this->match->insert($this->getPDO());
-
 	}
 
 	/**
