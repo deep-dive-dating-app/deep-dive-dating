@@ -20,21 +20,21 @@ class QuestionTest extends DeepDiveDatingAppTest {
 
 	/**
 	 * valid id to create the question object to own the test
-	 *@var string $VALID_QUESTION_ID
+	 *@var string $VALID_QUESTIONID
 	 **/
-protected $VALID_QUESTION_ID;
+protected $VALID_QUESTIONID;
 
 	/**
 	 * Content of questions
 	 * @var string $VALID_QUESTION_CONTENT
 	 **/
-	protected $VALID_QUESTION_CONTENT = "PHPUnit test passing";
+	protected $VALID_QUESTIONCONTENT = "PHPUnit test passing";
 
 	/**
 	 * Value applied to questions based on Dan's preferences
 	 * @var int $VALID_QUESTION_VALUE
 	 **/
-	protected $VALID_QUESTION_VALUE;
+	protected $VALID_QUESTIONVALUE;
 	/**
 	 * create all dependent objects so that the test can run properly
 	 */
@@ -46,7 +46,7 @@ protected $VALID_QUESTION_ID;
 		$numRows = $this->getConnection()->getRowCount("question");
 
 		//create the question object
-		$question = new Question(generateUuidV4(), $this->VALID_Question, $this->VALID_QUESTION_ID, $this->VALID_QUESTION_CONTENT, $this->VALID_QUESTION_VALUE);
+		$question = new Question(generateUuidV4(), $this->VALID_QUESTIONID, $this->VALID_QUESTIONCONTENT, $this->VALID_QUESTIONVALUE);
 		//insert the question object
 		$question->insert($this->getPDO());
 
@@ -66,7 +66,7 @@ protected $VALID_QUESTION_ID;
 		$numRows = $this->getConnection()->getRowCount("question");
 
 		//create the question object
-		$question = new Question(generateUuidV4(), $this->VALID_QUESTION_ID, $this->VALID_QUESTION_CONTENT, $this->VALID_QUESTION_CONTENT);
+		$question = new Question(generateUuidV4(), $this->VALID_QUESTIONID, $this->VALID_QUESTIONCONTENT, $this->VALID_QUESTIONCONTENT);
 
 		//insert the question object
 		$question->insert($this->getPDO());
@@ -98,7 +98,7 @@ protected $VALID_QUESTION_ID;
 		$numRows = $this->getConnection()->getRowCount("question");
 
 		//create a question object and insert it into the database
-		$question = new Question(generateUuidV4(), $this->VALID_QUESTION_ID, $this->VALID_QUESTION_CONTENT, $this->VALID_QUESTION_VALUE);
+		$question = new Question(generateUuidV4(), $this->VALID_QUESTIONID, $this->VALID_QUESTIONCONTENT, $this->VALID_QUESTIONVALUE);
 
 		//insert the question into the database
 		$question->insert($this->getPDO());
@@ -129,7 +129,7 @@ protected $VALID_QUESTION_ID;
 		$numRows = $this->getConnection()->getRowCount("question");
 
 		//insert the question into the database
-		$question = new Question(generateUuidV4(), $this->VALID_QUESTION_ID, $this->VALID_QUESTION_CONTENT,$this->VALID_QUESTION_VALUE);
+		$question = new Question(generateUuidV4(), $this->VALID_QUESTIONID, $this->VALID_QUESTIONCONTENT,$this->VALID_QUESTIONVALUE);
 
 		//insert the question into the database
 		$question->insert($this->getPDO());
