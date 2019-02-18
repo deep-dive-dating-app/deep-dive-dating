@@ -87,9 +87,9 @@ class User implements \JsonSerializable {
 			$this->setUserIpAddress($newUserIpAddress);
  		}
 
-		catch (\InvalidArgumentException | \RangeException | \Exception | \TypeError  $exception) {
+		catch (\InvalidArgumentException | \RangeException | \Exception | \TypeError | \ArgumentCountError $exception) {
 			$exceptionType = get_class($exception);
-			throw(new $exceptionType($exception->getMessage(), 0, $exception));
+			throw(new $exceptionType($exception->getMessage(), 0, $exception, $exception->getLine()));
 		}
 	}
 	/**
@@ -326,7 +326,7 @@ class User implements \JsonSerializable {
 		}
 		//enforce this hash is really an argon hash
 		$userHashInfo = password_get_info($newUserHash);
-		if($userHashInfo["algoname"] !== "argon2i") {
+		if($userHashInfo["algoName"] !== "argon2i") {
 					throw(new \InvalidArgumentException("user hash must be 97 characters"));
 		}
 		//enforce the hash is exactly 97 characters

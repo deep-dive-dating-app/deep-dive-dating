@@ -98,7 +98,7 @@ class UserTest extends DeepDiveDatingAppTest {
 			 * valid binary of the user ip address
 			 * @var string $VALID_USERIPADDRESS
 			 */
-			protected $VALID_USERIPADDRESS = "192.0.2.0/24";
+			protected $VALID_USERIPADDRESS = "177.108.73.111";
 
 			/**
 			 * create all dependent objects so that the test can run properly
@@ -108,10 +108,6 @@ class UserTest extends DeepDiveDatingAppTest {
 			parent::setUp();
 			$password = "abc123";
 			$this->VALID_USERHASH = password_hash($password, PASSWORD_ARGON2I, ["time_cost" => 384]);
-
-			// create and insert a User profile to own the test
-				$this->user = new User(generateUuidV4(), 12312312312312312312312312312312, "Mozilla/5.0 (compatible; MSIE 9.0; Windows Phone OS 7.5; Trident/5.0; IEMobile/9.0)
-", "https://allTheAvatarPics.com","0", "verylonely@gmail.com", "Loneliest Person", $this->VALID_USERHASH, "203.0.113.0/24");
 			}
 
 	/**
