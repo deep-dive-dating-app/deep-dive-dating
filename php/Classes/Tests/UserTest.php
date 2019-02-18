@@ -289,7 +289,7 @@ class UserTest extends DeepDiveDatingAppTest {
 				//grab the results from the array and make sure it meets expectations
 				$pdoUser = $results[0];
 				//$this->assertEquals($pdoUser->getUserId(), $user->getUserId());
-				$this->assertEquals($pdoUser->getUser(), $user->getUser());
+				$this->assertEquals($pdoUser->getUserId(), $user->getUserId());
 				$this->assertEquals($pdoUser->getUserActivationToken(), $user->getUserActivationToken());
 				$this->assertEquals($pdoUser->getUserAgent(), $user->getUserAgent());
 				$this->assertEquals($pdoUser->getUserAvatarUrl(), $user->getUserAvatarUrl());

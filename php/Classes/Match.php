@@ -189,11 +189,11 @@ class Match implements \JsonSerializable {
 	 * @param \PDO $pdo PDO connection object
 	 * @param Uuid|string $matchUserId
 	 * @param Uuid|string $matchToUserId
-	 * @return Match instance when two users match each other
+	 * @return \SplFixedArray instance when two users match each other
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError if $pdo is not a PDO connection object
 	 **/
-	public static function getMatchByMatchUserIdAndMatchToUserId(\PDO $pdo, $matchUserId, $matchToUserId) : ?Match {
+	public static function getMatchByMatchUserIdAndMatchToUserId(\PDO $pdo, $matchUserId, $matchToUserId) : \SplFixedArray {
 		//sanitize both Uuids
 		try {
 			$matchUserId = self::validateUuid($matchUserId);
@@ -269,7 +269,7 @@ class Match implements \JsonSerializable {
 	 * @throws \TypeError if a variable is not of the correct data type
 	 **/
 	//todo recompose getAllMatches to getMatchesByMatchToUserId
-	public static function getMatchByMatchToUserId(\PDO $pdo, $matchToUserId): \SplFixedArray {
+	public static function getMatchByMatchToUserId(\PDO $pdo, $matchToUserId, $matchUserId): \SplFixedArray {
 		//sanitize Uuid
 		try {
 			$matchToUserId = self::validateUuid($matchToUserId);
