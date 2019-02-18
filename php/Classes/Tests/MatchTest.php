@@ -2,7 +2,7 @@
 namespace DeepDiveDatingApp\DeepDiveDating\Tests;
 
 
-use DeepDiveDatingApp\DeepDiveDating\Match\Match;
+use DeepDiveDatingApp\DeepDiveDating\Match;
 
 require_once(dirname(__DIR__) . "/autoload.php");
 
@@ -17,6 +17,11 @@ require_once(dirname(__DIR__, 2) . "/lib/uuid.php");
 
 class MatchTest extends DeepDiveDatingAppTest {
 	/**
+	 * protected constant for initial match value
+	 * @var Match match
+	 **/
+	protected $match = null;
+	/**
 	 * protect constant for the actual match approved value being used to test Match Class
 	 * @var int $VALID_MATCH_APPROVED
 	 **/
@@ -27,6 +32,19 @@ class MatchTest extends DeepDiveDatingAppTest {
 	 * @var int $VALID_MATCH_APPROVED1
 	 **/
 	protected $VALID_MATCH_APPROVED1 = 0;
+
+	/**
+	 * create dependent objects before running each test
+	 **/
+	public final function setUp()  : void {
+		// run the default setUp() method first
+		parent::setUp();
+
+		// create and insert a Profile to own the test Tweet
+		$this->match = new Match(generateUuidV4(), generateUuidV4(),"0");
+		$this->match->insert($this->getPDO());
+
+	}
 
 	/**
 	 * create a match object, insert it in the database, and enforce that is meets expectations
