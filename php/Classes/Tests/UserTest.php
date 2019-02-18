@@ -107,9 +107,11 @@ class UserTest extends DeepDiveDatingAppTest {
 			//run the default setUp() method first
 			parent::setUp();
 			$password = "abc123";
-			$this->VALID_USERHASH = password_hash($password, PASSWORD2I, ["time_cost" => 384]);
+			$this->VALID_USERHASH = password_hash($password, PASSWORD_ARGON2I, ["time_cost" => 384]);
 
-			// create and insert
+			// create and insert a User profile to own the test
+				$this->user = new User(generateUuidV4(), 12312312312312312312312312312312, "Mozilla/5.0 (compatible; MSIE 9.0; Windows Phone OS 7.5; Trident/5.0; IEMobile/9.0)
+", "https://allTheAvatarPics.com","0", "verylonely@gmail.com", "Loneliest Person", $this->VALID_USERHASH, "203.0.113.0/24");
 			}
 
 	/**
