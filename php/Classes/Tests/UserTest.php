@@ -2,7 +2,7 @@
 
 namespace DeepDiveDatingApp\DeepDiveDating\Test;
 
-use DeepDiveDatingApp\DeepDiveDating\{User};
+use DeepDiveDatingApp\DeepDiveDating\User;
 
 require_once "DeepDiveDatingAppTest.php";
 require_once (dirname(__DIR__) . "/autoload.php");

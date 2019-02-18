@@ -74,7 +74,7 @@ class User implements \JsonSerializable {
 	 * @Documentation https://php.net/manual/en/language.oop5.decon.php
 	 */
 
-	public function __construct( Uuid $newUserId, string $newUserActivationToken, string $newUserAgent, string $newUserAvatarUrl, int $newUserBlocked, string $newUserEmail, string $newUserHandle, string $newUserHash, string $newUserIpAddress) {
+	public function __construct($newUserId, string $newUserActivationToken, string $newUserAgent, string $newUserAvatarUrl, int $newUserBlocked, string $newUserEmail, string $newUserHandle, string $newUserHash, string $newUserIpAddress) {
 		try {
 			$this->setUserId($newUserId);
 			$this->setUserActivationToken($newUserActivationToken);
@@ -87,7 +87,7 @@ class User implements \JsonSerializable {
 			$this->setUserIpAddress($newUserIpAddress);
  		}
 
-		catch (\InvalidArgumentException | \TypeError | \RangeException | \Exception $exception) {
+		catch (\InvalidArgumentException | \RangeException | \Exception | \TypeError  $exception) {
 			$exceptionType = get_class($exception);
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
 		}
