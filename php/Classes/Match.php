@@ -189,11 +189,11 @@ class Match implements \JsonSerializable {
 	 * @param \PDO $pdo PDO connection object
 	 * @param Uuid|string $matchUserId
 	 * @param Uuid|string $matchToUserId
-	 * @return \SplFixedArray Spl Fixed Array of Matches found
+	 * @return Match instance when two users match each other
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError if $pdo is not a PDO connection object
 	 **/
-	public static function getMatchByMatchUserIdAndMatchToUserId(\PDO $pdo, $matchUserId, $matchToUserId) : \SplFixedArray {
+	public static function getMatchByMatchUserIdAndMatchToUserId(\PDO $pdo, $matchUserId, $matchToUserId) : ?Match {
 		//sanitize both Uuids
 		try {
 			$matchUserId = self::validateUuid($matchUserId);
@@ -239,7 +239,7 @@ class Match implements \JsonSerializable {
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
 		//create query template
-		$query = "SELECT matchUserId, matchToUserId, matchApproved FROM `match` WHERE macthUserId = :matchUserId";
+		$query = "SELECT matchUserId, matchToUserId, matchApproved FROM `match` WHERE matchUserId = :matchUserId";
 		$statement = $pdo->prepare($query);
 		//bind elements to template
 		$parameters = ["matchUserId" => $matchUserId->getBytes()];
