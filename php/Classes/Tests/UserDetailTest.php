@@ -1,5 +1,5 @@
 <?php
-namespace DeepDiveDatingApp\DeepDiveDating;
+namespace DeepDiveDatingApp\DeepDiveDating\Tests;
 
 use DeepDiveDatingAp\DeepDiveDating\{
 	User, UserDetail, Question, Answer, Match, Report

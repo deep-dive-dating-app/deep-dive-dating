@@ -1,5 +1,5 @@
 <?php
-namespace DeepDiveDatingApp\DeepDiveDating\Test;
+namespace DeepDiveDatingApp\DeepDiveDating\Tests;
 
 use PHPUnit\Framework\TestCase;
 use PHPUnit\DbUnit\TestCaseTrait;

@@ -1,10 +1,9 @@
 <?php
 
-namespace DeepDiveDatingApp\DeepDiveDating\Test;
+namespace DeepDiveDatingApp\DeepDiveDating\Tests;
 
 use DeepDiveDatingApp\DeepDiveDating\User;
 
-require_once "DeepDiveDatingAppTest.php";
 require_once (dirname(__DIR__) . "/autoload.php");
 require_once (dirname(__DIR__, 2) . "/lib/uuid.php");
 
@@ -104,7 +103,16 @@ class UserTest extends DeepDiveDatingAppTest {
 			/**
 			 * create all dependent objects so that the test can run properly
 			 */
-			/**
+			public final function setUp(): void {
+			//run the default setUp() method first
+			parent::setUp();
+			$password = "abc123";
+			$this->VALID_USERHASH = password_hash($password, PASSWORD2I, ["time_cost" => 384]);
+
+			// create and insert
+			}
+
+	/**
 			 * preform the actual insert method and enforce that it meets expectations I.E corrupted data is worth nothing
 			 */
 

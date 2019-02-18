@@ -1,10 +1,10 @@
 <?php
 
 
-namespace DeepDiveDatingApp\DeepDiveDating\Question\Test;
+namespace DeepDiveDatingApp\DeepDiveDating\Question\Tests;
 require_once("autoload.php");
 require_once(dirname(__DIR__,2)."/lib/uuid.php");
-use DeepDiveDatingApp\DeepDiveDating\Question\Test;
+//use DeepDiveDatingApp\DeepDiveDating\Question\Test;
 /**
  * unit test for the Question class
  * PDO methods are located in the Question class
