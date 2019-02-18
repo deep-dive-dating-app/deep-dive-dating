@@ -577,8 +577,6 @@ class User implements \JsonSerializable {
 		}
 		return ($user);
 	}
-	//todo write getAllUsers
-
 	/**
 	 * gets all Users
 	 *
