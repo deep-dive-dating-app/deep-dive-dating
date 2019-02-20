@@ -71,6 +71,7 @@ class User implements \JsonSerializable {
 	 * @throws \RangeException if the data values are out of bounds (e.g. strings too long, negative integers)
 	 * @throws \Exception if some other exception occurs
 	 * @throws \TypeError if the data type violates the data hint
+	 * @throws  \ArgumentCountError is phpunit don't line up
 	 * @Documentation https://php.net/manual/en/language.oop5.decon.php
 	 */
 
@@ -97,7 +98,7 @@ class User implements \JsonSerializable {
 	 *
 	 * @return Uuid value of user id
 	 */
-	public function getUserId(): ?Uuid {
+	public function getUserId(): Uuid {
 		return($this->userId);
 	}
 
@@ -373,7 +374,7 @@ class User implements \JsonSerializable {
 	public function insert(\PDO $pdo) : void {
 
 		// create query template
-		$query = "INSERT INTO user(userId, userActivationToken, userAgent, userAvatarUrl, userBlocked, userEmail, userHandle, userHash, userIpAddress) VALUES(:userId, :userActivationToken, :userAgent, :userAvatarUrl, :userBlocked, :userEmail, :userHandle, :userHash, :userIpAddress)";
+		$query = "INSERT INTO `user`(userId, userActivationToken, userAgent, userAvatarUrl, userBlocked, userEmail, userHandle, userHash, userIpAddress) VALUES(:userId, :userActivationToken, :userAgent, :userAvatarUrl, :userBlocked, :userEmail, :userHandle, :userHash, :userIpAddress)";
 		$statement = $pdo->prepare($query);
 
 		//bind the member variables to the placeholders in the template
@@ -412,7 +413,7 @@ class User implements \JsonSerializable {
 	 */
 	public function update(\PDO $pdo) : void {
 		//create query template
-		$query = "UPDATE user SET userAgent = :userAgent, userAvatarUrl = :userAvatarUrl, userEmail = :userEmail, userHandle = :userHandle, userIpAddress = :userIpAddress WHERE userId = :userId";
+		$query = "UPDATE `user` SET userActivationToken = :userActivationToken, userAgent = :userAgent, userAvatarUrl = :userAvatarUrl, userBlocked =:userBlocked, userEmail = :userEmail, userHandle = :userHandle, userHash = :userHash, userIpAddress = :userIpAddress WHERE userId = :userId";
 		$statement = $pdo->prepare($query);
 
 		$parameters = ["userId" => $this->userId->getBytes(), "userActivationToken" => $this->userActivationToken, "userAgent" => $this->userAgent, "userAvatarUrl" => $this->userAvatarUrl, "userBlocked" => $this->userBlocked, "userEmail" => $this->userEmail, "userHandle" => $this->userHandle, "userHash" => $this->userHash, "userIpAddress" => $this->userIpAddress];
@@ -423,7 +424,7 @@ class User implements \JsonSerializable {
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @param Uuid|string $userId user id to search for
-	 * @return user|null user found or null if not found
+	 * @return user found or null if not found
 	 * @throws \PDOException when mySql related errors are found
 	 * @throws \TypeError when a variable is not the correct data type
 	 */
@@ -436,7 +437,7 @@ class User implements \JsonSerializable {
 		}
 
 		//create query template
-		$query = "SELECT user.userId, user.userActivationToken, user.userAgent, user.userAvatarUrl, user.userBlocked, user.userEmail, user.userHandle, user.userHash, user.userIpAddress FROM `user` INNER JOIN userDetail ON user.userId = userDetail.userDetailUserId WHERE userId = :userId";
+		$query = "SELECT userId, userActivationToken, userAgent, userAvatarUrl, userBlocked, userEmail,userHandle, userHash, userIpAddress FROM `user` WHERE userId=:userId";
 		$statement = $pdo->prepare($query);
 
 		// bind the user id  to the placeholder in the template
@@ -448,6 +449,7 @@ class User implements \JsonSerializable {
 				$user = null;
 				$statement->setFetchMode(\PDO::FETCH_ASSOC);
 				$row = $statement->fetch();
+
 				if($row !== false) {
 							$user = new User($row["userId"], $row["userActivationToken"], $row["userAgent"], $row["userAvatarUrl"], $row["userBlocked"], $row["userEmail"], $row["userHandle"], $row["userHash"], $row["userIpAddress"]);
 			}
@@ -500,7 +502,7 @@ class User implements \JsonSerializable {
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @param string $userHandle user handle to search for
-	 * @return \SplFixedArray SplFixedArray of users found
+	 * @return \SplFixedArray of similar values to the User handle
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when the variables are not the correct data type
 	 */
@@ -516,7 +518,7 @@ class User implements \JsonSerializable {
 		$userHandle = str_replace("_", "\\_", str_replace("%", "\\%", $userHandle));
 
 		//create query template
-		$query = "SELECT user.userId, user.userActivationToken, user.userAgent, user.userAvatarUrl, user.userBlocked, user.userEmail, user.userHandle, user.userHash, user.userIpAddress FROM `user` INNER JOIN userDetail ON user.userId = userDetail.userDetailUserId WHERE userHandle LIKE :userHandle";
+		$query = "SELECT userId, userActivationToken, userAgent, userAvatarUrl, userBlocked, userEmail, userHandle, userHash, userIpAddress FROM `user` WHERE userHandle LIKE :userHandle";
 		$statement = $pdo->prepare($query);
 
 		//bind the user handle to the placeholder in the template
@@ -556,7 +558,7 @@ class User implements \JsonSerializable {
 					throw(new \PDOException("not a valid email"));
 		}
 		//create query template
-		$query = "SELECT user.userId, user.userActivationToken, user.userAgent, user.userAvatarUrl, user.userBlocked, user.userEmail, user.userHandle, user.userHash, user.userIpAddress FROM `user` INNER JOIN userDetail ON user.userId = userDetail.userDetailUserId WHERE userEmail = :userEmail";
+		$query = "SELECT userId, userActivationToken, userAgent, userAvatarUrl, userBlocked, userEmail, userHandle, userHash, userIpAddress FROM `user` WHERE userEmail = :userEmail";
 		$statement = $pdo->prepare($query);
 
 		//bind the user email to the placeholder in the template
@@ -587,7 +589,7 @@ class User implements \JsonSerializable {
 	 */
 	public static function getAllUsers(\PDO $pdo) : \SPLFixedArray {
 			//create query template
-			$query = " SELECT user.userId, user.userActivationToken, user.userAgent, user.userAvatarUrl, user.userBlocked, user.userEmail, user.userHandle, user.userHash, user.userIpAddress FROM `user`";
+			$query = " SELECT userId, userActivationToken, userAgent, userAvatarUrl, userBlocked, userEmail, userHandle, userHash, userIpAddress FROM `user`";
 			$statement = $pdo->prepare($query);
 			$statement->execute();
 
@@ -597,7 +599,7 @@ class User implements \JsonSerializable {
 			while(($row = $statement->fetch()) !== false) {
 					try {
 						$user = new User($row["userId"], $row["userActivationToken"], $row["userAgent"], $row["userAvatarUrl"], $row["userBlocked"], $row["userEmail"], $row["userHandle"], $row["userHash"], $row["userIpAddress"]);
-						$users[$users->key()] = $users;
+						$users[$users->key()] = $user;
 						$users->next();
 					} catch(\Exception $exception) {
 						// if row couldn't be converted, rethrow it
