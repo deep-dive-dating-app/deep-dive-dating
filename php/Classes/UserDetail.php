@@ -1,5 +1,6 @@
 <?php
 namespace DeepDiveDatingApp\DeepDiveDating;
+
 require_once("autoload.php");
 require_once(dirname(__DIR__, 2) . "/vendor/autoload.php");
 
@@ -463,7 +464,8 @@ class UserDetail implements \JsonSerializable {
 		//verify the religion is secure
 		$newUserDetailReligion = trim($newUserDetailReligion);
 		$newUserDetailReligion = filter_var($newUserDetailReligion, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-		if(empty($newUserDetailReigion) === true) {
+
+		if(empty($newUserDetailReligion) === true) {
 			throw(new \InvalidArgumentException("Religion is empty or insecure"));
 		}
 		//verify the religion will fit in the database

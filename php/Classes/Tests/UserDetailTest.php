@@ -1,15 +1,13 @@
 <?php
 namespace DeepDiveDatingApp\DeepDiveDating\Tests;
 
-use DeepDiveDatingAp\DeepDiveDating\{
-	User, UserDetail, Question, Answer, Match, Report
-};
+use DeepDiveDatingApp\DeepDiveDating\UserDetail;
 
 //grab the class under scrutiny
 require_once(dirname(__DIR__)) . "/autoload.php";
 
 // grab the uuid generator
-require_once(dirname(__DIR__, 2) . "lib/uuid.php");
+require_once(dirname(__DIR__, 2) . "/lib/uuid.php");
 
 /**
  * Full PHPUnit test for the UserDetail class
@@ -41,7 +39,7 @@ class UserDetailTest extends DeepDiveDatingAppTest {
 	 * valid display email
 	 * @var string $VALID_EMAIL
 	 **/
-	protected $VALID_EMAIL = "single@ready2mingle.com";
+	protected $VALID_DISPLAY_EMAIL = "single@ready2mingle.com";
 	/**
 	 * valid education
 	 * @var string $VALID_EDUCATION
@@ -77,6 +75,7 @@ class UserDetailTest extends DeepDiveDatingAppTest {
 		$password = "pimpinaintez";
 		$this->VALID_HASH = password_hash($password, PASSWORD_ARGON2I, ["time_cost" => 384]);
 		$this->VALID_ACTIVATION = bin2hex(random_bytes(16));
+		
 	}
 
 	/**
@@ -86,6 +85,8 @@ class UserDetailTest extends DeepDiveDatingAppTest {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("userDetail");
 		$userDetailId = generateUuidV4();
+		$userDetailUserId = generateUuidV4();
+
 		$userDetail = new UserDetail($userDetailId, $userDetailUserId, $this->VALID_ABOUT_ME, $this->VALID_AGE, $this->VALID_CAREER, $this->VALID_DISPLAY_EMAIL, $this->VALID_EDUCATION, $this->VALID_GENDER, $this->VALID_INTERESTS, $this->VALID_RACE, $this->VALID_RELIGION);
 		$userDetail->insert($this->getPDO());
 		// grab the data from mySQL and enforce the fields match our expectations
@@ -112,6 +113,8 @@ class UserDetailTest extends DeepDiveDatingAppTest {
 		$numRows = $this->getConnection()->getRowCount("userDetail");
 		// create a new UserDetail and insert into mySQL
 		$userDetailId = generateUuidV4();
+		$userDetailUserId = generateUuidV4();
+
 		$userDetail = new UserDetail($userDetailId, $userDetailUserId, $this->VALID_ABOUT_ME, $this->VALID_AGE, $this->VALID_CAREER, $this->VALID_DISPLAY_EMAIL, $this->VALID_EDUCATION, $this->VALID_GENDER, $this->VALID_INTERESTS, $this->VALID_RACE, $this->VALID_RELIGION);
 		$userDetail->insert($this->getPDO());
 		// edit the UserDetail and update it in mySQL
@@ -150,6 +153,8 @@ class UserDetailTest extends DeepDiveDatingAppTest {
 
 		// create a new UserDetail and insert into mySQL
 		$userDetailId = generateUuidV4();
+		$userDetailUserId = generateUuidV4();
+
 		$userDetail = new UserDetail($userDetailId, $userDetailUserId, $this->VALID_ABOUT_ME, $this->VALID_AGE, $this->VALID_CAREER, $this->VALID_DISPLAY_EMAIL, $this->VALID_EDUCATION, $this->VALID_GENDER, $this->VALID_INTERESTS, $this->VALID_RACE, $this->VALID_RELIGION);
 		$userDetail->insert($this->getPDO());
 
@@ -171,6 +176,8 @@ class UserDetailTest extends DeepDiveDatingAppTest {
 		$numRows = $this->getConnection()->getRowCount("userDetail");
 		// create a new UserDetail and insert into mySQL
 		$userDetailId = generateUuidV4();
+		$userDetailUserId = generateUuidV4();
+
 		$userDetail = new UserDetail($userDetailId, $userDetailUserId, $this->VALID_ABOUT_ME, $this->VALID_AGE, $this->VALID_CAREER, $this->VALID_DISPLAY_EMAIL, $this->VALID_EDUCATION, $this->VALID_GENDER, $this->VALID_INTERESTS, $this->VALID_RACE, $this->VALID_RELIGION);
 		$userDetail->insert($this->getPDO());
 		// grab the data from mySQL and enforce the fields match our expectations
@@ -207,6 +214,8 @@ class UserDetailTest extends DeepDiveDatingAppTest {
 		$numRows = $this->getConnection()->getRowCount("userDetail");
 		// create a new UserDetail and insert into mySQL
 		$userDetailId = generateUuidV4();
+		$userDetailUserId = generateUuidV4();
+
 		$userDetail = new UserDetail($userDetailId, $userDetailUserId, $this->VALID_ABOUT_ME, $this->VALID_AGE, $this->VALID_CAREER, $this->VALID_DISPLAY_EMAIL, $this->VALID_EDUCATION, $this->VALID_GENDER, $this->VALID_INTERESTS, $this->VALID_RACE, $this->VALID_RELIGION);
 		$userDetail->insert($this->getPDO());
 		// grab the data from mySQL
