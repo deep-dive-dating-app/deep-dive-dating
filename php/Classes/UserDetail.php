@@ -89,7 +89,7 @@ class UserDetail implements \JsonSerializable {
 	 *
 	 ************************************************************/
 //todo add type hints
-	public function __construct($newUserDetailId, $newUserDetailUserId, string $newUserDetailAboutMe, int $newUserDetailAge, string $newUserDetailCareer, string $newUserDetailDisplayEmail, string $newUserDetailEducation, string $newUserDetailGender, string $newUserDetailInterests, string $newUserDetailRace, string $newUserDetailReligion) {
+	public function __construct($newUserDetailId, $newUserDetailUserId, string $newUserDetailAboutMe, int $newUserDetailAge, ?string $newUserDetailCareer, string $newUserDetailDisplayEmail, string $newUserDetailEducation, string $newUserDetailGender, string $newUserDetailInterests, string $newUserDetailRace, string $newUserDetailReligion) {
 		try {
 			$this->setUserDetailId($newUserDetailId);
 			$this->setUserDetailUserId($newUserDetailUserId);
@@ -234,7 +234,7 @@ class UserDetail implements \JsonSerializable {
 	 * @return string userDetailCareer
 	***/
 
-	public function getUserDetailCareer(): string {
+	public function getUserDetailCareer(): ?string {
 		return $this->userDetailCareer;
 	}
 
@@ -247,7 +247,7 @@ class UserDetail implements \JsonSerializable {
 	 * @throws \TypeError when input is wrong type
 	 */
 
-	public function setUserDetailCareer(string $newUserDetailCareer): void {
+	public function setUserDetailCareer(?string $newUserDetailCareer): void {
 		if($newUserDetailCareer === null) {
 			$this->userDetailCareer = null;
 		}
@@ -262,7 +262,7 @@ class UserDetail implements \JsonSerializable {
 		}
 
 		//convert and store the career section
-		$this->userDetailAboutMe = $newUserDetailCareer;
+		$this->userDetailCareer = $newUserDetailCareer;
 	}
 
 	/*************Accessor method for user detail display email**************
@@ -555,6 +555,7 @@ class UserDetail implements \JsonSerializable {
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
 			if($row !== false) {
+				var_dump($row);
 				$userDetail = new UserDetail($row["userDetailId"], $row["userDetailUserId"], $row["userDetailAboutMe"], $row["userDetailAge"], $row["userDetailCareer"], $row["userDetailDisplayEmail"], $row["userDetailEducation"], $row["userDetailGender"], $row['userDetailInterests'], $row["userDetailRace"], $row["userDetailReligion"]);
 			}
 		} catch(\Exception $exception) {
