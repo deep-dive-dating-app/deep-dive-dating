@@ -555,7 +555,6 @@ class UserDetail implements \JsonSerializable {
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
 			if($row !== false) {
-				var_dump($row);
 				$userDetail = new UserDetail($row["userDetailId"], $row["userDetailUserId"], $row["userDetailAboutMe"], $row["userDetailAge"], $row["userDetailCareer"], $row["userDetailDisplayEmail"], $row["userDetailEducation"], $row["userDetailGender"], $row['userDetailInterests'], $row["userDetailRace"], $row["userDetailReligion"]);
 			}
 		} catch(\Exception $exception) {

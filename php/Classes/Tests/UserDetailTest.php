@@ -116,9 +116,10 @@ class UserDetailTest extends DeepDiveDatingAppTest {
 		$numRows = $this->getConnection()->getRowCount("userDetail");
 		// create a new UserDetail and insert into mySQL
 		$userDetailId = generateUuidV4();
-		$userDetailUserId = generateUuidV4();
 
-		$userDetail = new UserDetail($userDetailId, $userDetailUserId, $this->VALID_ABOUT_ME, $this->VALID_AGE, $this->VALID_CAREER, $this->VALID_DISPLAY_EMAIL, $this->VALID_EDUCATION, $this->VALID_GENDER, $this->VALID_INTERESTS, $this->VALID_RACE, $this->VALID_RELIGION);
+
+		$userDetail = new UserDetail($userDetailId, $this->user->getUserId(), $this->VALID_ABOUT_ME, $this->VALID_AGE, $this->VALID_CAREER, $this->VALID_DISPLAY_EMAIL, $this->VALID_EDUCATION, $this->VALID_GENDER, $this->VALID_INTERESTS, $this->VALID_RACE, $this->VALID_RELIGION);
+		var_dump($userDetail);
 		$userDetail->insert($this->getPDO());
 		// edit the UserDetail and update it in mySQL
 		$userDetail->setUserDetailAboutMe($this->VALID_ABOUT_ME);
@@ -135,7 +136,7 @@ class UserDetailTest extends DeepDiveDatingAppTest {
 		$pdoUserDetail = UserDetail::getUserDetailByUserDetailId($this->getPDO(), $userDetail->getUserDetailId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("userDetail"));
 		$this->assertEquals($pdoUserDetail->getUserDetailId(), $userDetailId);
-		$this->assertEquals($pdoUserDetail->getUserDetailUserId(), $userDetailUserId);
+		$this->assertEquals($pdoUserDetail->getUserDetailUserId(), $this->user->getUserId());
 		$this->assertEquals($pdoUserDetail->getUserDetailAboutMe(), $this->VALID_ABOUT_ME);
 		$this->assertEquals($pdoUserDetail->getUserDetailAge(), $this->VALID_AGE);
 		$this->assertEquals($pdoUserDetail->getUserDetailCareer(), $this->VALID_CAREER);
@@ -156,9 +157,9 @@ class UserDetailTest extends DeepDiveDatingAppTest {
 
 		// create a new UserDetail and insert into mySQL
 		$userDetailId = generateUuidV4();
-		$userDetailUserId = generateUuidV4();
 
-		$userDetail = new UserDetail($userDetailId, $userDetailUserId, $this->VALID_ABOUT_ME, $this->VALID_AGE, $this->VALID_CAREER, $this->VALID_DISPLAY_EMAIL, $this->VALID_EDUCATION, $this->VALID_GENDER, $this->VALID_INTERESTS, $this->VALID_RACE, $this->VALID_RELIGION);
+
+		$userDetail = new UserDetail($userDetailId, $this->user->getUserId(), $this->VALID_ABOUT_ME, $this->VALID_AGE, $this->VALID_CAREER, $this->VALID_DISPLAY_EMAIL, $this->VALID_EDUCATION, $this->VALID_GENDER, $this->VALID_INTERESTS, $this->VALID_RACE, $this->VALID_RELIGION);
 		$userDetail->insert($this->getPDO());
 
 		// Delete the UserDetail from the mySQL
@@ -179,15 +180,15 @@ class UserDetailTest extends DeepDiveDatingAppTest {
 		$numRows = $this->getConnection()->getRowCount("userDetail");
 		// create a new UserDetail and insert into mySQL
 		$userDetailId = generateUuidV4();
-		$userDetailUserId = generateUuidV4();
 
-		$userDetail = new UserDetail($userDetailId, $userDetailUserId, $this->VALID_ABOUT_ME, $this->VALID_AGE, $this->VALID_CAREER, $this->VALID_DISPLAY_EMAIL, $this->VALID_EDUCATION, $this->VALID_GENDER, $this->VALID_INTERESTS, $this->VALID_RACE, $this->VALID_RELIGION);
+
+		$userDetail = new UserDetail($userDetailId, $this->user->getUserId(), $this->VALID_ABOUT_ME, $this->VALID_AGE, $this->VALID_CAREER, $this->VALID_DISPLAY_EMAIL, $this->VALID_EDUCATION, $this->VALID_GENDER, $this->VALID_INTERESTS, $this->VALID_RACE, $this->VALID_RELIGION);
 		$userDetail->insert($this->getPDO());
 		// grab the data from mySQL and enforce the fields match our expectations
 		$pdoUserDetail = UserDetail::getUserDetailByUserDetailId($this->getPDO(), $userDetail->getUserDetailId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("userDetail"));
 		$this->assertEquals($pdoUserDetail->getUserDetailId(), $userDetailId);
-		$this->assertEquals($pdoUserDetail->getUserDetailUserId(), $userDetailUserId);
+		$this->assertEquals($pdoUserDetail->getUserDetailUserId(), $this->user->getUserId());
 		$this->assertEquals($pdoUserDetail->getUserDetailAboutMe(), $this->VALID_ABOUT_ME);
 		$this->assertEquals($pdoUserDetail->getUserDetailAge(), $this->VALID_AGE);
 		$this->assertEquals($pdoUserDetail->getUserDetailCareer(), $this->VALID_CAREER);
@@ -217,9 +218,9 @@ class UserDetailTest extends DeepDiveDatingAppTest {
 		$numRows = $this->getConnection()->getRowCount("userDetail");
 		// create a new UserDetail and insert into mySQL
 		$userDetailId = generateUuidV4();
-		$userDetailUserId = generateUuidV4();
 
-		$userDetail = new UserDetail($userDetailId, $userDetailUserId, $this->VALID_ABOUT_ME, $this->VALID_AGE, $this->VALID_CAREER, $this->VALID_DISPLAY_EMAIL, $this->VALID_EDUCATION, $this->VALID_GENDER, $this->VALID_INTERESTS, $this->VALID_RACE, $this->VALID_RELIGION);
+
+		$userDetail = new UserDetail($userDetailId, $this->user->getUserId(), $this->VALID_ABOUT_ME, $this->VALID_AGE, $this->VALID_CAREER, $this->VALID_DISPLAY_EMAIL, $this->VALID_EDUCATION, $this->VALID_GENDER, $this->VALID_INTERESTS, $this->VALID_RACE, $this->VALID_RELIGION);
 		$userDetail->insert($this->getPDO());
 		// grab the data from mySQL
 		$results = UserDetail::getUserDetailByUserDetailUserId($this->getPDO(), $userDetail->getUserDetailUserId());
@@ -229,7 +230,7 @@ class UserDetailTest extends DeepDiveDatingAppTest {
 		$pdoUserDetail = $results[0];
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("userDetail"));
 		$this->assertEquals($pdoUserDetail->getUserDetailId(), $userDetailId);
-		$this->assertEquals($pdoUserDetail->getUserDetailUserId(), $userDetailUserId);
+		$this->assertEquals($pdoUserDetail->getUserDetailUserId(), $this->user->getUserId());
 		$this->assertEquals($pdoUserDetail->getUserDetailAboutMe(), $this->VALID_ABOUT_ME);
 		$this->assertEquals($pdoUserDetail->getUserDetailAge(), $this->VALID_AGE);
 		$this->assertEquals($pdoUserDetail->getUserDetailCareer(), $this->VALID_CAREER);
