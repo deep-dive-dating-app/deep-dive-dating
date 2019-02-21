@@ -1,7 +1,7 @@
 <?php
 namespace DeepDiveDatingApp\DeepDiveDating\Tests;
 
-use DeepDiveDatingApp\DeepDiveDating\UserDetail;
+use DeepDiveDatingApp\DeepDiveDating\{User, UserDetail};
 
 //grab the class under scrutiny
 require_once(dirname(__DIR__)) . "/autoload.php";
@@ -20,6 +20,8 @@ require_once(dirname(__DIR__, 2) . "/lib/uuid.php");
  **/
 
 class UserDetailTest extends DeepDiveDatingAppTest {
+
+	protected $user = null;
 	/**
 	 * valid about me for user
 	 * @var string $VALID_ABOUT_ME
@@ -73,9 +75,11 @@ class UserDetailTest extends DeepDiveDatingAppTest {
 		parent::setUp();
 		//
 		$password = "pimpinaintez";
-		$this->VALID_HASH = password_hash($password, PASSWORD_ARGON2I, ["time_cost" => 384]);
-		$this->VALID_ACTIVATION = bin2hex(random_bytes(16));
-		
+		$hash = password_hash($password, PASSWORD_ARGON2I, ["time_cost" => 384]);
+		$activationToken = bin2hex(random_bytes(16));
+
+		$this->user = new User(generateUuidV4(), $activationToken, "Firefox", "www.coolpix.biz", 0, "email@email.com", "Billy Bob", $hash, "177.108.73.111");
+		$this->user->insert($this->getPDO());
 	}
 
 	/**
@@ -85,15 +89,14 @@ class UserDetailTest extends DeepDiveDatingAppTest {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("userDetail");
 		$userDetailId = generateUuidV4();
-		$userDetailUserId = generateUuidV4();
 
-		$userDetail = new UserDetail($userDetailId, $userDetailUserId, $this->VALID_ABOUT_ME, $this->VALID_AGE, $this->VALID_CAREER, $this->VALID_DISPLAY_EMAIL, $this->VALID_EDUCATION, $this->VALID_GENDER, $this->VALID_INTERESTS, $this->VALID_RACE, $this->VALID_RELIGION);
+		$userDetail = new UserDetail($userDetailId, $this->user->getUserId(), $this->VALID_ABOUT_ME, $this->VALID_AGE, $this->VALID_CAREER, $this->VALID_DISPLAY_EMAIL, $this->VALID_EDUCATION, $this->VALID_GENDER, $this->VALID_INTERESTS, $this->VALID_RACE, $this->VALID_RELIGION);
 		$userDetail->insert($this->getPDO());
 		// grab the data from mySQL and enforce the fields match our expectations
 		$pdoUserDetail = UserDetail::getUserDetailByUserDetailId($this->getPDO(), $userDetail->getUserDetailId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("userDetail"));
 		$this->assertEquals($pdoUserDetail->getUserDetailId(), $userDetailId);
-		$this->assertEquals($pdoUserDetail->getUserDetailUserId(), $userDetailUserId);
+		$this->assertEquals($pdoUserDetail->getUserDetailUserId(), $this->user->getUserId());
 		$this->assertEquals($pdoUserDetail->getUserDetailAboutMe(), $this->VALID_ABOUT_ME);
 		$this->assertEquals($pdoUserDetail->getUserDetailAge(), $this->VALID_AGE);
 		$this->assertEquals($pdoUserDetail->getUserDetailCareer(), $this->VALID_CAREER);

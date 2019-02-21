@@ -60,7 +60,7 @@ class User implements \JsonSerializable {
 	 *
 	 * @param string|Uuid $newUserId id of this user or null if a new user account
 	 * @param string $newUserActivationToken activation token to safe guard against malicious accounts
-	 * @param string $newUserAgent string recorded info about the browser and system to assist with blocking/reporting
+	 * @param string $newuserAgent string recorded info about the browser and system to assist with blocking/reporting
 	 * @param string $newUserAvatarUrl string url to the user's avatar image
 	 * @param int $newUserBlocked int info on the blocked status of the user
 	 * @param string $newUserEmail string containing the user email
@@ -75,11 +75,11 @@ class User implements \JsonSerializable {
 	 * @Documentation https://php.net/manual/en/language.oop5.decon.php
 	 */
 
-	public function __construct($newUserId, string $newUserActivationToken, string $newUserAgent, string $newUserAvatarUrl, int $newUserBlocked, string $newUserEmail, string $newUserHandle, string $newUserHash, string $newUserIpAddress) {
+	public function __construct($newUserId, string $newUserActivationToken, string $newuserAgent, string $newUserAvatarUrl, int $newUserBlocked, string $newUserEmail, string $newUserHandle, string $newUserHash, string $newUserIpAddress) {
 		try {
 			$this->setUserId($newUserId);
 			$this->setUserActivationToken($newUserActivationToken);
-			$this->setUserAgent($newUserAgent);
+			$this->setuserAgent($newuserAgent);
 			$this->setUserAvatarUrl($newUserAvatarUrl);
 			$this->setUserBlocked($newUserBlocked);
 			$this->setUserEmail($newUserEmail);
@@ -152,35 +152,35 @@ class User implements \JsonSerializable {
 		$this->userActivationToken = $newUserActivationToken;
 	}
 	/**
-	 * accessor method for user agent
+	 * accessor method for user Age
 	 *
-	 * @return string value for user agent
+	 * @return string value for user Age
 	 */
-	public function getUserAgent(): string {
+	public function getuserAgent(): string {
 				return ($this->userAgent);
 	}
 	/**
-	 * mutator method for the user agent
+	 * mutator method for the user Age
 	 *
-	 * @param string $newUserAgent new value of the user agent
-	 * @throws \InvalidArgumentException if $newUserAgent is not a string or insecure
-	 * @throws \RangeException if $newUserAgent is > 255 characters
-	 * @throws \TypeError if $newUserAgent is not a string
+	 * @param string $newuserAgent new value of the user Age
+	 * @throws \InvalidArgumentException if $newuserAgent is not a string or insecure
+	 * @throws \RangeException if $newuserAgent is > 255 characters
+	 * @throws \TypeError if $newuserAgent is not a string
 	 * @throws \Exception
 	 */
-	public function setUserAgent (string $newUserAgent) : void {
-		//verify the the user agent is secure
-		$newUserAgent = trim($newUserAgent);
-		$newUserAgent = filter_var($newUserAgent, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-		if(empty($newUserAgent) === true) {
-					throw (new \InvalidArgumentException("user agent is empty or insecure"));
+	public function setuserAgent (string $newuserAgent) : void {
+		//verify the the user Age is secure
+		$newuserAgent = trim($newuserAgent);
+		$newuserAgent = filter_var($newuserAgent, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newuserAgent) === true) {
+					throw (new \InvalidArgumentException("user Age is empty or insecure"));
 		}
-		//verify the user agent will fit in the database
-		if(strlen($newUserAgent) > 255) {
-					throw(new \RangeException("user agent is too large"));
+		//verify the user Age will fit in the database
+		if(strlen($newuserAgent) > 255) {
+					throw(new \RangeException("user Age is too large"));
 		}
-		//store the user agent
-		$this->userAgent = $newUserAgent;
+		//store the user Age
+		$this->userAgent = $newuserAgent;
 	}
 	/**
 	 * accessor method for user avatar url

@@ -89,7 +89,7 @@ class UserDetail implements \JsonSerializable {
 	 *
 	 ************************************************************/
 //todo add type hints
-	public function __construct(string $newUserDetailId, string $newUserDetailUserId, string $newUserDetailAboutMe, int $newUserDetailAge, string $newUserDetailCareer, string $newUserDetailDisplayEmail, string $newUserDetailEducation, string $newUserDetailGender, string $newUserDetailInterests, string $newUserDetailRace, string $newUserDetailReligion) {
+	public function __construct($newUserDetailId, $newUserDetailUserId, string $newUserDetailAboutMe, int $newUserDetailAge, string $newUserDetailCareer, string $newUserDetailDisplayEmail, string $newUserDetailEducation, string $newUserDetailGender, string $newUserDetailInterests, string $newUserDetailRace, string $newUserDetailReligion) {
 		try {
 			$this->setUserDetailId($newUserDetailId);
 			$this->setUserDetailUserId($newUserDetailUserId);
