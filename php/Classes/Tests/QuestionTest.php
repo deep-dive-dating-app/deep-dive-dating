@@ -4,7 +4,7 @@
 namespace DeepDiveDatingApp\DeepDiveDating\Question\Tests;
 use DeepDiveDatingApp\DeepDiveDating\Question;
 
-require_once("autoload.php");
+require_once (dirname(__DIR__) . "/autoload.php");
 require_once(dirname(__DIR__,2)."/lib/uuid.php");
 //use DeepDiveDatingApp\DeepDiveDating\Question\Test;
 /**
@@ -24,7 +24,7 @@ class QuestionTest extends DeepDiveDatingAppTest {
 	 * valid id to create the question object to own the test
 	 *@var string $VALID_QUESTIONID
 	 **/
-protected $VALID_QUESTIONID;
+protected  $VALID_QUESTIONID;
 
 	/**
 	 * Content of questions
