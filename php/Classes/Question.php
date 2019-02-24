@@ -46,7 +46,7 @@ class Question implements \JsonSerializable {
 			//determine what exception type was thrown
 		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
 			$exceptionType = get_class($exception);
-			throw(new $exceptionType ($exception->getMessage(), 0, $exception));
+			throw(new $exceptionType ($exception->getMessage(), 0, $exception, $exception->getLine()));
 		}
 	}
 
@@ -130,15 +130,13 @@ class Question implements \JsonSerializable {
 	 * @throws \TypeError if $newQuestionValue is not an int
 	 **/
 	public function setQuestionValue(int $newQuestionValue): void {
-		try {
-			$uuid = self::validateUuid($newQuestionValue);
-		} catch(\InvalidArgumentException | \RangeException | \Exception |\TypeError $exception) {
-			$exceptionType = get_class($exception);
-			throw(new $exceptionType ($exception->getMessage(), 0, $exception));
+		if($newQuestionValue === 1) {
+			$this->questionValue = 0;
+			return;
 		}
 
 		//convert and store Question value
-		$this->questionValue = $uuid;
+		$this->questionValue = int;
 	}
 	/**
 
@@ -222,7 +220,7 @@ class Question implements \JsonSerializable {
 			}
 		} catch(\Exception $exception) {
 			// if the row couldn't be converted, rethrow it
-			throw(new \PDOException($exception->getMessage(), 0, $exception));
+			throw(new \PDOException($exception->getMessage(), 0, $exception, $exception->getLine()));
 		}
 		return ($question);
 	}
@@ -254,7 +252,7 @@ class Question implements \JsonSerializable {
 				$questions->next();
 			} catch(\Exception $exception) {
 				// if the row couldn't be converted, rethrow it
-				throw(new \PDOException($exception->getMessage(), 0, $exception));
+				throw(new \PDOException($exception->getMessage(), 0, $exception, $exception->getLine()));
 			}
 		}
 		return ($questions);

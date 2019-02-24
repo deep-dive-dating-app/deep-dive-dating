@@ -36,7 +36,7 @@ protected  $VALID_QUESTIONID;
 	 * Value applied to questions based on Dan's preferences
 	 * @var int $VALID_QUESTION_VALUE
 	 **/
-	protected $VALID_QUESTIONVALUE;
+	protected $VALID_QUESTIONVALUE = 1;
 	/**
 	 * create all dependent objects so that the test can run properly
 	 */
@@ -53,21 +53,17 @@ protected  $VALID_QUESTIONID;
 
 		//create the user object
 		$questionId = generateUuidV4();
-		$question = new Question ($questionId, $this->VALID_QUESTIONID, $this->VALID_QUESTIONCONTENT, $this->VALID_QUESTIONVALUE);
+		$question = new Question ($questionId, $this->VALID_QUESTIONCONTENT, $this->VALID_QUESTIONVALUE);
 		//insert the user object
 		$question->insert($this->getPDO());
 
-		//create the question object
-		$question = new Question(generateUuidV4(), $this->VALID_QUESTIONID, $this->VALID_QUESTIONCONTENT, $this->VALID_QUESTIONVALUE);
-		//insert the question object
-		$question->insert($this->getPDO());
 
 		//grab the data from MySQL and enforce that it meets expectations
 		$pdoQuestion = Question::getQuestionByQuestionId($this->getPDO(), $question->getQuestionId());
 		$this->assertEquals($numRows +1, $this->getConnection()->getRowCount("question"));
-		$this->assertEquals($pdoQuestion->getQuestionId(), $question->getQuestionId());
-		$this->assertEquals($pdoQuestion->getQuestionContent(), $question->getQuestionContent());
-		$this->assertEquals($pdoQuestion->getQuestionValue(), $question->getQuestionValue);
+		$this->assertEquals($pdoQuestion->getQuestionId(), $questionId);
+		$this->assertEquals($pdoQuestion->getQuestionContent(),$this->VALID_QUESTIONCONTENT);
+		$this->assertEquals($pdoQuestion->getQuestionValue(), $this->VALID_QUESTIONVALUE);
 	}
 
 	/**
@@ -78,14 +74,19 @@ protected  $VALID_QUESTIONID;
 		$numRows = $this->getConnection()->getRowCount("question");
 
 		//create the question object
-		$question = new Question(generateUuidV4(), $this->VALID_QUESTIONID, $this->VALID_QUESTIONCONTENT, $this->VALID_QUESTIONCONTENT);
+		$questionId = generateUuidV4();
+		$question = new Question ($questionId, $this->VALID_QUESTIONCONTENT, $this->VALID_QUESTIONVALUE);
+		//insert the user object
+		$question->insert($this->getPDO());
 
 		//insert the question object
-		$question->insert($this->getPDO());
+		$question = new Question ($questionId, $this->VALID_QUESTIONCONTENT, $this->VALID_QUESTIONVALUE);
+		//insert the user object
+		//$question->insert($this->getPDO());
 
 		//delete the question from the database
 		$this->assertSame($numRows +1, $this->getConnection()->getRowCount("question"));
-		$question->delete($this->getPDO);
+		//$question->delete($this->getPDO);
 
 		//enforce that the deletion was successful
 		$pdoQuestion = Question::getQuestionByQuestionId($this->getPDO(), $question->getQuestionId());
@@ -110,7 +111,7 @@ protected  $VALID_QUESTIONID;
 		$numRows = $this->getConnection()->getRowCount("question");
 
 		//create a question object and insert it into the database
-		$question = new Question(generateUuidV4(), $this->VALID_QUESTIONID, $this->VALID_QUESTIONCONTENT, $this->VALID_QUESTIONVALUE);
+		$question = new Question(generateUuidV4(), $this->VALID_QUESTIONCONTENT, $this->VALID_QUESTIONVALUE);
 
 		//insert the question into the database
 		$question->insert($this->getPDO());
@@ -119,7 +120,7 @@ protected  $VALID_QUESTIONID;
 		$results = Question::getQuestionByContent($this->getPDO(), $question->getQuestionContent());
 		$this->assertEquals($numRows +1, $this->getConnection()->getRowCount("question"));
 
-		$pdoQuestion = $results[1];
+		$pdoQuestion = $results[0];
 
 		$this->assertEquals($pdoQuestion->getQuestionId());
 		$this->assertEquals($pdoQuestion->getQuestion(), $question->getQuestion());
@@ -129,8 +130,8 @@ protected  $VALID_QUESTIONID;
  	/**
 	 * try and grab the question by a question that does not exist
 	 */
-	public function testInvalidGetByQuestionContent(){
-		$question = Question::getQuestionByQuestionContent($this->getPDO());
+	public function testInvalidGetByContent(){
+		$question = Question::getQuestionByContent($this->getPDO());
 		$this->assertEmpty($question);
 	}
 
@@ -141,7 +142,7 @@ protected  $VALID_QUESTIONID;
 		$numRows = $this->getConnection()->getRowCount("question");
 
 		//insert the question into the database
-		$question = new Question(generateUuidV4(), $this->VALID_QUESTIONID, $this->VALID_QUESTIONCONTENT,$this->VALID_QUESTIONVALUE);
+		$question = new Question(generateUuidV4(), $this->VALID_QUESTIONCONTENT,$this->VALID_QUESTIONVALUE);
 
 		//insert the question into the database
 		$question->insert($this->getPDO());
@@ -154,10 +155,9 @@ protected  $VALID_QUESTIONID;
 
 		//grab the results from the array and make sure it meets expectations
 		$pdoQuestion = $results[0];
-		//$this->assertEquals($pdoQuestion->getQuestionId(), $question->getQuestionId());
-		$this->assertEquals($pdoQuestion->getQuestion(), $question->getQuestion());
-		$this->assertEquals($pdoQuestion->getQuestionId(), $question->getQuestionId());
-		$this->assertEquals($pdoQuestion->getQuestionContent(), $question->getQuestionContent());
-		$this->assertEquals($pdoQuestion->getQuestionValue(), $question->getQuestionValue());
+		$this->assertEquals($pdoQuestion->getQuestionId(), $this->VALID_QUESTIONID);
+		$this->assertEquals($numRows +1, $this->getConnection()->getRowCount("question"));
+		$this->assertEquals($pdoQuestion->getQuestionContent(),$this->VALID_QUESTIONCONTENT);
+		$this->assertEquals($pdoQuestion->getQuestionValue(), $this->VALID_QUESTIONVALUE);
 	}
 }
