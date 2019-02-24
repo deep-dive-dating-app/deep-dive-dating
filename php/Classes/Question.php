@@ -38,7 +38,7 @@ class Question implements \JsonSerializable {
 	 * @throws \TypeError if data types violate type hints
 	 *
 	 **/
-	public function __construct(string $newQuestionId, string $newQuestionContent, int $newQuestionValue) {
+	public function __construct($newQuestionId, string $newQuestionContent, int $newQuestionValue) {
 		try {
 			$this->setQuestionId($newQuestionId);
 			$this->setQuestionContent($newQuestionContent);

@@ -41,9 +41,8 @@ protected  $VALID_QUESTIONID;
 	 * create all dependent objects so that the test can run properly
 	 */
 	public final function setUp()  : void {
-		// create and insert a Profile to own the test Tweet
-		$this->question = new Question(generateUuidV4(), null, "1", $this->VALID_QUESTIONID, "+1212555121212121");
-		$this->question->insert($this->getPDO());
+		// create and insert a Profile to own the Question test
+		parent::setUp();
 	}
 	/**
 	 * perform the actual insert method and enforce that is meets expectations i.e, corrupted data is worth nothing
@@ -51,6 +50,12 @@ protected  $VALID_QUESTIONID;
 
 	public function testValidQuestionInsert(){
 		$numRows = $this->getConnection()->getRowCount("question");
+
+		//create the user object
+		$questionId = generateUuidV4();
+		$question = new Question ($questionId, $this->VALID_QUESTIONID, $this->VALID_QUESTIONCONTENT, $this->VALID_QUESTIONVALUE);
+		//insert the user object
+		$question->insert($this->getPDO());
 
 		//create the question object
 		$question = new Question(generateUuidV4(), $this->VALID_QUESTIONID, $this->VALID_QUESTIONCONTENT, $this->VALID_QUESTIONVALUE);
