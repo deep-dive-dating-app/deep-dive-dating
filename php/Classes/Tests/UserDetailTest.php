@@ -187,6 +187,9 @@ class UserDetailTest extends DeepDiveDatingAppTest {
 		// grab the data from mySQL and enforce the fields match our expectations
 		$pdoUserDetail = UserDetail::getUserDetailByUserDetailId($this->getPDO(), $userDetail->getUserDetailId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("userDetail"));
+		$this->assertCount(1,);
+
+
 		$this->assertEquals($pdoUserDetail->getUserDetailId(), $userDetailId);
 		$this->assertEquals($pdoUserDetail->getUserDetailUserId(), $this->user->getUserId());
 		$this->assertEquals($pdoUserDetail->getUserDetailAboutMe(), $this->VALID_ABOUT_ME);

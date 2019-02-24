@@ -52,7 +52,6 @@ protected $VALID_ANSWERSCORE = "i" || "c";
 		$this->answer = new Answer(generateUuidV4(), null, "This is the answer someone will write.", "i" | "c", $this->VALID_ANSWERQUESTIONID, "1212555121212121");
 		$this->answer->insert($this->getPDO());
 	}
-
 /**
 * perform the actual insert method and enforce that is meets expectations i.e, corrupted data is worth nothing
 **/
