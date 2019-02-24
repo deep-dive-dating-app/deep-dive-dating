@@ -187,7 +187,7 @@ class UserDetailTest extends DeepDiveDatingAppTest {
 		// grab the data from mySQL and enforce the fields match our expectations
 		$pdoUserDetail = UserDetail::getUserDetailByUserDetailId($this->getPDO(), $userDetail->getUserDetailId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("userDetail"));
-		$this->assertCount(1,);
+
 
 
 		$this->assertEquals($pdoUserDetail->getUserDetailId(), $userDetailId);
@@ -230,7 +230,7 @@ class UserDetailTest extends DeepDiveDatingAppTest {
 		// enforce no other objects are bleeding into UserDetail
 		//$this->assertContainsOnlyInstancesOf("DeepDiveDatingApp\DeepDiveDating\UserDetail", $results);
 		//enforce the results meet expectations
-		$pdoUserDetail = $results[0];
+		$pdoUserDetail = $results;
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("userDetail"));
 		$this->assertEquals($pdoUserDetail->getUserDetailId(), $userDetailId);
 		$this->assertEquals($pdoUserDetail->getUserDetailUserId(), $this->user->getUserId());
