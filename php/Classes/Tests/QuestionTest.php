@@ -1,7 +1,7 @@
 <?php
 
 
-namespace DeepDiveDatingApp\DeepDiveDating\Question\Tests;
+namespace DeepDiveDatingApp\DeepDiveDating\Tests;
 use DeepDiveDatingApp\DeepDiveDating\Question;
 
 require_once (dirname(__DIR__) . "/autoload.php");
