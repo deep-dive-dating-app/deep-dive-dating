@@ -90,7 +90,7 @@ class User implements \JsonSerializable {
 
 		catch (\InvalidArgumentException | \RangeException | \Exception | \TypeError | \ArgumentCountError $exception) {
 			$exceptionType = get_class($exception);
-			throw(new $exceptionType($exception->getMessage(), 0, $exception, $exception->getLine()));
+			throw new $exceptionType($exception->getMessage(), 0, $exception);
 		}
 	}
 	/**

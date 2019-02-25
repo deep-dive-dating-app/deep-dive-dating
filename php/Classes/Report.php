@@ -4,6 +4,7 @@ require_once("autoload.php");
 require_once(dirname(__DIR__, 2) . "/vendor/autoload.php");
 
 use Ramsey\Uuid\Uuid;
+use DeepDiveDatingApp\DeepDiveDating\ValidateDate;
 
 /**
  * Report Class
@@ -62,7 +63,7 @@ class Report implements \JsonSerializable {
 	 * @throws \Exception if some other exception occurs
 	 **/
 	//todo add type hints
-	public function __construct(Uuid $newReportUserId, Uuid $newReportAbuserId, string $newReportAgent, string $newReportContent, \DateTime $newReportDate, string $newReportIp) {
+	public function __construct(Uuid $newReportUserId, Uuid $newReportAbuserId, string $newReportAgent, string $newReportContent, $newReportDate, string $newReportIp) {
 		try {
 			$this->setReportUserId($newReportUserId);
 			$this->setReportAbuserId($newReportAbuserId);
@@ -221,7 +222,7 @@ class Report implements \JsonSerializable {
 		}
 		//use ValidateDate to store new date time
 		try {
-			$newReportDate = self::vaildateDateTime($newReportDate);
+			$newReportDate = self::validateDateTime($newReportDate);
 		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
 			$exceptionType = get_class($exception);
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
