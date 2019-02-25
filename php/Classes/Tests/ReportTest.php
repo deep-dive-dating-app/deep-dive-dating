@@ -79,21 +79,6 @@ class ReportTest extends DeepDiveDatingAppTest {
 	protected $user = null;
 
 	/**
-	 * protected uuid value for 1st user
-	 * @var string $userID1
-	 */
-	protected $userID1 = "eddef194-a088-4fae-bf1c-213ecbe814d9";
-
-	/**
-	 * protected uuid value for 2nd user
-	 * @var string $userID2
-	 */
-	protected $userID2 = "18a0e099-475d-4621-87bb-2e98132169f9";
-	/**
-	 * create dependent objects before running each test
-	 **/
-
-	/**
 	 * id for this user
 	 * @var Uuid $VALID_USERID
 	 */
@@ -188,13 +173,13 @@ class ReportTest extends DeepDiveDatingAppTest {
 		$password = "pimpinaintez";
 		$hash = password_hash($password, PASSWORD_ARGON2I, ["time_cost" => 384]);
 		$activationToken = bin2hex(random_bytes(16));
-		$this->user = new User($this->userID1, $activationToken, "Firefox", "www.coolpix.biz", 0, "email@email.com", "Billy Bob", $hash, "177.108.73.111");
+		$this->user = new User($this->VALID_USERID, $activationToken, "Firefox", "www.coolpix.biz", 0, "email@email.com", "Billy Bob", $hash, "177.108.73.111");
 		$this->user->insert($this->getPDO());
 
 		$password2 = "passforward";
 		$hash2 = password_hash($password2, PASSWORD_ARGON2I, ["time_cost" => 384]);
 		$activationToken2 = bin2hex(random_bytes(16));
-		$this->user = new User($this->userID2, $activationToken2, "Firefox", "www.coolpix.com", 0, "email2@email.com", "Billy Joe", $hash2, "177.108.73.121");
+		$this->user = new User($this->VALID_USERID2, $activationToken2, "Firefox", "www.coolpix.com", 0, "email2@email.com", "Billy Joe", $hash2, "177.108.73.121");
 		$this->user->insert($this->getPDO());
 
 	}

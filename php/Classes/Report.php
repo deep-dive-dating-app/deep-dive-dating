@@ -300,7 +300,7 @@ class Report implements \JsonSerializable {
 	 **/
 	public function update(\PDO $pdo) :void {
 		//query template
-		$query = "UPDATE report SET reportAbuserId = :reportAbuserId, reportAgent = :reportAgent, reportContent = :reportContent, reportDate = :reportDate WHERE reportUserId = :reportUserId";
+		$query = "UPDATE report SET reportAbuserId = :reportAbuserId, reportAgent = :reportAgent, reportContent = :reportContent, reportDate = :reportDate, reportIp = :reportIp WHERE reportUserId = :reportUserId";
 		$statement = $pdo->prepare($query);
 		//bind variables to the template
 		$formattedDate = $this->reportDate->format("Y-m-d H:i:s.u");
