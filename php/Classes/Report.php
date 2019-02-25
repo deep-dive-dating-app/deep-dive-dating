@@ -19,12 +19,12 @@ class Report implements \JsonSerializable {
 	use ValidateDate;
 	/**
 	 * id for the user who submitted the report
-	 * @var \Uuid $reportUserId
+	 * @var User $reportUserId
 	 **/
 	private $reportUserId;
 	/**
 	 * id for the user accused of misconduct
-	 * @var \Uuid $reportAbuserId
+	 * @var User $reportAbuserId
 	 **/
 	private $reportAbuserId;
 	/**
@@ -51,8 +51,8 @@ class Report implements \JsonSerializable {
 	/**
 	 * Constructor Method for Report
 	 *
-	 * @param string|Uuid $newReportUserId user id for the account making the report
-	 * @param string|Uuid $newReportAbuserId user id for the account detailed in the report
+	 * @param User $newReportUserId user id for the account making the report
+	 * @param User $newReportAbuserId user id for the account detailed in the report
 	 * @param string $newReportAgent agent information for the user who made the report
 	 * @param string $newReportContent value/contents of the report
 	 * @param \DateTime|string $newReportDate date and time report was sent
@@ -82,16 +82,16 @@ class Report implements \JsonSerializable {
 	/**
 	 * Accessor Method for Report User Id
 	 *
-	 * @return string|Uuid value of User Id for the person who made the report
+	 * @return User value of User Id for the person who made the report
 	 **/
-	public function getReportUserId() : Uuid {
+	public function getReportUserId() : User {
 		return($this->reportUserId);
 	}
 
 	/**
 	 * Mutator Method for Report User Id
 	 *
-	 * @param Uuid|string new value of Report User Id
+	 * @param User new value of Report User Id
 	 * @throws \RangeException if $newReportUserId is not positive
 	 * @throws \TypeError if $newReportUserId is not a Uuid or string
 	 **/
@@ -108,9 +108,9 @@ class Report implements \JsonSerializable {
 	/**
 	 * Accessor Method for Report Abuser Id
 	 *
-	 * @return string|Uuid value of User Id for the person who the report is about
+	 * @return User value of User Id for the person who the report is about
 	 **/
-	public function getReportAbuserId() : Uuid {
+	public function getReportAbuserId() : User {
 		return($this->reportAbuserId);
 	}
 

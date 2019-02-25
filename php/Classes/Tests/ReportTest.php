@@ -198,8 +198,8 @@ class ReportTest extends DeepDiveDatingAppTest {
 		//grab data my database and enforce expectations
 		$pdoReport = Report::getReportByUserId($this->getPDO(), $report->getReportUserId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("report"));
-		$this->assertEquals($pdoReport->getReportUserId(), $report->getReportUserId());
-		$this->assertEquals($pdoReport->getReportAbuserId(), $report->getReportAbuserId());
+		$this->assertEquals($pdoReport->getReportUserId(), $userId);
+		$this->assertEquals($pdoReport->getReportAbuserId(), $userId2);
 		$this->assertEquals($pdoReport->getReportAgent(), $report->getReportAgent());
 		$this->assertEquals($pdoReport->getReportContent(), $report->getReportContent());
 		$this->assertEquals($pdoReport->getReportDate(), $report->getReportDate());
