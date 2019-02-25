@@ -149,7 +149,7 @@ class MatchTest extends DeepDiveDatingAppTest {
 		$numRows = $this->getConnection()->getRowCount("match");
 
 		// create the match object
-		$match = new Match($this->userID1, $this->userID2, $this->VALID_MATCH_APPROVED);
+		$match = new Match($this->match->getMatchUserId(), $this->match->getMatchToUserId(), $this->VALID_MATCH_APPROVED);
 		//insert match object
 		$match->insert($this->getPDO());
 
