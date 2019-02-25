@@ -88,7 +88,9 @@ class ReportTest extends DeepDiveDatingAppTest {
 	 * id for this user
 	 * @var Uuid $VALID_USERID
 	 */
-	protected $VALID_USERID;
+	protected $userId = "ed0c874c-6b0c-4b8c-9478-c70640558a26";
+
+	protected $userId2= "190671de-177d-4034-86ac-a598887f3ae6";
 
 	/**
 	 * placeholder activation token for the initial profile creation
@@ -174,12 +176,10 @@ class ReportTest extends DeepDiveDatingAppTest {
 		$hash = password_hash($password, PASSWORD_ARGON2I, ["time_cost" => 384]);
 
 		// create and insert two users to own the test report
-		$userId=generateUuidV4();
-		$this->userOne = new User($userId, $this->VALID_USERACTIVATIONTOKEN, $this->VALID_USERAGENT, $this->VALID_USERAVATARURL, $this->VALID_USERBLOCKED, $this->VALID_USEREMAIL, $this->VALID_USERHANDLE, $hash, $this->VALID_USERIPADDRESS);
+		$this->userOne = new User($this->userId, $this->VALID_USERACTIVATIONTOKEN, $this->VALID_USERAGENT, $this->VALID_USERAVATARURL, $this->VALID_USERBLOCKED, $this->VALID_USEREMAIL, $this->VALID_USERHANDLE, $hash, $this->VALID_USERIPADDRESS);
 		$this->userOne->insert($this->getPDO());
 
-		$userId2=generateUuidV4();
-		$this->userTwo = new User($userId2, $this->VALID_USERACTIVATIONTOKEN, $this->VALID_USERAGENT1, $this->VALID_USERAVATARURL1, $this->VALID_USERBLOCKED1, $this->VALID_USEREMAIL1, $this->VALID_USERHANDLE1, $hash, $this->VALID_USERIPADDRESS);
+		$this->userTwo = new User($this->userId2, $this->VALID_USERACTIVATIONTOKEN, $this->VALID_USERAGENT1, $this->VALID_USERAVATARURL1, $this->VALID_USERBLOCKED1, $this->VALID_USEREMAIL1, $this->VALID_USERHANDLE1, $hash, $this->VALID_USERIPADDRESS);
 		$this->userTwo->insert($this->getPDO());
 
 	}
@@ -190,11 +190,9 @@ class ReportTest extends DeepDiveDatingAppTest {
 	public function testValidReportInsert() {
 		//get number of rows and save it for the test
 		$numRows = $this->getConnection()->getRowCount("report");
-		$reportUserId = $this->userOne;
-		$reportAbuserId = $this->userTwo;
 
 		//create report object
-		$report = new Report($reportUserId, $reportAbuserId, $this->VALID_REPORT_AGENT, $this->VALID_REPORT_CONTENT, $this->VALID_REPORT_DATE, $this->VALID_REPORT_IP);
+		$report = new Report($this->userId, $this->userId2, $this->VALID_REPORT_AGENT, $this->VALID_REPORT_CONTENT, $this->VALID_REPORT_DATE, $this->VALID_REPORT_IP);
 		//insert report into database
 		$report->insert($this->getPDO());
 		//grab data my database and enforce expectations
@@ -214,11 +212,9 @@ class ReportTest extends DeepDiveDatingAppTest {
 	public function testValidReportUpdate() {
 		//get number of rows and save it for the test
 		$numRows = $this->getConnection()->getRowCount("report");
-		$reportUserId = $this->userOne;
-		$reportAbuserId = $this->userTwo;
 
 		//create report object
-		$report = new Report($reportUserId, $reportAbuserId, $this->VALID_REPORT_AGENT, $this->VALID_REPORT_CONTENT, $this->VALID_REPORT_DATE, $this->VALID_REPORT_IP);
+		$report = new Report($this->userId, $this->userId2, $this->VALID_REPORT_AGENT, $this->VALID_REPORT_CONTENT, $this->VALID_REPORT_DATE, $this->VALID_REPORT_IP);
 		//insert report into database
 		$report->insert($this->getPDO());
 
