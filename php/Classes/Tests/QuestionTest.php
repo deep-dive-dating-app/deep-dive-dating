@@ -117,21 +117,21 @@ protected  $VALID_QUESTIONID;
 		$question->insert($this->getPDO());
 
 		//grab the question from the database
-		$results = Question::getQuestionByContent($this->getPDO(), $question->getQuestionContent());
+		$results = Question::getQuestionContent($this->getPDO(), $question->getQuestionContent());
 		$this->assertEquals($numRows +1, $this->getConnection()->getRowCount("question"));
 
 		$pdoQuestion = $results[0];
 
-		$this->assertEquals($pdoQuestion->getQuestionId());
-		$this->assertEquals($pdoQuestion->getQuestion(), $question->getQuestion());
-		$this->assertEquals($pdoQuestion->getQuestionContent());
-		$this->assertEquals($pdoQuestion->getQuestionValue());
+		$this->assertEquals($pdoQuestion->getQuestionId(), $this->VALID_QUESTIONID);
+		$this->assertEquals($numRows +1, $this->getConnection()->getRowCount("question"));
+		$this->assertEquals($pdoQuestion->getQuestionContent(),$this->VALID_QUESTIONCONTENT);
+		$this->assertEquals($pdoQuestion->getQuestionValue(), $this->VALID_QUESTIONVALUE);
 	}
  	/**
 	 * try and grab the question by a question that does not exist
 	 */
-	public function testInvalidGetByContent(){
-		$question = Question::getQuestionByContent($this->getPDO());
+	public function testInvalidGetQuestionContent(){
+		$question = Question::getQuestionContent($this->getPDO());
 		$this->assertEmpty($question);
 	}
 

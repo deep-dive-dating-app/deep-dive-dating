@@ -38,7 +38,7 @@ class Question implements \JsonSerializable {
 	 * @throws \TypeError if data types violate type hints
 	 *
 	 **/
-	public function __construct($newQuestionId, string $newQuestionContent, int $newQuestionValue) {
+	public function __construct($newQuestionId, string $newQuestionContent,  $newQuestionValue) {
 		try {
 			$this->setQuestionId($newQuestionId);
 			$this->setQuestionContent($newQuestionContent);
@@ -130,13 +130,10 @@ class Question implements \JsonSerializable {
 	 * @throws \TypeError if $newQuestionValue is not an int
 	 **/
 	public function setQuestionValue(int $newQuestionValue): void {
-		if($newQuestionValue === 1) {
-			$this->questionValue = 0;
-			return;
-		}
+		if(empty($newQuestionValue) == "i" || "c")
 
 		//convert and store Question value
-		$this->questionValue = int;
+		$this->questionValue = $newQuestionValue;
 	}
 	/**
 
@@ -220,7 +217,8 @@ class Question implements \JsonSerializable {
 			}
 		} catch(\Exception $exception) {
 			// if the row couldn't be converted, rethrow it
-			throw(new \PDOException($exception->getMessage(), 0, $exception, $exception->getLine()));
+			var_dump($exception);
+			throw new \PDOException($exception->getMessage(), 0, $exception);
 		}
 		return ($question);
 	}
