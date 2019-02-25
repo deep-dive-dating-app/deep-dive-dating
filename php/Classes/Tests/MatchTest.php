@@ -1,10 +1,10 @@
-W<?php
+<?php
 namespace DeepDiveDatingApp\DeepDiveDating\Tests;
 
 
-use DeepDiveDatingApp\DeepDiveDating\Match;
+use DeepDiveDatingApp\DeepDiveDating\{User, Match};
 
-require_once(dirname(__DIR__) . "/autoload.php");
+require_once(dirname(__DIR__, 1) . "/autoload.php");
 
 require_once(dirname(__DIR__, 2) . "/lib/uuid.php");
 
@@ -33,6 +33,9 @@ class MatchTest extends DeepDiveDatingAppTest {
 	 **/
 	protected $VALID_MATCH_APPROVED1 = 0;
 
+	protected $userID1 = "eddef194-a088-4fae-bf1c-213ecbe814d9";
+
+	protected $userID2 = "18a0e099-475d-4621-87bb-2e98132169f9";
 	/**
 	 * create dependent objects before running each test
 	 **/
@@ -40,9 +43,21 @@ class MatchTest extends DeepDiveDatingAppTest {
 		// run the default setUp() method first
 		parent::setUp();
 
-		// create and insert a Profile to own the test Tweet
-		$this->match = new Match(generateUuidV4(), generateUuidV4(),"0");
-		$this->match->insert($this->getPDO());
+		$password = "pimpinaintez";
+		$hash = password_hash($password, PASSWORD_ARGON2I, ["time_cost" => 384]);
+		$activationToken = bin2hex(random_bytes(16));
+		$this->user = new User($this->userID1, $activationToken, "Firefox", "www.coolpix.biz", 0, "email@email.com", "Billy Bob", $hash, "177.108.73.111");
+		$this->user->insert($this->getPDO());
+
+		$password2 = "passforward";
+		$hash2 = password_hash($password2, PASSWORD_ARGON2I, ["time_cost" => 384]);
+		$activationToken2 = bin2hex(random_bytes(16));
+		$this->user = new User($this->userID2, $activationToken2, "Firefox", "www.coolpix.com", 0, "email2@email.com", "Billy Joe", $hash2, "177.108.73.121");
+		$this->user->insert($this->getPDO());
+
+
+		//$this->match = new Match($this->userID1, $this->userID2,"0");
+		//$this->match->insert($this->getPDO());
 	}
 
 	/**
@@ -53,7 +68,7 @@ class MatchTest extends DeepDiveDatingAppTest {
 		$numRows = $this->getConnection()->getRowCount("match");
 
 		// create the match object
-		$match = new Match(generateUuidV4(), generateUuidV4(), $this->VALID_MATCH_APPROVED);
+		$match = new Match($this->userID1, $this->userID2, $this->VALID_MATCH_APPROVED);
 		//insert match object
 		$match->insert($this->getPDO());
 
@@ -73,14 +88,14 @@ class MatchTest extends DeepDiveDatingAppTest {
 		$numRows = $this->getConnection()->getRowCount("match");
 
 		//create the match object
-		$match = new Match(generateUuidV4(), generateUuidV4(), $this->VALID_MATCH_APPROVED);
+		$match = new Match($this->userID1, $this->userID2, $this->VALID_MATCH_APPROVED);
 		//insert match object
 		$match->insert($this->getPDO());
 
 		//edit the quote object then insert the object back into the database
 		$match->setMatchApproved($this->VALID_MATCH_APPROVED1);
 		$match->update($this->getPDO());
-		$pdoMatch =  Match::getMatchByMatchUserId($this->getPDO(), $match->getQuoteId());
+		$pdoMatch =  Match::getMatchByMatchUserId($this->getPDO(), $match->getMatchUserId());
 		// enforce expectations
 		$this->assertEquals($pdoMatch->getMatchUserId(), $match->getMatchUserId());
 		$this->assertEquals($pdoMatch->getMatchToUserId(), $match->getMatchToUserId());
@@ -95,7 +110,7 @@ class MatchTest extends DeepDiveDatingAppTest {
 		$numRows = $this->getConnection()->getRowCount("match");
 
 		//create match object
-		$match = new Match(generateUuidV4(), generateUuidV4(), $this->VALID_MATCH_APPROVED);
+		$match = new Match($this->userID1, $this->userID2, $this->VALID_MATCH_APPROVED);
 		//insert match object
 		$match->insert($this->getPDO());
 		//delete match from database
@@ -134,13 +149,18 @@ class MatchTest extends DeepDiveDatingAppTest {
 		$numRows = $this->getConnection()->getRowCount("match");
 
 		// create the match object
-		$match = new Match(generateUuidV4(), generateUuidV4(), $this->VALID_MATCH_APPROVED);
+		$match = new Match($this->userID1, $this->userID2, $this->VALID_MATCH_APPROVED);
 		//insert match object
 		$match->insert($this->getPDO());
 
 		//grab data from mySQL and enforce that it meets expectations
-		$pdoMatch = Match::getMatchByMatchToUserId($this->getPDO(), $match->getMatchToUserId());
+		$results = Match::getMatchByMatchToUserId($this->getPDO(), $match->getMatchToUserId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("match"));
+		$this->assertCount(1, $results);
+		$this->assertContainsOnlyInstancesOf("DeepDiveDatingApp\\DeepDiveDating\\Tests\\Match", $results);
+
+		$pdoMatch = $results[0];
+
 		$this->assertEquals($pdoMatch->getMatchUserId(), $match->getMatchUserId());
 		$this->assertEquals($pdoMatch->getMatchToUserId(), $match->getMatchToUserId());
 		$this->assertEquals($pdoMatch->getMatchApproved(), $match->getMatchApproved());
@@ -154,7 +174,7 @@ class MatchTest extends DeepDiveDatingAppTest {
 		$numRows = $this->getConnection()->getRowCount("match");
 
 		// create the match object
-		$match = new Match(generateUuidV4(), generateUuidV4(), $this->VALID_MATCH_APPROVED);
+		$match = new Match($this->userID1, $this->userID2, $this->VALID_MATCH_APPROVED);
 		//insert match object
 		$match->insert($this->getPDO());
 

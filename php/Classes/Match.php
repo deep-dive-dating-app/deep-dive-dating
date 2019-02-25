@@ -44,7 +44,7 @@ class Match implements \JsonSerializable {
 	 * @throws \Exception for other exceptions
 	 **/
 	//todo add type hints
-	public function __construct( Uuid $newMatchUserId, Uuid $newMatchToUserId, int $newMatchApproved) {
+	public function __construct( $newMatchUserId, $newMatchToUserId, int $newMatchApproved) {
 		try {
 			$this->setMatchUserId($newMatchUserId);
 			$this->setMatchToUserId($newMatchToUserId);
@@ -128,7 +128,7 @@ class Match implements \JsonSerializable {
 
 	public function setMatchApproved(int $newMatchApproved) : void {
 		// check if input is valid
-		if ($newMatchApproved !== 1 || $newMatchApproved !== 0) {
+		if ($newMatchApproved > 1 || $newMatchApproved < 0) {
 			throw(new \RangeException("Match Approved Value is invalid"));
 		}
 		//store new value on server
@@ -176,10 +176,10 @@ class Match implements \JsonSerializable {
 	 **/
 	public function update(\PDO $pdo) : void {
 		//first create query template
-		$query = "UPDATE `match` SET matchApproved = :matchApproved WHERE matchUserId = :matchUserId";
+		$query = "UPDATE `match` SET matchToUserId = :matchToUserId, matchApproved = :matchApproved WHERE matchUserId = :matchUserId";
 		$statement = $pdo->prepare($query);
 		//then bind member variables to the placeholder in the template
-		$parameters = ["matchApproved" => $this->matchApproved];
+		$parameters = ["matchUserId" => $this->matchUserId->getBytes(), "matchToUserId" => $this->matchToUserId->getBytes(), "matchApproved" => $this->matchApproved];
 		$statement->execute($parameters);
 	}
 // todo write getMatchByMatchUserIdAndMatchToUserId
@@ -269,7 +269,7 @@ class Match implements \JsonSerializable {
 	 * @throws \TypeError if a variable is not of the correct data type
 	 **/
 	//todo recompose getAllMatches to getMatchesByMatchToUserId
-	public static function getMatchByMatchToUserId(\PDO $pdo, $matchToUserId, $matchUserId): \SplFixedArray {
+	public static function getMatchByMatchToUserId(\PDO $pdo, $matchToUserId): \SplFixedArray {
 		//sanitize Uuid
 		try {
 			$matchToUserId = self::validateUuid($matchToUserId);
