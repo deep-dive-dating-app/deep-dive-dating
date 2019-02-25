@@ -86,11 +86,13 @@ class MatchTest extends DeepDiveDatingAppTest {
 		$match->insert($this->getPDO());
 
 		//grab data from mySQL and enforce that it meets expectations
-		$pdoMatch = Match::getMatchByMatchUserId($this->getPDO(), $match->getMatchUserId());
+		$results = Match::getMatchByMatchUserId($this->getPDO(), $match->getMatchUserId());
+		$pdoMatch = $results[0];
+
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("match"));
-		$this->assertEquals($pdoMatch->getMatchUserId(), $match->getMatchUserId());
-		$this->assertEquals($pdoMatch->getMatchToUserId(), $match->getMatchToUserId());
-		$this->assertEquals($pdoMatch->getMatchApproved(), $match->getMatchApproved());
+		$this->assertEquals($pdoMatch->getMatchUserId(), $this->userID1);
+		$this->assertEquals($pdoMatch->getMatchToUserId(), $this->userID2);
+		$this->assertEquals($pdoMatch->getMatchApproved(), $this->VALID_MATCH_APPROVED);
 	}
 
 	/**
@@ -108,7 +110,8 @@ class MatchTest extends DeepDiveDatingAppTest {
 		//edit the quote object then insert the object back into the database
 		$match->setMatchApproved($this->VALID_MATCH_APPROVED1);
 		$match->update($this->getPDO());
-		$pdoMatch =  Match::getMatchByMatchUserId($this->getPDO(), $match->getMatchUserId());
+		$results =  Match::getMatchByMatchUserId($this->getPDO(), $match->getMatchUserId());
+		$pdoMatch = $results[0];
 		// enforce expectations
 		$this->assertEquals($pdoMatch->getMatchUserId(), $match->getMatchUserId());
 		$this->assertEquals($pdoMatch->getMatchToUserId(), $match->getMatchToUserId());
@@ -191,8 +194,10 @@ class MatchTest extends DeepDiveDatingAppTest {
 		//insert match object
 		$match->insert($this->getPDO());
 
+		$results = Match::getMatchByMatchUserIdAndMatchToUserId($this->getPDO(), $match->getMatchUserId(), $match->getMatchToUserId());
+
 		//grab data from mySQL and enforce that it meets expectations
-		$pdoMatch = Match::getMatchByMatchUserIdAndMatchToUserId($this->getPDO(), $match->getMatchUserId(), $match->getMatchToUserId());
+		$pdoMatch = $results[0];
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("match"));
 		$this->assertEquals($pdoMatch->getMatchUserId(), $match->getMatchUserId());
 		$this->assertEquals($pdoMatch->getMatchToUserId(), $match->getMatchToUserId());
