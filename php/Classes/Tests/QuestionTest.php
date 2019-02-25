@@ -14,6 +14,13 @@ require_once(dirname(__DIR__,2)."/lib/uuid.php");
  * @author Natalie Woodard
  */
 class QuestionTest extends DeepDiveDatingAppTest {
+
+	/**
+	 * uuid for users
+	 * @var string uuid
+	 **/
+	protected $uuid1 = "ab963c9e-8994-4108-b3be-ffa5074f9d00";
+
 	/**
 	* Questions for users
 	 * @var Question question
