@@ -24,19 +24,19 @@ class QuestionTest extends DeepDiveDatingAppTest {
 	 * valid id to create the question object to own the test
 	 *@var string $VALID_QUESTIONID
 	 **/
-protected  $VALID_QUESTIONID;
+protected  $VALID_QUESTIONID = "9efa5233-8f3c-40ab-96ae-38d0814d9751";
 
 	/**
 	 * Content of questions
-	 * @var string $VALID_QUESTION_CONTENT
+	 * @var string $VALID_QUESTIONCONTENT
 	 **/
-	protected $VALID_QUESTIONCONTENT = "PHPUnit test passing";
+	protected $VALID_QUESTIONCONTENT = "This is the content of the question";
 
 	/**
 	 * Value applied to questions based on Dan's preferences
-	 * @var int $VALID_QUESTION_VALUE
+	 * @var int $VALID_QUESTIONVALUE
 	 **/
-	protected $VALID_QUESTIONVALUE = 1;
+	protected $VALID_QUESTIONVALUE = "1";
 	/**
 	 * create all dependent objects so that the test can run properly
 	 */
@@ -61,7 +61,7 @@ protected  $VALID_QUESTIONID;
 		//grab the data from MySQL and enforce that it meets expectations
 		$pdoQuestion = Question::getQuestionByQuestionId($this->getPDO(), $question->getQuestionId());
 		$this->assertEquals($numRows +1, $this->getConnection()->getRowCount("question"));
-		$this->assertEquals($pdoQuestion->getQuestionId(), $questionId);
+		$this->assertEquals($pdoQuestion->getQuestionId(), $this->VALID_QUESTIONID);
 		$this->assertEquals($pdoQuestion->getQuestionContent(),$this->VALID_QUESTIONCONTENT);
 		$this->assertEquals($pdoQuestion->getQuestionValue(), $this->VALID_QUESTIONVALUE);
 	}
@@ -90,7 +90,7 @@ protected  $VALID_QUESTIONID;
 
 		//enforce that the deletion was successful
 		$pdoQuestion = Question::getQuestionByQuestionId($this->getPDO(), $question->getQuestionId());
-		$this->assertNull($pdoQuestion);
+		$this->assertEmpty($pdoQuestion);
 		$this->assertEquals($numRows, $this->getConnection()->getRowCount("question"));
 	}
 
@@ -107,7 +107,7 @@ protected  $VALID_QUESTIONID;
 	/**
 	 * insert a question object, grab it by the content, and enforce that it meets expectations
 	 */
-	public function testValidGetQuestionByContent() {
+	public function testValidGetQuestionContent() {
 		$numRows = $this->getConnection()->getRowCount("question");
 
 		//create a question object and insert it into the database
@@ -117,21 +117,19 @@ protected  $VALID_QUESTIONID;
 		$question->insert($this->getPDO());
 
 		//grab the question from the database
-		$results = Question::getQuestionContent($this->getPDO(), $question->getQuestionContent());
+		$pdoQuestion = Question::getQuestionByQuestionContent($this->getPDO(), $question->getQuestionContent());
 		$this->assertEquals($numRows +1, $this->getConnection()->getRowCount("question"));
-
-		$pdoQuestion = $results[0];
 
 		$this->assertEquals($pdoQuestion->getQuestionId(), $this->VALID_QUESTIONID);
-		$this->assertEquals($numRows +1, $this->getConnection()->getRowCount("question"));
 		$this->assertEquals($pdoQuestion->getQuestionContent(),$this->VALID_QUESTIONCONTENT);
 		$this->assertEquals($pdoQuestion->getQuestionValue(), $this->VALID_QUESTIONVALUE);
 	}
  	/**
 	 * try and grab the question by a question that does not exist
 	 */
-	public function testInvalidGetQuestionContent(){
-		$question = Question::getQuestionContent($this->getPDO());
+	public function testInvalidGetQuestionByQuestionContent(){
+		$question = Question::getQuestionByQuestionContent($this->getPDO());
+		($this->getPDO());
 		$this->assertEmpty($question);
 	}
 

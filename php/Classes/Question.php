@@ -223,6 +223,40 @@ class Question implements \JsonSerializable {
 		return ($question);
 	}
 
+
+	public static function getQuestionByQuestionContent(\PDO $pdo, $questionContent): ?Question {
+		// sanitize the questionContent before searching
+		try {
+			$questionContent = self::validateUuid($questionContent);
+		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+
+		// create query template
+		$query = "SELECT questionId, questionContent, questionValue FROM question WHERE questionId = :questionId";
+		$statement = $pdo->prepare($query);
+
+		// bind the Question content to the place holder in the template
+		$parameters = ["questionContent" => $questionContent];
+		$statement->execute($parameters);
+
+		// grab the Question from mySQL
+		try {
+			$question = null;
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement->fetch();
+			if($row !== false) {
+				$question = new Question($row["questionId"], $row["questionContent"], $row["questionValue"]);
+			}
+		} catch(\Exception $exception) {
+			// if the row couldn't be converted, rethrow it
+			var_dump($exception);
+			throw new \PDOException($exception->getMessage(), 0, $exception);
+		}
+		return ($question);
+	}
+
+
 	/**
 	 *
 	 * gets all Questions
