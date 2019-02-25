@@ -19,12 +19,12 @@ class Report implements \JsonSerializable {
 	use ValidateDate;
 	/**
 	 * id for the user who submitted the report
-	 * @var User $reportUserId
+	 * @var uuid|string $reportUserId
 	 **/
 	private $reportUserId;
 	/**
 	 * id for the user accused of misconduct
-	 * @var User $reportAbuserId
+	 * @var uuid|string $reportAbuserId
 	 **/
 	private $reportAbuserId;
 	/**
@@ -51,8 +51,8 @@ class Report implements \JsonSerializable {
 	/**
 	 * Constructor Method for Report
 	 *
-	 * @param User $newReportUserId user id for the account making the report
-	 * @param User $newReportAbuserId user id for the account detailed in the report
+	 * @param uuid|string $newReportUserId user id for the account making the report
+	 * @param uuid|string $newReportAbuserId user id for the account detailed in the report
 	 * @param string $newReportAgent agent information for the user who made the report
 	 * @param string $newReportContent value/contents of the report
 	 * @param \DateTime|string $newReportDate date and time report was sent
@@ -82,16 +82,16 @@ class Report implements \JsonSerializable {
 	/**
 	 * Accessor Method for Report User Id
 	 *
-	 * @return User value of User Id for the person who made the report
+	 * @return uuid value of User Id for the person who made the report
 	 **/
-	public function getReportUserId() : User {
+	public function getReportUserId() : uuid {
 		return($this->reportUserId);
 	}
 
 	/**
 	 * Mutator Method for Report User Id
 	 *
-	 * @param User new value of Report User Id
+	 * @param uuid new value of Report User Id
 	 * @throws \RangeException if $newReportUserId is not positive
 	 * @throws \TypeError if $newReportUserId is not a Uuid or string
 	 **/
@@ -109,16 +109,16 @@ class Report implements \JsonSerializable {
 	 * test
 	 * Accessor Method for Report Abuser Id
 	 *
-	 * @return User value of User Id for the person who the report is about
+	 * @return uuid|string value of User Id for the person who the report is about
 	 **/
-	public function getReportAbuserId() : User {
+	public function getReportAbuserId() : uuid {
 		return($this->reportAbuserId);
 	}
 
 	/**
 	 * Mutator Method for Report Abuser Id
 	 *
-	 * @param Uuid|string $newReportAbuserId new value of Report Abuser Id
+	 * @param uuid $newReportAbuserId new value of Report Abuser Id
 	 * @throws \RangeException if $newReportAbuserId is not positive
 	 * @throws \TypeError if $newReportAbuserId is not a Uuid or string
 	 **/
@@ -131,6 +131,7 @@ class Report implements \JsonSerializable {
 		}
 		$this->reportAbuserId = $uuid;
 	}
+
 
 	/**
 	 * Accessor Method for Report Agent

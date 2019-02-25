@@ -88,9 +88,13 @@ class ReportTest extends DeepDiveDatingAppTest {
 	 * id for this user
 	 * @var Uuid $VALID_USERID
 	 */
-	protected $userId = "ed0c874c-6b0c-4b8c-9478-c70640558a26";
+	protected $VALID_USERID = "ed0c874c-6b0c-4b8c-9478-c70640558a26";
 
-	protected $userId2= "190671de-177d-4034-86ac-a598887f3ae6";
+	/**
+	 * id for this user
+	 * @var Uuid $VALID_USERID2
+	 */
+	protected $VALID_USERID2= "190671de-177d-4034-86ac-a598887f3ae6";
 
 	/**
 	 * placeholder activation token for the initial profile creation
@@ -176,10 +180,10 @@ class ReportTest extends DeepDiveDatingAppTest {
 		$hash = password_hash($password, PASSWORD_ARGON2I, ["time_cost" => 384]);
 
 		// create and insert two users to own the test report
-		$this->userOne = new User($this->userId, $this->VALID_USERACTIVATIONTOKEN, $this->VALID_USERAGENT, $this->VALID_USERAVATARURL, $this->VALID_USERBLOCKED, $this->VALID_USEREMAIL, $this->VALID_USERHANDLE, $hash, $this->VALID_USERIPADDRESS);
+		$this->userOne = new User($this->VALID_USERID, $this->VALID_USERACTIVATIONTOKEN, $this->VALID_USERAGENT, $this->VALID_USERAVATARURL, $this->VALID_USERBLOCKED, $this->VALID_USEREMAIL, $this->VALID_USERHANDLE, $hash, $this->VALID_USERIPADDRESS);
 		$this->userOne->insert($this->getPDO());
 
-		$this->userTwo = new User($this->userId2, $this->VALID_USERACTIVATIONTOKEN, $this->VALID_USERAGENT1, $this->VALID_USERAVATARURL1, $this->VALID_USERBLOCKED1, $this->VALID_USEREMAIL1, $this->VALID_USERHANDLE1, $hash, $this->VALID_USERIPADDRESS);
+		$this->userTwo = new User($this->VALID_USERID2, $this->VALID_USERACTIVATIONTOKEN, $this->VALID_USERAGENT1, $this->VALID_USERAVATARURL1, $this->VALID_USERBLOCKED1, $this->VALID_USEREMAIL1, $this->VALID_USERHANDLE1, $hash, $this->VALID_USERIPADDRESS);
 		$this->userTwo->insert($this->getPDO());
 
 	}
@@ -190,16 +194,20 @@ class ReportTest extends DeepDiveDatingAppTest {
 	public function testValidReportInsert() {
 		//get number of rows and save it for the test
 		$numRows = $this->getConnection()->getRowCount("report");
-
+		$reportUserId = generateUuidV4();
+		$reportAbuserId = generateUuidV4();
 		//create report object
-		$report = new Report($this->userId, $this->userId2, $this->VALID_REPORT_AGENT, $this->VALID_REPORT_CONTENT, $this->VALID_REPORT_DATE, $this->VALID_REPORT_IP);
+		$report = new Report($this->VALID_USERID, $this->VALID_USERID2, $this->VALID_REPORT_AGENT, $this->VALID_REPORT_CONTENT, $this->VALID_REPORT_DATE, $this->VALID_REPORT_IP);
 		//insert report into database
 		$report->insert($this->getPDO());
+
 		//grab data my database and enforce expectations
-		$pdoReport = Report::getReportByUserId($this->getPDO(), $report->getReportUserId());
+		$results = Report::getReportByUserId($this->getPDO(), $report->getReportUserId());
+		$pdoReport = $results[0];
+
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("report"));
-		$this->assertEquals($pdoReport->getReportUserId(), $userId);
-		$this->assertEquals($pdoReport->getReportAbuserId(), $userId2);
+		$this->assertEquals($pdoReport->getReportUserId(), $reportUserId);
+		$this->assertEquals($pdoReport->getReportAbuserId(), $reportAbuserId);
 		$this->assertEquals($pdoReport->getReportAgent(), $report->getReportAgent());
 		$this->assertEquals($pdoReport->getReportContent(), $report->getReportContent());
 		$this->assertEquals($pdoReport->getReportDate(), $report->getReportDate());
@@ -214,17 +222,21 @@ class ReportTest extends DeepDiveDatingAppTest {
 		$numRows = $this->getConnection()->getRowCount("report");
 
 		//create report object
-		$report = new Report($this->userId, $this->userId2, $this->VALID_REPORT_AGENT, $this->VALID_REPORT_CONTENT, $this->VALID_REPORT_DATE, $this->VALID_REPORT_IP);
+		$report = new Report($this->VALID_USERID, $this->VALID_USERID2, $this->VALID_REPORT_AGENT, $this->VALID_REPORT_CONTENT, $this->VALID_REPORT_DATE, $this->VALID_REPORT_IP);
 		//insert report into database
 		$report->insert($this->getPDO());
+		$reportUserId = generateUuidV4();
+		$reportAbuserId = generateUuidV4();
 
 		//edit the report object and insert back into the database
 		$report->setReportContent($this->VALID_REPORT_CONTENT1);
 		$report->update($this->getPDO());
-		$pdoReport = Report::getReportByUserId($this->getPDO(), $report->getReportUserId());
-
-		$this->assertEquals($pdoReport->getReportUserId(), $report->getReportUserId());
-		$this->assertEquals($pdoReport->getReportAbuserId(), $report->getReportAbuserId());
+		$results = Report::getReportByUserId($this->getPDO(), $report->getReportUserId());
+		$pdoReport = $results[0];
+		
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("report"));
+		$this->assertEquals($pdoReport->getReportUserId(), $reportUserId);
+		$this->assertEquals($pdoReport->getReportAbuserId(), $reportAbuserId);
 		$this->assertEquals($pdoReport->getReportAgent(), $report->getReportAgent());
 		$this->assertEquals($pdoReport->getReportContent(), $report->getReportContent());
 		$this->assertEquals($pdoReport->getReportDate(), $report->getReportDate());
