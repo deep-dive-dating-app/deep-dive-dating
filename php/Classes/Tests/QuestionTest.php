@@ -131,14 +131,6 @@ protected  $VALID_QUESTIONID = "9efa5233-8f3c-40ab-96ae-38d0814d9751";
 		$this->assertEquals($pdoQuestion->getQuestionContent(),$this->VALID_QUESTIONCONTENT);
 		$this->assertEquals($pdoQuestion->getQuestionValue(), $this->VALID_QUESTIONVALUE);
 	}
- 	/**
-	 * try and grab the question by a question that does not exist
-	 */
-	public function testInvalidGetQuestionByQuestionContent(){
-		$question = Question::getQuestionByQuestionContent($this->getPDO());
-		($this->getPDO());
-		$this->assertEmpty($question);
-	}
 
 	/**
 	 * insert a question use getAll method, then enforce it meets expectation

@@ -12,7 +12,7 @@ class Question implements \JsonSerializable {
 	use ValidateUuid;
 
 	/**Question Id user will be graded by, this is the primary key
-	 * @var string|Uuid $questionId
+	 * @var uuid $questionId
 	 **/
 	private $questionId;
 	/**
@@ -29,7 +29,7 @@ class Question implements \JsonSerializable {
 	 *
 	 * /**Constructor for Question class
 	 *
-	 * @param string|Uuid $newQuestionId id for question set
+	 * @param uuid $newQuestionId id for question set
 	 * @param string $newQuestionContent space where question appears
 	 * @param int $newQuestionValue value that gets calculated from answers to questions
 	 * @throws \InvalidArgumentException if data types are not valid
@@ -38,7 +38,7 @@ class Question implements \JsonSerializable {
 	 * @throws \TypeError if data types violate type hints
 	 *
 	 **/
-	public function __construct($newQuestionId, string $newQuestionContent,  $newQuestionValue) {
+	public function __construct($newQuestionId, string $newQuestionContent, $newQuestionValue) {
 		try {
 			$this->setQuestionId($newQuestionId);
 			$this->setQuestionContent($newQuestionContent);
@@ -62,11 +62,11 @@ class Question implements \JsonSerializable {
 	/**
 	 * mutator method for Question id
 	 *
-	 * @param Uuid|string $newQuestionId is not positive
+	 * @param uuid $newQuestionId is not positive
 	 * @throws \InvalidArgumentException if the id is not a string or is insecure
 	 * @throws \RangeException if $newQuestionId is not positive
 	 * @throws \Exception for when an exception is thrown
-	 * @throws \TypeError if $newQuestionId is not a uuid or string
+	 * @throws \TypeError if $newQuestionId is not a string
 	 **/
 	public function setQuestionId($newQuestionId): void {
 		try {
@@ -100,7 +100,10 @@ class Question implements \JsonSerializable {
 	 * @throws \TypeError if data types violate type hints
 	 **/
 
-	public function setQuestionContent(string $newQuestionContent) {
+	public function setQuestionContent(string $newQuestionContent): void {
+		//the following verifies whether the question content is secure
+		$newQuestionContent = trim($newQuestionContent);
+		$newQuestionContent = filter_var($newQuestionContent, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		if(empty($newQuestionContent) == true) {
 			throw(new \InvalidArgumentException("This question content is empty."));
 		}
@@ -123,7 +126,7 @@ class Question implements \JsonSerializable {
 	/**
 	 * mutator method for question value
 	 *
-	 * @param Uuid|int $newQuestionValue is not positive
+	 * @param int $newQuestionValue is not positive
 	 * @throws \InvalidArgumentException if the id is not a string or is insecure
 	 * @throws \RangeException if $newQuestionValue is not positive
 	 * @throws \Exception for when an exception is thrown
@@ -183,7 +186,7 @@ class Question implements \JsonSerializable {
 	 * gets the Question by questionId
 	 *
 	 * @param \PDO $pdo PDO connection object
-	 * @param Uuid|string $questionId question id
+	 * @param string $questionId question id
 	 * @return Question|null Question found or null if not found
 	 * @throws \InvalidArgumentException if question is not a string or is insecure
 	 * @throws \PDOException when mySQL related errors occur
@@ -217,43 +220,34 @@ class Question implements \JsonSerializable {
 			}
 		} catch(\Exception $exception) {
 			// if the row couldn't be converted, rethrow it
-			var_dump($exception);
 			throw new \PDOException($exception->getMessage(), 0, $exception);
 		}
 		return ($question);
 	}
-
-
-	public static function getQuestionByQuestionContent(\PDO $pdo, $questionContent): ?Question {
-		// sanitize the questionContent before searching
-		try {
-			$questionContent = self::validateUuid($questionContent);
-		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
-			throw(new \PDOException($exception->getMessage(), 0, $exception));
-		}
+//gets question by question content
+	public static function getQuestionByQuestionContent(\PDO $pdo, $questionContent) : Question {
 
 		// create query template
-		$query = "SELECT questionId, questionContent, questionValue FROM question WHERE questionId = :questionId";
+		$query = "SELECT questionId, questionContent, questionValue FROM question WHERE questionContent = :questionContent";
 		$statement = $pdo->prepare($query);
 
 		// bind the Question content to the place holder in the template
 		$parameters = ["questionContent" => $questionContent];
 		$statement->execute($parameters);
 
-		// grab the Question from mySQL
+		//grab the Question from mySQL
 		try {
-			$question = null;
+			$questionContent = null;
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
 			if($row !== false) {
-				$question = new Question($row["questionId"], $row["questionContent"], $row["questionValue"]);
+				$questionContent = new Question($row["questionId"], $row["questionContent"], $row["questionValue"]);
 			}
 		} catch(\Exception $exception) {
 			// if the row couldn't be converted, rethrow it
-			var_dump($exception);
-			throw new \PDOException($exception->getMessage(), 0, $exception);
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
-		return ($question);
+		return ($questionContent);
 	}
 
 
