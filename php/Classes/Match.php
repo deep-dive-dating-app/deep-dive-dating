@@ -305,7 +305,7 @@ class Match implements \JsonSerializable {
 	public function jsonSerialize() : array {
 		$fields = get_object_vars($this);
 
-		$fields["matchUSerId"] = $this->matchUserId->toString();
+		$fields["matchUserId"] = $this->matchUserId->toString();
 		$fields["matchToUserId"] = $this->matchToUserId->toString();
 
 		return($fields);

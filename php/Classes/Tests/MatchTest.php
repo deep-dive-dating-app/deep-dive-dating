@@ -21,6 +21,7 @@ class MatchTest extends DeepDiveDatingAppTest {
 	 * @var Match match
 	 **/
 	protected $match = null;
+
 	/**
 	 * protect constant for the actual match approved value being used to test Match Class
 	 * @var int $VALID_MATCH_APPROVED
@@ -33,12 +34,27 @@ class MatchTest extends DeepDiveDatingAppTest {
 	 **/
 	protected $VALID_MATCH_APPROVED1 = 0;
 
+	/**
+	 * protected uuid value for 1st user
+	 * @var string $userID1
+	 */
 	protected $userID1 = "eddef194-a088-4fae-bf1c-213ecbe814d9";
 
+	/**
+	 * protected uuid value for 2nd user
+	 * @var string $userID2
+	 */
 	protected $userID2 = "18a0e099-475d-4621-87bb-2e98132169f9";
 	/**
 	 * create dependent objects before running each test
 	 **/
+
+	/**
+	 * empty variable for user
+	 * @var $user = null
+	 */
+	protected $user = null;
+
 	public final function setUp()  : void {
 		// run the default setUp() method first
 		parent::setUp();
@@ -55,9 +71,6 @@ class MatchTest extends DeepDiveDatingAppTest {
 		$this->user = new User($this->userID2, $activationToken2, "Firefox", "www.coolpix.com", 0, "email2@email.com", "Billy Joe", $hash2, "177.108.73.121");
 		$this->user->insert($this->getPDO());
 
-
-		//$this->match = new Match($this->userID1, $this->userID2,"0");
-		//$this->match->insert($this->getPDO());
 	}
 
 	/**
@@ -144,12 +157,12 @@ class MatchTest extends DeepDiveDatingAppTest {
 	/**
 	 * insert Match object, grab it by Valid Match ToUserId
 	 **/
-	public function testValidGetByMatchToUserId() {
+	public function testValidGetMatchByMatchToUserId() {
 		//get number of rows and save it for the test
 		$numRows = $this->getConnection()->getRowCount("match");
 
 		// create the match object
-		$match = new Match($this->match->getMatchUserId(), $this->match->getMatchToUserId(), $this->VALID_MATCH_APPROVED);
+		$match = new Match($this->userID1, $this->userID2, $this->VALID_MATCH_APPROVED);
 		//insert match object
 		$match->insert($this->getPDO());
 
