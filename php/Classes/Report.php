@@ -63,7 +63,7 @@ class Report implements \JsonSerializable {
 	 * @throws \Exception if some other exception occurs
 	 **/
 	//todo add type hints
-	public function __construct(Uuid $newReportUserId, Uuid $newReportAbuserId, string $newReportAgent, string $newReportContent, $newReportDate, string $newReportIp) {
+	public function __construct($newReportUserId, $newReportAbuserId, string $newReportAgent, string $newReportContent, $newReportDate, string $newReportIp) {
 		try {
 			$this->setReportUserId($newReportUserId);
 			$this->setReportAbuserId($newReportAbuserId);
