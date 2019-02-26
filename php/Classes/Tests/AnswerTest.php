@@ -55,8 +55,11 @@ protected $VALID_ANSWERSCORE1 = "9";
 	 **/
 	public final function setUp()  : void {
 		// create and insert a Answer to own the test
-		$this->answer = new Answer(generateUuidV4(), generateUuidV4(), "This is the answer someone will write.", $this->VALID_ANSWERSCORE, $this->VALID_ANSWERQUESTIONID, "1212555121212121");
-		$this->answer->insert($this->getPDO());
+		$answerUserId = generateUuidV4();
+	$answerQuestionId = generateUuidV4();
+
+		$answer = new Answer($answerUserId, $answerQuestionId, "This is the answer someone will write.", $this->VALID_ANSWERSCORE);
+		$answer->insert($this->getPDO());
 	}
 /**
 * perform the actual insert method and enforce that is meets expectations i.e, corrupted data is worth nothing
@@ -66,6 +69,8 @@ public function testValidAnswerInsert(){
 $numRows = $this->getConnection()->getRowCount("answer");
 
 //create the answer object
+	//$answerUserId = generateUuidV4()
+	//$answerQuestionId =
 $answer = new Answer(generateUuidV4(), generateUuidV4(), $this->VALID_ANSWERUSERID, $this->VALID_ANSWERRESULT, $this->VALID_ANSWERSCORE);
 //insert the answer object
 $answer->insert($this->getPDO());
