@@ -149,7 +149,7 @@ class Answer implements \JsonSerializable {
 			throw(new \InvalidArgumentException("This result is empty."));
 		}
 		//verify the answer score is correct or incorrect
-		if(($newAnswerResult !== "i") || ($newAnswerResult !== "c")) {
+		if(($newAnswerResult !== "i") && ($newAnswerResult !== "c")) {
 			throw(new \RangeException("This answer is invalid."));
 		}
 		//Store the answer score
