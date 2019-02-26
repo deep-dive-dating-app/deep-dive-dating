@@ -15,73 +15,71 @@ require_once(dirname(__DIR__,2)."/lib/uuid.php");
 * @author Natalie Woodard
 */
 class AnswerTest extends DeepDiveDatingAppTest {
-/**
-* Answer from users
-* @var Answer answer
-**/
-protected $answer = null;
+	/**
+	 * Answer from users
+	 * @var Answer answer
+	 **/
+	protected $answer = null;
 
-/**
-* valid id to create the answer object to own the test
-*@var uuid $VALID_ANSWERQUESTIONID
-**/
-protected $VALID_ANSWERQUESTIONID;
+	/**
+	 * valid id to create the answer object to own the test
+	 * @var uuid $VALID_ANSWERQUESTIONID
+	 **/
+	protected $VALID_ANSWERQUESTIONID;
 
-/**
-* valid id to create the object to own the test
-* @var string $VALID_ANSWERUSERID
-**/
-protected $VALID_ANSWERUSERID = "PHPUnit test passing";
+	/**
+	 * valid id to create the object to own the test
+	 * @var string $VALID_ANSWERUSERID
+	 **/
+	protected $VALID_ANSWERUSERID = "PHPUnit test passing";
 
-/**
-* Result of the answer input from user
-* @var string $VALID_ANSWERRESULT
-**/
-protected $VALID_ANSWERRESULT = "This is my answer to the question.";
+	/**
+	 * Result of the answer input from user
+	 * @var string $VALID_ANSWERRESULT
+	 **/
+	protected $VALID_ANSWERRESULT = "This is my answer to the question.";
 
-/**
- *Score of the answers compared to Dan's preferred answers
- *@var int $VALID_ANSWER_SCORE
- */
-protected $VALID_ANSWERSCORE = "2";
+	/**
+	 *Score of the answers compared to Dan's preferred answers
+	 * @var int $VALID_ANSWER_SCORE
+	 */
+	protected $VALID_ANSWERSCORE = "2";
 
-/**
- *score of answers for 2nd user
- */
-protected $VALID_ANSWERSCORE1 = "9";
+	/**
+	 *score of answers for 2nd user
+	 */
+	//protected $VALID_ANSWERSCORE1 = "9";
 
 	/**
 	 * create dependent objects before running each test
 	 **/
-	public final function setUp()  : void {
-		// create and insert a Answer to own the test
-		$answerUserId = generateUuidV4();
-	$answerQuestionId = generateUuidV4();
-
-		$answer = new Answer($answerUserId, $answerQuestionId, "This is the answer someone will write.", $this->VALID_ANSWERSCORE);
-		$answer->insert($this->getPDO());
+	public final function setUp(): void {
+		// run the default method first
+		parent::setup();
 	}
 /**
 * perform the actual insert method and enforce that is meets expectations i.e, corrupted data is worth nothing
 **/
 
 public function testValidAnswerInsert(){
+	//count the number of rows and save it for later
 $numRows = $this->getConnection()->getRowCount("answer");
 
 //create the answer object
-	//$answerUserId = generateUuidV4()
-	//$answerQuestionId =
-$answer = new Answer(generateUuidV4(), generateUuidV4(), $this->VALID_ANSWERUSERID, $this->VALID_ANSWERRESULT, $this->VALID_ANSWERSCORE);
+	$answerUserId = generateUuidV4();
+	$answerQuestionId = generateUuidV4();
+$answer = new Answer($answerUserId, $answerQuestionId, $this->VALID_ANSWERRESULT, $this->VALID_ANSWERSCORE);
 //insert the answer object
 $answer->insert($this->getPDO());
 
 //grab the data from MySQL and enforce that it meets expectations
 $pdoAnswer = Answer::getAnswerByAnswerQuestionId($this->getPDO(), $answer->getAnswerQuestionId());
 $this->assertEquals($numRows +1, $this->getConnection()->getRowCount("answer"));
-$this->assertEquals($pdoAnswer->getAnswerQuestionId(), $answer->getAnswerQuestionId());
-$this->assertEquals($pdoAnswer->getAnswerUserId(), $answer->getAnswerUserId());
-$this->assertEquals($pdoAnswer->getAnswerResult(), $answer->getAnswerResult());
-$this->assertEquals($pdoAnswer->getAnswerScore(), $answer->getAnswerScore());
+$this->assertEquals($pdoAnswer->getAnswerUserId(), $this->VALID_ANSWERUSERID);
+$this->assertEquals($pdoAnswer->getAnswerQuestionId(), $this->VALID_ANSWERQUESTIONID);
+$this->assertEquals($pdoAnswer->getAnswerResult(), $this->VALID_ANSWERRESULT);
+$this->assertEquals($pdoAnswer->getAnswerScore(), $this->VALID_ANSWERSCORE);
+//$this->assertEquals($pdoAnswer->getAnswerScore1(), $this->VALID_ANSWERSCORE1);
 }
 
 /**
