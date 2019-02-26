@@ -5,7 +5,7 @@
 			<file>UserTest.php</file>
 			<file>UserDetailTest.php</file>
 			<file>QuestionTest.php</file>
-			<!--file>AnswerTest.php</file-->
+			<file>AnswerTest.php</file>
 			<file>MatchTest.php</file>
 			<file>ReportTest.php</file>
 		</testsuite>
