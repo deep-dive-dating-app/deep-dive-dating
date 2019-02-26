@@ -37,7 +37,7 @@ class AnswerTest extends DeepDiveDatingAppTest {
 	 * Result of the answer input from user
 	 * @var string $VALID_ANSWERRESULT
 	 **/
-	protected $VALID_ANSWERRESULT = "This is my answer to the question.";
+	protected $VALID_ANSWERRESULT = "c";
 
 	/**
 	 *Score of the answers compared to Dan's preferred answers

@@ -137,14 +137,14 @@ class Answer implements \JsonSerializable {
 	/**
 	 * mutator method for answer result
 	 *
-	 * @param int $newAnswerResult new value answer result
+	 * @param string $newAnswerResult new value answer result
 	 * @throws \InvalidArgumentException if the answer result is empty
 	 * @throws \RangeException if the answer result is longer than one integer
 	 * @throws \Exception for when an exception is thrown
 	 * @throws \TypeError if data types violate type hints
 	 **/
 
-	public function setAnswerResult(int $newAnswerResult) {
+	public function setAnswerResult(string $newAnswerResult) {
 		if(empty($newAnswerResult) == true) {
 			throw(new \InvalidArgumentException("This result is empty."));
 		}
@@ -156,16 +156,13 @@ class Answer implements \JsonSerializable {
 		$this->answerResult = $newAnswerResult;
 	}
 
-
-
-
 	/**
 	 * accessor method for answer score
 	 *
-	 * @return string value of answer score
+	 * @return int value of answer score
 	 **/
 
-	public function getAnswerScore(): string {
+	public function getAnswerScore(): int {
 		return ($this->answerScore);
 	}
 
