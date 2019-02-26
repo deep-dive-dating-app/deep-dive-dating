@@ -75,8 +75,8 @@ $answer->insert($this->getPDO());
 //grab the data from MySQL and enforce that it meets expectations
 $pdoAnswer = Answer::getAnswerByAnswerQuestionId($this->getPDO(), $answer->getAnswerQuestionId());
 $this->assertEquals($numRows +1, $this->getConnection()->getRowCount("answer"));
-$this->assertEquals($pdoAnswer->getAnswerUserId(), $this->VALID_ANSWERUSERID);
-$this->assertEquals($pdoAnswer->getAnswerQuestionId(), $this->VALID_ANSWERQUESTIONID);
+$this->assertEquals($pdoAnswer->getAnswerUserId(), $answerUserId);
+$this->assertEquals($pdoAnswer->getAnswerQuestionId(), $answerQuestionId);
 $this->assertEquals($pdoAnswer->getAnswerResult(), $this->VALID_ANSWERRESULT);
 $this->assertEquals($pdoAnswer->getAnswerScore(), $this->VALID_ANSWERSCORE);
 //$this->assertEquals($pdoAnswer->getAnswerScore1(), $this->VALID_ANSWERSCORE1);
@@ -88,9 +88,11 @@ $this->assertEquals($pdoAnswer->getAnswerScore(), $this->VALID_ANSWERSCORE);
 public function testValidAnswerDelete() {
 //grab the number of answers and save it for the test
 $numRows = $this->getConnection()->getRowCount("answer");
+	$answerUserId = generateUuidV4();
+	$answerQuestionId = generateUuidV4();
 
 //create the answer object
-$answer = new Answer(generateUuidV4(), $this->VALID_ANSWERQUESTIONID, $this->VALID_ANSWERUSERID, $this->VALID_ANSWERRESULT, $this->VALID_ANSWERSCORE);
+$answer = new Answer($answerUserId, $answerQuestionId, $this->VALID_ANSWERUSERID, $this->VALID_ANSWERRESULT, $this->VALID_ANSWERSCORE);
 
 //insert the answer object
 $answer->insert($this->getPDO());
@@ -120,9 +122,11 @@ $this->assertEmpty($answer);
 */
 public function testValidGetAnswerByAnswerUserId() {
 $numRows = $this->getConnection()->getRowCount("answer");
+	$answerUserId = generateUuidV4();
+	$answerQuestionId = generateUuidV4();
 
 //create a answer object and insert it into the database
-$answer = new Answer(generateUuidV4(), $this->VALID_ANSWERQUESTIONID, $this->VALID_ANSWERUSERID, $this->VALID_ANSWERRESULT, $this->VALID_ANSWERSCORE);
+$answer = new Answer($answerUserId, $answerQuestionId, $this->VALID_ANSWERUSERID, $this->VALID_ANSWERRESULT, $this->VALID_ANSWERSCORE);
 
 //insert the answer into the database
 $answer->insert($this->getPDO());
@@ -133,8 +137,8 @@ $this->assertEquals($numRows +1, $this->getConnection()->getRowCount("answer"));
 
 $pdoAnswer = $results[1];
 
-	$this->assertEquals($pdoAnswer->getAnswerQuestionId(), $answer->getAnswerQuestionId());
-	$this->assertEquals($pdoAnswer->getAnswerUserId(), $answer->getAnswerUserId());
+	$this->assertEquals($pdoAnswer->getAnswerQuestionId(), $answerQuestionId);
+	$this->assertEquals($pdoAnswer->getAnswerUserId(), $answerUserId);
 	$this->assertEquals($pdoAnswer->getAnswerResult(), $answer->getAnswerResult());
 	$this->assertEquals($pdoAnswer->getAnswerScore(), $answer->getAnswerScore());
 }
@@ -151,9 +155,11 @@ $this->assertEmpty($answer);
 */
 public function testGetAllAnswers() {
 	$numRows = $this->getConnection()->getRowCount("answer");
+	$answerUserId = generateUuidV4();
+	$answerQuestionId = generateUuidV4();
 
 //insert the answer into the database
-	$answer = new Answer(generateUuidV4(), $this->VALID_ANSWERQUESTIONID, $this->VALID_ANSWERUSERID, $this->VALID_ANSWERRESULT, $this->VALID_ANSWERSCORE);
+	$answer = new Answer($answerUserId, $answerQuestionId, $this->VALID_ANSWERUSERID, $this->VALID_ANSWERRESULT, $this->VALID_ANSWERSCORE);
 
 //insert the answer into the database
 	$answer->insert($this->getPDO());
@@ -167,8 +173,8 @@ public function testGetAllAnswers() {
 //grab the results from the array and make sure it meets expectations
 	$pdoAnswer = $results[0];
 //$this->assertEquals($pdoAnswer->getAnswerQuestionId(), $answer->getAnswerQuestionId());
-	$this->assertEquals($pdoAnswer->getAnswerQuestionId(), $answer->getAnswerQuestionId());
-	$this->assertEquals($pdoAnswer->getAnswerUserId(), $answer->getAnswerUserId());
+	$this->assertEquals($pdoAnswer->getAnswerQuestionId(), $answerQuestionId);
+	$this->assertEquals($pdoAnswer->getAnswerUserId(), $answerUserId);
 	$this->assertEquals($pdoAnswer->getAnswerResult(), $answer->getAnswerResult());
 	$this->assertEquals($pdoAnswer->getAnswerScore(), $answer->getAnswerScore());
 }
