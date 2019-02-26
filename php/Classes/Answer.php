@@ -181,7 +181,7 @@ class Answer implements \JsonSerializable {
 			throw(new \InvalidArgumentException("This score is empty."));
 		}
 		//verify the answer score is correct or incorrect
-		if(($newAnswerScore !=="c") || ($newAnswerScore !== "i")) {
+		if(($newAnswerScore !== "2") || ($newAnswerScore !== "9")) {
 			throw(new \RangeException("This answer score is too long. It must be no longer than 1 character."));
 		}
 		//Store the answer score

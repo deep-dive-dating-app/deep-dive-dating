@@ -43,13 +43,19 @@ protected $VALID_ANSWERRESULT = "This is my answer to the question.";
  *Score of the answers compared to Dan's preferred answers
  *@var int $VALID_ANSWER_SCORE
  */
-protected $VALID_ANSWERSCORE = "i" || "c";
+protected $VALID_ANSWERSCORE = "2";
+
+/**
+ *score of answers for 2nd user
+ */
+protected $VALID_ANSWERSCORE1 = "9";
+
 	/**
 	 * create dependent objects before running each test
 	 **/
 	public final function setUp()  : void {
 		// create and insert a Answer to own the test
-		$this->answer = new Answer(generateUuidV4(), null, "This is the answer someone will write.", "i" | "c", $this->VALID_ANSWERQUESTIONID, "1212555121212121");
+		$this->answer = new Answer(generateUuidV4(), generateUuidV4(), "This is the answer someone will write.", $this->VALID_ANSWERSCORE, $this->VALID_ANSWERQUESTIONID, "1212555121212121");
 		$this->answer->insert($this->getPDO());
 	}
 /**
@@ -60,7 +66,7 @@ public function testValidAnswerInsert(){
 $numRows = $this->getConnection()->getRowCount("answer");
 
 //create the answer object
-$answer = new Answer(generateUuidV4(), $this->VALID_ANSWERQUESTIONID, $this->VALID_ANSWERUSERID, $this->VALID_ANSWERRESULT, $this->VALID_ANSWERSCORE);
+$answer = new Answer(generateUuidV4(), generateUuidV4(), $this->VALID_ANSWERUSERID, $this->VALID_ANSWERRESULT, $this->VALID_ANSWERSCORE);
 //insert the answer object
 $answer->insert($this->getPDO());
 
