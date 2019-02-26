@@ -57,9 +57,9 @@ class AnswerTest extends DeepDiveDatingAppTest {
 		// run the default method first
 		parent::setup();
 	}
-/**
-* perform the actual insert method and enforce that is meets expectations i.e, corrupted data is worth nothing
-**/
+
+	//perform the actual insert method and enforce that is meets expectations i.e, corrupted data is worth nothing
+
 
 public function testValidAnswerInsert(){
 	//count the number of rows and save it for later
