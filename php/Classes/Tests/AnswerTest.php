@@ -43,7 +43,7 @@ class AnswerTest extends DeepDiveDatingAppTest {
 	 *Score of the answers compared to Dan's preferred answers
 	 * @var int $VALID_ANSWERSCORE
 	 */
-	protected $VALID_ANSWERSCORE = 0;
+	protected $VALID_ANSWERSCORE = 1;
 
 	/**
 	 *score of answers for 2nd user

@@ -127,64 +127,67 @@ class Answer implements \JsonSerializable {
 	/**
 	 * accessor method for answer result
 	 *
-	 * @return string value of answer result
+	 * @return int value of answer result
 	 **/
 
-	public function getAnswerResult(): string {
+	public function getAnswerResult(): int {
 		return ($this->answerResult);
 	}
 
 	/**
 	 * mutator method for answer result
 	 *
-	 * @param string $newAnswerResult new value answer result
+	 * @param int $newAnswerResult new value answer result
 	 * @throws \InvalidArgumentException if the answer result is empty
-	 * @throws \RangeException if the answer is result is longer than 1
+	 * @throws \RangeException if the answer result is longer than one integer
 	 * @throws \Exception for when an exception is thrown
 	 * @throws \TypeError if data types violate type hints
 	 **/
 
-	public function setAnswerResult(string $newAnswerResult) {
+	public function setAnswerResult(int $newAnswerResult) {
 		if(empty($newAnswerResult) == true) {
-			throw(new \InvalidArgumentException("This answer result is empty."));
+			throw(new \InvalidArgumentException("This result is empty."));
 		}
-		//verify the answer result is no longer than 1 integer.
-		if(($newAnswerResult) > 1) {
-			throw(new \RangeException("This answer result is too long. It must be no longer than 1 character."));
+		//verify the answer score is correct or incorrect
+		if(($newAnswerResult !== "i") || ($newAnswerResult !== "c")) {
+			throw(new \RangeException("This answer is invalid."));
 		}
-		//Store the answer result
+		//Store the answer score
 		$this->answerResult = $newAnswerResult;
 	}
+
+
+
 
 	/**
 	 * accessor method for answer score
 	 *
-	 * @return int value of answer score
+	 * @return string value of answer score
 	 **/
 
-	public function getAnswerScore(): int {
+	public function getAnswerScore(): string {
 		return ($this->answerScore);
 	}
 
 	/**
 	 * mutator method for answer score
 	 *
-	 * @param int $newAnswerScore new value answer score
+	 * @param string $newAnswerScore new value answer score
 	 * @throws \InvalidArgumentException if the answer score is empty
-	 * @throws \RangeException if the answer score is longer than one integer
+	 * @throws \RangeException if the answer score is longer than 1
 	 * @throws \Exception for when an exception is thrown
 	 * @throws \TypeError if data types violate type hints
 	 **/
 
-	public function setAnswerScore(int $newAnswerScore) {
+	public function setAnswerScore(string $newAnswerScore) {
 		if(empty($newAnswerScore) == true) {
-			throw(new \InvalidArgumentException("This score is empty."));
+			throw(new \InvalidArgumentException("This answer score is empty."));
 		}
-		//verify the answer score is correct or incorrect
-		if(($newAnswerScore !== "0") || ($newAnswerScore !== "1")) {
-			throw(new \RangeException("This answer is invalid."));
+		//verify the answer result is no longer than 1 integer.
+		if(($newAnswerScore) > 1) {
+			throw(new \RangeException("This answer score is too long."));
 		}
-		//Store the answer score
+		//Store the answer result
 		$this->answerScore = $newAnswerScore;
 	}
 
