@@ -349,6 +349,37 @@ class Answer implements \JsonSerializable {
 		}
 		return ($answer);
 	}
+
+	/*
+	 * gets all answers
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @return \SplFixedArray SplFixedArray of Answers or null if none found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 */
+	public static function getAllAnswers(\PDO $pdo) : \SPLFixedArray {
+		//create query template
+		$query = "SELECT answerQuestionId, answerUserId, answerResult, answerScore FROM answer";
+		$statement = $pdo->prepare($query);
+		$statement->execute();
+
+		//build and array of answers
+		$answers = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+				try {
+					$answer = new Answer($row["answerQuestionId"], $row["answerUserId"], $row["answerResult"], $row["answerScore"]);
+					$answers[$answers->key()] = $answer;
+					$answers->next();
+				}  catch (\Exception $exception){
+					throw(new \PDOException($exception->getMessage(), 0, $exception));
+				}
+		}
+		return ($answers);
+	}
+
+
 	/**
 	 * formats the state variables for JSON serialization
 	 *
