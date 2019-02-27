@@ -57,6 +57,9 @@ class AnswerTest extends DeepDiveDatingAppTest {
 	 */
 	//protected $VALID_ANSWERSCORE1 = "9";
 
+
+protected $questionId = null;
+
 	/**
 	 * create dependent objects before running each test
 	 **/
@@ -74,9 +77,9 @@ class AnswerTest extends DeepDiveDatingAppTest {
 
 		// adding a question
 		$questionId = generateUuidV4();
-		$question = new Question ($questionId, "test question content", "1");
+		$this->question = new Question ($questionId, "test question content", "1");
 		//insert the user object
-		$question->insert($this->getPDO());
+		$this->question->insert($this->getPDO());
 	}
 
 	//perform the actual insert method and enforce that is meets expectations i.e, corrupted data is worth nothing
@@ -87,7 +90,6 @@ public function testValidAnswerInsert() : void {
 $numRows = $this->getConnection()->getRowCount("answer");
 
 //create the answer object
-
 $answer = new Answer($this->user->getUserId(), $this->question->getQuestionId(), $this->VALID_ANSWERRESULT, $this->VALID_ANSWERSCORE);
 //insert the answer object
 $answer->insert($this->getPDO());
@@ -102,29 +104,29 @@ $this->assertEquals($pdoAnswer->getAnswerScore(), $this->VALID_ANSWERSCORE);
 //$this->assertEquals($pdoAnswer->getAnswerScore1(), $this->VALID_ANSWERSCORE1);
 }
 
-/**
-* create a answer object, update it in the database, and then enforce that it meets expectations
-**/
-public function testValidAnswerDelete() {
-//grab the number of answers and save it for the test
-$numRows = $this->getConnection()->getRowCount("answer");
+	/**
+	* create a answer object, update it in the database, and then enforce that it meets expectations
+	**/
+	public function testValidAnswerDelete() {
+	//grab the number of answers and save it for the test
+	$numRows = $this->getConnection()->getRowCount("answer");
 
 
-//create the answer object
-$answer = new Answer($this->user->getUserId(), $this->question->getQuestionId(), $this->VALID_ANSWERRESULT, $this->VALID_ANSWERSCORE);
+	//create the answer object
+	$answer = new Answer($this->user->getUserId(), $this->question->getQuestionId(), $this->VALID_ANSWERRESULT, $this->VALID_ANSWERSCORE);
 
-//insert the answer object
-$answer->insert($this->getPDO());
+	//insert the answer object
+	$answer->insert($this->getPDO());
 
-//delete the answer from the database
-$this->assertSame($numRows +1, $this->getConnection()->getRowCount("answer"));
-$answer->delete($this->getPDO);
+	//delete the answer from the database
+	$this->assertSame($numRows +1, $this->getConnection()->getRowCount("answer"));
+	$answer->delete($this->getPDO());
 
-//enforce that the deletion was successful
-$pdoAnswer = Answer::getAnswerByAnswerQuestionId($this->getPDO(), $answer->getAnswerQuestionId());
-$this->assertNull($pdoAnswer);
-$this->assertEquals($numRows, $this->getConnection()->getRowCount("answer"));
-}
+	//enforce that the deletion was successful
+	$pdoAnswer = Answer::getAnswerByAnswerQuestionId($this->getPDO(), $answer->getAnswerQuestionId());
+	$this->assertNull($pdoAnswer);
+	$this->assertEquals($numRows, $this->getConnection()->getRowCount("answer"));
+	}
 
 /**
 * try and grab an answer by a primary that does not exist

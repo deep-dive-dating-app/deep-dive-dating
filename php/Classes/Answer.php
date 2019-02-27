@@ -225,7 +225,7 @@ class Answer implements \JsonSerializable {
 		$statement = $pdo->prepare($query);
 
 		// bind the member variables to the place holder in the template
-		$parameters = ["answerUserId" => $this->answerUserId->getBytes()];
+		$parameters = ["answerUserId" => $this->answerUserId->getBytes(), "answerQuestionId" => $this->answerQuestionId->getBytes()];
 		$statement->execute($parameters);
 	}
 	/**
@@ -260,7 +260,7 @@ class Answer implements \JsonSerializable {
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
 			if($row !== false) {
-				$answer = new Answer($row["answerUSerId"], $row["answerQuestionId"], $row["answerResult"], $row["answerScore"]);
+				$answer = new Answer($row["answerUserId"], $row["answerQuestionId"], $row["answerResult"], $row["answerScore"]);
 			}
 		} catch(\Exception $exception) {
 			// if the row couldn't be converted, rethrow it
@@ -300,7 +300,7 @@ class Answer implements \JsonSerializable {
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
 			if($row !== false) {
-				$answer = new Answer($row["answerUSerId"], $row["answerQuestionId"], $row["answerResult"], $row["answerScore"]);
+				$answer = new Answer($row["answerUserId"], $row["answerQuestionId"], $row["answerResult"], $row["answerScore"]);
 			}
 		} catch(\Exception $exception) {
 			// if the row couldn't be converted, rethrow it
