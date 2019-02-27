@@ -150,10 +150,10 @@ $answer = new Answer($this->user->getUserId(), $this->question->getQuestionId(),
 $answer->insert($this->getPDO());
 
 //grab the answer from the database
-$results = Answer::getAnswerByAnswerUserId($this->getPDO(), $answer->getAnswerUserId());
+	$pdoAnswer  = Answer::getAnswerByAnswerUserId($this->getPDO(), $answer->getAnswerUserId());
 $this->assertEquals($numRows +1, $this->getConnection()->getRowCount("answer"));
 
-$pdoAnswer = $results[1];
+
 
 	$this->assertEquals($pdoAnswer->getAnswerQuestionId(), $this->question->getQuestionId());
 	$this->assertEquals($pdoAnswer->getAnswerUserId(), $this->user->getUserId());
