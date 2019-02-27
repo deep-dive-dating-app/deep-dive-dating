@@ -172,31 +172,4 @@ $answer = Answer::getAnswerByAnswerUserId($this->getPDO(),$answerUserId);
 $this->assertEmpty($answer);
 }
 
-/**
-* insert an answer use getAll method, then enforce it meets expectation
-*/
-public function testGetAllAnswers() {
-	$numRows = $this->getConnection()->getRowCount("answer");
-
-
-//insert the answer into the database
-	$answer = new Answer($this->user->getUserId(), $this->question->getQuestionId(), $this->VALID_ANSWERRESULT, $this->VALID_ANSWERSCORE);
-
-//insert the answer into the database
-	$answer->insert($this->getPDO());
-
-//grab the results from mySQL and enforce it meets expectations
-	$results = Answer::getAllAnswers($this->getPDO());
-	$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("answer"));
-	$this->assertCount(1, $results);
-//$this->assertContainsOnlyInstancesOf()
-
-//grab the results from the array and make sure it meets expectations
-	$pdoAnswer = $results[0];
-//$this->assertEquals($pdoAnswer->getAnswerQuestionId(), $answer->getAnswerQuestionId());
-	$this->assertEquals($pdoAnswer->getAnswerQuestionId(), $this->question->getQuestionId());
-	$this->assertEquals($pdoAnswer->getAnswerUserId(), $this->user->getUserId());
-	$this->assertEquals($pdoAnswer->getAnswerResult(), $answer->getAnswerResult());
-	$this->assertEquals($pdoAnswer->getAnswerScore(), $answer->getAnswerScore());
-}
 }

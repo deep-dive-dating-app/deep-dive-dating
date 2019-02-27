@@ -53,9 +53,9 @@ class Question implements \JsonSerializable {
 	/**
 	 * accessor method for Question id
 	 *
-	 * @return string value of question id (null if it is a new question id)
+	 * @return Uuid value of question id (null if it is a new question id)
 	 **/
-	public function getQuestionId(): string {
+	public function getQuestionId(): Uuid {
 		return ($this->questionId);
 	}
 
