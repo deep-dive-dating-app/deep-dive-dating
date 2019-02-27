@@ -2,7 +2,8 @@
 
 namespace DeepDiveDatingApp\DeepDiveDating\Tests;
 
-use DeepDiveDatingApp\DeepDiveDating\{Answer, Question};
+use DeepDiveDatingApp\DeepDiveDating\{Answer, User, Question};
+use Ramsey\Uuid\Uuid;
 
 require_once(dirname(__DIR__, 1) . "/autoload.php");
 require_once(dirname(__DIR__,2)."/lib/uuid.php");
@@ -16,20 +17,20 @@ require_once(dirname(__DIR__,2)."/lib/uuid.php");
 */
 class AnswerTest extends DeepDiveDatingAppTest {
 	/**
-	 * Answer from users
-	 * @var Answer answer
+	 * user that is answering the questions
+	 * @var User $user
 	 **/
-	protected $answer = null;
+	protected $user = null;
 
 	/**
 	 * valid id to create the answer object to own the test
-	 * @var uuid $VALID_ANSWERQUESTIONID
+	 * @var Uuid $VALID_ANSWERQUESTIONID
 	 **/
 	protected $VALID_ANSWERQUESTIONID;
 
 	/**
 	 * valid id to create the object to own the test
-	 * @var string $VALID_ANSWERUSERID
+	 * @var Uuid $VALID_ANSWERUSERID
 	 **/
 	protected $VALID_ANSWERUSERID = "PHPUnit test passing";
 
@@ -56,12 +57,19 @@ class AnswerTest extends DeepDiveDatingAppTest {
 	public final function setUp(): void {
 		// run the default method first
 		parent::setup();
+		$password = "pimpinaintez";
+		$userId = generateUuidV4();
+		$hash = password_hash($password, PASSWORD_ARGON2I, ["time_cost" => 384]);
+		$activationToken = bin2hex(random_bytes(16));
+
+		$this->user = new User($userId, $activationToken, "Firefox", "www.coolpix.biz", 0, "email@email.com", "Billy Bob", $hash, "177.108.73.111");
+		$this->user->insert($this->getPDO());
 	}
 
 	//perform the actual insert method and enforce that is meets expectations i.e, corrupted data is worth nothing
 
 
-public function testValidAnswerInsert(){
+public function testValidAnswerInsert() : void {
 	//count the number of rows and save it for later
 $numRows = $this->getConnection()->getRowCount("answer");
 
@@ -92,7 +100,7 @@ $numRows = $this->getConnection()->getRowCount("answer");
 	$answerQuestionId = generateUuidV4();
 
 //create the answer object
-$answer = new Answer($answerUserId, $answerQuestionId, $this->VALID_ANSWERUSERID, $this->VALID_ANSWERRESULT, $this->VALID_ANSWERSCORE);
+$answer = new Answer($answerUserId, $answerQuestionId, $this->VALID_ANSWERRESULT, $this->VALID_ANSWERSCORE);
 
 //insert the answer object
 $answer->insert($this->getPDO());
@@ -126,7 +134,7 @@ $numRows = $this->getConnection()->getRowCount("answer");
 	$answerQuestionId = generateUuidV4();
 
 //create a answer object and insert it into the database
-$answer = new Answer($answerUserId, $answerQuestionId, $this->VALID_ANSWERUSERID, $this->VALID_ANSWERRESULT, $this->VALID_ANSWERSCORE);
+$answer = new Answer($answerUserId, $answerQuestionId, $this->VALID_ANSWERRESULT, $this->VALID_ANSWERSCORE);
 
 //insert the answer into the database
 $answer->insert($this->getPDO());
@@ -146,7 +154,9 @@ $pdoAnswer = $results[1];
 * try and grab the answer by an answer that does not exist
 */
 public function testInvalidGetByAnswerUserId(){
-$answer = Answer::getAnswerByAnswerUserId($this->getPDO());
+	// grab a profile id that exceeds the maximum allowable profile id
+	$answerUserId = generateUuidV4();
+$answer = Answer::getAnswerByAnswerUserId($this->getPDO(),$answerUserId);
 $this->assertEmpty($answer);
 }
 
@@ -159,7 +169,7 @@ public function testGetAllAnswers() {
 	$answerQuestionId = generateUuidV4();
 
 //insert the answer into the database
-	$answer = new Answer($answerUserId, $answerQuestionId, $this->VALID_ANSWERUSERID, $this->VALID_ANSWERRESULT, $this->VALID_ANSWERSCORE);
+	$answer = new Answer($answerUserId, $answerQuestionId, $this->VALID_ANSWERRESULT, $this->VALID_ANSWERSCORE);
 
 //insert the answer into the database
 	$answer->insert($this->getPDO());

@@ -16,13 +16,13 @@ class Answer implements \JsonSerializable {
 	use ValidateUuid;
 
 	/**Id for answers user will be graded by, this is the primary key
-	 * @var string|Uuid $answerUserId
+	 * @var Uuid $answerUserId
 	 **/
 
 	private $answerUserId;
 	/**
 	 * Id to link answer to user, this is a foreign key
-	 * @var string|Uuid $answerQuestionId
+	 * @var Uuid $answerQuestionId
 	 **/
 	private $answerQuestionId;
 	/**
@@ -127,10 +127,10 @@ class Answer implements \JsonSerializable {
 	/**
 	 * accessor method for answer result
 	 *
-	 * @return int value of answer result
+	 * @return string value of answer result
 	 **/
 
-	public function getAnswerResult(): int {
+	public function getAnswerResult(): string {
 		return ($this->answerResult);
 	}
 
@@ -194,9 +194,8 @@ class Answer implements \JsonSerializable {
 	 * @param \PDO $pdo PDO connection object
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError if $pdo is not a PDO connection object
-	 * @throws \InvalidArgumentException if data types are not valid
-	 * @throws \RangeException if data values are out of bounds
-	 * @throws \Exception for when an exception is thrown
+	 *
+	 *
 	 **/
 
 	public function insert(\PDO $pdo): void {
