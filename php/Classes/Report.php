@@ -382,49 +382,6 @@ class Report implements \JsonSerializable {
 		return $reports;
 	}
 
-	/**
-	 * Gets Reports by Content
-	 *
-	 * @param \PDO $pdo PDO connection object
-	 * @param string $reportContent value of report details
-	 * @return \SplFixedArray collection of reports that were found or null if not found
-	 * @throws \PDOException if mySQL errors occur
-	 * @throws \TypeError if a variable is not of the correct data type
-	 **/
-	public static function getReportByContent(\PDO $pdo, string $reportContent) : \SplFixedArray {
-		//sanitize string before search
-		$reportContent = trim($reportContent);
-		$reportContent = filter_var($reportContent, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-		if(empty($reportContent) === true) {
-			throw(new \PDOException("report content is invalid"));
-		}
-
-		//escape any mySQL wildcards
-		$reportContent = str_replace("_", "\\_", str_replace("%", "\\%", $reportContent));
-
-		//query template
-		$query = "SELECT reportUserId, reportAbuserId, reportAgent, reportContent, reportDate, reportIp FROM report WHERE reportContent LIKE :reportContent";
-		$statement = $pdo->prepare($query);
-
-		//bind variables to the template
-		$reportContent = "%$reportContent%";
-		$parameters = ["reportContent" => $reportContent];
-		$statement->execute($parameters);
-
-		//build an array of Reports
-		$reports = new \SplFixedArray($statement->rowCount());
-		$statement->setFetchMode(\PDO::FETCH_ASSOC);
-		while(($row = $statement->fetch()) !== false) {
-			try {
-				$report = new Report($row["reportUserId"], $row["reportAbuserId"], $row["reportAgent"], $row["reportContent"], $row["reportDate"], $row["reportIp"]);
-				$reports[$reports->key()] = $report;
-				$reports->next();
-			} catch(\Exception $exception) {
-				throw(new \PDOException($exception->getMessage(), 0, $exception));
-			}
-		}
-		return ($reports);
-	}
 
 	//todo write getReportByReportUserIdAndReportAbuserId
 	/**

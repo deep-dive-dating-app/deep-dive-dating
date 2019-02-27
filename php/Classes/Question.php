@@ -133,7 +133,7 @@ class Question implements \JsonSerializable {
 	 * @throws \TypeError if $newQuestionValue is not an int
 	 **/
 	public function setQuestionValue(int $newQuestionValue): void {
-		if(empty($newQuestionValue) == "i" || "c")
+		if($newQuestionValue > 0)
 
 		//convert and store Question value
 		$this->questionValue = $newQuestionValue;

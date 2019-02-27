@@ -41,8 +41,8 @@ class Answer implements \JsonSerializable {
 	 *
 	 * /*******Constructor for answer class************
 	 *
-	 * @param string|Uuid $newAnswerUserId id for new answers linked to user
 	 * @param string|Uuid $newAnswerQuestionId id for new answers linked to questions
+	 * @param string|Uuid $newAnswerUserId id for new answers linked to user
 	 * @param string $newAnswerResult id for result of answer from user
 	 * @param int $newAnswerScore value that gets calculated from answers to questions
 	 * @throws \InvalidArgumentException if data types are not valid
@@ -50,10 +50,10 @@ class Answer implements \JsonSerializable {
 	 * @throws \Exception for when an exception is thrown
 	 * @throws \TypeError if data types violate type hints
 	 **/
-	public function __construct(string $newAnswerUserId, string $newAnswerQuestionId, string $newAnswerResult, int $newAnswerScore) {
+	public function __construct($newAnswerQuestionId, $newAnswerUserId, string $newAnswerResult, int $newAnswerScore) {
 		try {
-			$this->setAnswerUserId($newAnswerUserId);
 			$this->setAnswerQuestionId($newAnswerQuestionId);
+			$this->setAnswerUserId($newAnswerUserId);
 			$this->setAnswerResult($newAnswerResult);
 			$this->setAnswerScore($newAnswerScore);
 			//determine what exception type was thrown
@@ -200,11 +200,11 @@ class Answer implements \JsonSerializable {
 
 	public function insert(\PDO $pdo): void {
 		// create query template
-		$query = "INSERT INTO answer(answerUserId, answerQuestionId, answerResult, answerScore) VALUES(:answerUserId, :answerQuestionId, :answerResult, :answerScore)";
+		$query = "INSERT INTO answer(answerQuestionId, answerUserId, answerResult, answerScore) VALUES(:answerQuestionId, :answerUserId, :answerResult, :answerScore)";
 		$statement = $pdo->prepare($query);
 
 		//bind the member variables to the place holders in the template
-		$parameters = ["answerUserId" => $this->answerUserId->getBytes(), "answerQuestionId" => $this->answerQuestionId->getBytes(), "answerResult" => $this->answerResult, "answerScore" => $this->answerScore];
+		$parameters = ["answerQuestionId" => $this->answerQuestionId->getBytes(), "answerUserId" => $this->answerUserId->getBytes(), "answerResult" => $this->answerResult, "answerScore" => $this->answerScore];
 		$statement->execute($parameters);
 	}
 
@@ -233,12 +233,12 @@ class Answer implements \JsonSerializable {
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @param Uuid|string $answerUserId answer user id
-	 * @return Answer|null Answer found or null if not found
+	 * @return \SplFixedArray Answer found or null if not found
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when a variable are not the correct data type
 	 * @throws \RangeException if answer user id is not positive
 	 **/
-	public static function getAnswerByAnswerUserId(\PDO $pdo, $answerUserId): ?Answer {
+	public static function getAnswerByAnswerUserId(\PDO $pdo, $answerUserId): \SplFixedArray {
 		// sanitize the answerUserId before searching
 		try {
 			$answerUserId = self::validateUuid($answerUserId);
@@ -253,20 +253,20 @@ class Answer implements \JsonSerializable {
 		// bind the answer user id to the place holder in the template
 		$parameters = ["answerUserId" => $answerUserId->getBytes()];
 		$statement->execute($parameters);
-
+		$answers = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		// grab the Answer from mySQL
-		try {
-			$answer = null;
-			$statement->setFetchMode(\PDO::FETCH_ASSOC);
-			$row = $statement->fetch();
-			if($row !== false) {
-				$answer = new Answer($row["answerUserId"], $row["answerQuestionId"], $row["answerResult"], $row["answerScore"]);
+		while (($row = $statement->fetch()) !== false) {
+			try {
+					$answer = new Answer($row["answerUserId"], $row["answerQuestionId"], $row["answerResult"], $row["answerScore"]);
+					$answers[$answers->key()] = $answer;
+					$answers->next();
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
-		} catch(\Exception $exception) {
-			// if the row couldn't be converted, rethrow it
-			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
-		return ($answer);
+		return ($answers);
 	}
 	/**
 	 * gets the Answer by answerQuestionId
@@ -277,7 +277,7 @@ class Answer implements \JsonSerializable {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when a variable are not the correct data type
 	 * @throws \RangeException if answer user id is not positive
-	 **/
+
 	public static function getAnswerByAnswerQuestionId(\PDO $pdo, $answerQuestionId): ?Answer {
 		// sanitize the answerQuestionId before searching
 		try {
@@ -308,41 +308,47 @@ class Answer implements \JsonSerializable {
 		}
 		return ($answer);
 	}
+	 **/
+
 	/**
 	 * gets the Answer by answerQuestionIdAndUserId
 	 *
 	 * @param \PDO $pdo PDO connection object
-	 * @param Uuid|string $getAnswerByAnswerQuestionIdAndUserId answer
+	 * @param Uuid|string $answerQuestionId answer
+	 * @param Uuid|string $answerUserId
 	 * @return Answer|null Answer found or null if not found
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when a variable are not the correct data type
 	 * @throws \RangeException if answer user id is not positive
 	 **/
-	public static function getAnswerByAnswerQuestionIdAndUserId(\PDO $pdo, $answerQuestionId, $answerByUserId): ?Answer {
+	public static function getAnswerByAnswerQuestionIdAndUserId(\PDO $pdo, $answerQuestionId, $answerUserId): ?Answer {
 		// sanitize the getAnswerByAnswerQuestionIdAndUserId before searching
 		try {
-			$getAnswerByAnswerQuestionIdAndUserId = self::validateUuid($answerQuestionId);
-			$getAnswerByAnswerQuestionIdAndUserId = self::validateUuid($answerByUserId);
+			$answerQuestionId = self::validateUuid($answerQuestionId);
+			$answerUserId = self::validateUuid($answerUserId);
 		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
 
 		// create query template
-		$query = "SELECT answerUserId, answerQuestionId, answerResult, answerScore FROM answer WHERE getAnswerByAnswerQuestionIdAndUserId = :getAnswerByAnswerQuestionIdAndUserId";
+		$query = "SELECT answerQuestionId, answerUserId, answerResult, answerScore FROM answer WHERE answerQuestionId = :answerQuestionId AND answerUserId = :answerUserId";
 		$statement = $pdo->prepare($query);
 
 		// bind the getAnswerByAnswerQuestionIdAndUserId to the place holder in the template
-		$parameters = ["getAnswerByAnswerQuestionIdAndUserId" => $getAnswerByAnswerQuestionIdAndUserId->getBytes()];
+		$parameters = ["answerQuestionId" => $answerQuestionId, "answerUserId" => $answerUserId];
 		$statement->execute($parameters);
 
 		// grab the Answer from mySQL
 		try {
+			var_dump("hello World");
 			$answer = null;
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
 			if($row !== false) {
-				$answer = new Answer($row["answerUSerId"], $row["answerQuestionId"], $row["answerResult"], $row["answerScore"]);
+				$answer = new Answer($row["answerQuestionId"], $row["answerUserId"], $row["answerResult"], $row["answerScore"]);
+				var_dump($row);
 			}
+
 		} catch(\Exception $exception) {
 			// if the row couldn't be converted, rethrow it
 			throw(new \PDOException($exception->getMessage(), 0, $exception));

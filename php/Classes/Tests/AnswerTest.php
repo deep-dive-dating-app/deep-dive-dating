@@ -90,12 +90,13 @@ public function testValidAnswerInsert() : void {
 $numRows = $this->getConnection()->getRowCount("answer");
 
 //create the answer object
-$answer = new Answer($this->user->getUserId(), $this->question->getQuestionId(), $this->VALID_ANSWERRESULT, $this->VALID_ANSWERSCORE);
+$answer = new Answer($this->question->getQuestionId(), $this->user->getUserId(), $this->VALID_ANSWERRESULT, $this->VALID_ANSWERSCORE);
 //insert the answer object
 $answer->insert($this->getPDO());
 
 //grab the data from MySQL and enforce that it meets expectations
-$pdoAnswer = Answer::getAnswerByAnswerQuestionId($this->getPDO(), $answer->getAnswerQuestionId());
+$pdoAnswer = Answer::getAnswerByAnswerQuestionIdAndUserId($this->getPDO(), $answer->getAnswerQuestionId(), $answer->getAnswerUserId());
+var_dump($pdoAnswer);
 $this->assertEquals($numRows +1, $this->getConnection()->getRowCount("answer"));
 $this->assertEquals($pdoAnswer->getAnswerUserId(), $this->user->getUserId());
 $this->assertEquals($pdoAnswer->getAnswerQuestionId(), $this->question->getQuestionId());
@@ -123,20 +124,21 @@ $this->assertEquals($pdoAnswer->getAnswerScore(), $this->VALID_ANSWERSCORE);
 	$answer->delete($this->getPDO());
 
 	//enforce that the deletion was successful
-	$pdoAnswer = Answer::getAnswerByAnswerQuestionId($this->getPDO(), $answer->getAnswerQuestionId());
+	$pdoAnswer = Answer::getAnswerByAnswerQuestionIdAndUserId($this->getPDO(), $answer->getAnswerQuestionId(), $answer->getAnswerUserId());
 	$this->assertNull($pdoAnswer);
 	$this->assertEquals($numRows, $this->getConnection()->getRowCount("answer"));
 	}
 
 /**
 * try and grab an answer by a primary that does not exist
-*/
+
 
 public function testInvalidGetByAnswerQuestionId(){
 //grab the answer by an invalid key
 $answer = Answer::getAnswerByAnswerQuestionId($this->getPDO(), DeepDiveDatingAppTest::INVALID_KEY);
 $this->assertEmpty($answer);
 }
+**/
 
 /**
 * insert an answer object, grab it by the content, and enforce that it meets expectations
@@ -152,10 +154,11 @@ $answer = new Answer($this->user->getUserId(), $this->question->getQuestionId(),
 $answer->insert($this->getPDO());
 
 //grab the answer from the database
-	$pdoAnswer  = Answer::getAnswerByAnswerUserId($this->getPDO(), $answer->getAnswerUserId());
+	$results  = Answer::getAnswerByAnswerUserId($this->getPDO(), $answer->getAnswerUserId());
 $this->assertEquals($numRows +1, $this->getConnection()->getRowCount("answer"));
-
-
+	$this->assertCount(1, $results);
+	$this->assertContainsOnlyInstancesOf("DeepDiveDatingApp\\DeepDiveDating\\Answer", $results);
+	$pdoAnswer = $results[0];
 
 	$this->assertEquals($pdoAnswer->getAnswerQuestionId(), $this->question->getQuestionId());
 	$this->assertEquals($pdoAnswer->getAnswerUserId(), $this->user->getUserId());

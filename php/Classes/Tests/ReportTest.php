@@ -235,4 +235,6 @@ class ReportTest extends DeepDiveDatingAppTest {
 		$this->assertEquals($pdoReport->getReportDate(), $report->getReportDate());
 		$this->assertEquals($pdoReport->getReportIp(), $report->getReportIp());
 	}
+	// todo test get report by report abuser id
+	//todo test get report by repoprt user id and report abuser
 }
