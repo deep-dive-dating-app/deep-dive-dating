@@ -17,10 +17,16 @@ require_once(dirname(__DIR__,2)."/lib/uuid.php");
 */
 class AnswerTest extends DeepDiveDatingAppTest {
 	/**
-	 * user that is answering the questions
+	 * user that is answering; this is for foreign key relations
 	 * @var User $user
 	 **/
 	protected $user = null;
+
+	/**
+	 * questions that user is answering; this is for foreign key relations
+	 * @var Question $question
+	 */
+	protected $question = null;
 
 	/**
 	 * valid id to create the answer object to own the test
@@ -57,6 +63,7 @@ class AnswerTest extends DeepDiveDatingAppTest {
 	public final function setUp(): void {
 		// run the default method first
 		parent::setup();
+		//adding a user
 		$password = "pimpinaintez";
 		$userId = generateUuidV4();
 		$hash = password_hash($password, PASSWORD_ARGON2I, ["time_cost" => 384]);
@@ -64,6 +71,12 @@ class AnswerTest extends DeepDiveDatingAppTest {
 
 		$this->user = new User($userId, $activationToken, "Firefox", "www.coolpix.biz", 0, "email@email.com", "Billy Bob", $hash, "177.108.73.111");
 		$this->user->insert($this->getPDO());
+
+		// adding a question
+		$questionId = generateUuidV4();
+		$question = new Question ($questionId, "test question content", "1");
+		//insert the user object
+		$question->insert($this->getPDO());
 	}
 
 	//perform the actual insert method and enforce that is meets expectations i.e, corrupted data is worth nothing
@@ -74,17 +87,16 @@ public function testValidAnswerInsert() : void {
 $numRows = $this->getConnection()->getRowCount("answer");
 
 //create the answer object
-	$answerUserId = generateUuidV4();
-	$answerQuestionId = generateUuidV4();
-$answer = new Answer($answerUserId, $answerQuestionId, $this->VALID_ANSWERRESULT, $this->VALID_ANSWERSCORE);
+
+$answer = new Answer($this->user->getUserId(), $this->question->getQuestionId(), $this->VALID_ANSWERRESULT, $this->VALID_ANSWERSCORE);
 //insert the answer object
 $answer->insert($this->getPDO());
 
 //grab the data from MySQL and enforce that it meets expectations
 $pdoAnswer = Answer::getAnswerByAnswerQuestionId($this->getPDO(), $answer->getAnswerQuestionId());
 $this->assertEquals($numRows +1, $this->getConnection()->getRowCount("answer"));
-$this->assertEquals($pdoAnswer->getAnswerUserId(), $answerUserId);
-$this->assertEquals($pdoAnswer->getAnswerQuestionId(), $answerQuestionId);
+$this->assertEquals($pdoAnswer->getAnswerUserId(), $this->user->getUserId());
+$this->assertEquals($pdoAnswer->getAnswerQuestionId(), $this->question->getQuestionId());
 $this->assertEquals($pdoAnswer->getAnswerResult(), $this->VALID_ANSWERRESULT);
 $this->assertEquals($pdoAnswer->getAnswerScore(), $this->VALID_ANSWERSCORE);
 //$this->assertEquals($pdoAnswer->getAnswerScore1(), $this->VALID_ANSWERSCORE1);
@@ -96,11 +108,10 @@ $this->assertEquals($pdoAnswer->getAnswerScore(), $this->VALID_ANSWERSCORE);
 public function testValidAnswerDelete() {
 //grab the number of answers and save it for the test
 $numRows = $this->getConnection()->getRowCount("answer");
-	$answerUserId = generateUuidV4();
-	$answerQuestionId = generateUuidV4();
+
 
 //create the answer object
-$answer = new Answer($answerUserId, $answerQuestionId, $this->VALID_ANSWERRESULT, $this->VALID_ANSWERSCORE);
+$answer = new Answer($this->user->getUserId(), $this->question->getQuestionId(), $this->VALID_ANSWERRESULT, $this->VALID_ANSWERSCORE);
 
 //insert the answer object
 $answer->insert($this->getPDO());
@@ -130,11 +141,10 @@ $this->assertEmpty($answer);
 */
 public function testValidGetAnswerByAnswerUserId() {
 $numRows = $this->getConnection()->getRowCount("answer");
-	$answerUserId = generateUuidV4();
-	$answerQuestionId = generateUuidV4();
+
 
 //create a answer object and insert it into the database
-$answer = new Answer($answerUserId, $answerQuestionId, $this->VALID_ANSWERRESULT, $this->VALID_ANSWERSCORE);
+$answer = new Answer($this->user->getUserId(), $this->question->getQuestionId(), $this->VALID_ANSWERRESULT, $this->VALID_ANSWERSCORE);
 
 //insert the answer into the database
 $answer->insert($this->getPDO());
@@ -145,8 +155,8 @@ $this->assertEquals($numRows +1, $this->getConnection()->getRowCount("answer"));
 
 $pdoAnswer = $results[1];
 
-	$this->assertEquals($pdoAnswer->getAnswerQuestionId(), $answerQuestionId);
-	$this->assertEquals($pdoAnswer->getAnswerUserId(), $answerUserId);
+	$this->assertEquals($pdoAnswer->getAnswerQuestionId(), $this->question->getQuestionId());
+	$this->assertEquals($pdoAnswer->getAnswerUserId(), $this->user->getUserId());
 	$this->assertEquals($pdoAnswer->getAnswerResult(), $answer->getAnswerResult());
 	$this->assertEquals($pdoAnswer->getAnswerScore(), $answer->getAnswerScore());
 }
@@ -165,11 +175,10 @@ $this->assertEmpty($answer);
 */
 public function testGetAllAnswers() {
 	$numRows = $this->getConnection()->getRowCount("answer");
-	$answerUserId = generateUuidV4();
-	$answerQuestionId = generateUuidV4();
+
 
 //insert the answer into the database
-	$answer = new Answer($answerUserId, $answerQuestionId, $this->VALID_ANSWERRESULT, $this->VALID_ANSWERSCORE);
+	$answer = new Answer($this->user->getUserId(), $this->question->getQuestionId(), $this->VALID_ANSWERRESULT, $this->VALID_ANSWERSCORE);
 
 //insert the answer into the database
 	$answer->insert($this->getPDO());
@@ -183,8 +192,8 @@ public function testGetAllAnswers() {
 //grab the results from the array and make sure it meets expectations
 	$pdoAnswer = $results[0];
 //$this->assertEquals($pdoAnswer->getAnswerQuestionId(), $answer->getAnswerQuestionId());
-	$this->assertEquals($pdoAnswer->getAnswerQuestionId(), $answerQuestionId);
-	$this->assertEquals($pdoAnswer->getAnswerUserId(), $answerUserId);
+	$this->assertEquals($pdoAnswer->getAnswerQuestionId(), $this->question->getQuestionId());
+	$this->assertEquals($pdoAnswer->getAnswerUserId(), $this->user->getUserId());
 	$this->assertEquals($pdoAnswer->getAnswerResult(), $answer->getAnswerResult());
 	$this->assertEquals($pdoAnswer->getAnswerScore(), $answer->getAnswerScore());
 }
