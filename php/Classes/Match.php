@@ -157,7 +157,7 @@ class Match implements \JsonSerializable {
 	 * @param \PDO $pdo PDO connection object
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError if $pdo is not a PDO connection object
-	 **/
+
 	public function delete(\PDO $pdo) : void {
 		//first create query template
 		$query = "DELETE FROM `match` WHERE matchUserId = :matchUserId";
@@ -166,6 +166,7 @@ class Match implements \JsonSerializable {
 		$parameters = ["matchUserId" => $this->matchUserId->getBytes()];
 		$statement->execute($parameters);
 	}
+	 * **/
 
 	/**
 	 * Updates Match in mySQL
