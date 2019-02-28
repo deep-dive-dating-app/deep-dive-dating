@@ -100,4 +100,23 @@ protected  $VALID_QUESTIONID = "9efa5233-8f3c-40ab-96ae-38d0814d9751";
 		$this->assertEquals($pdoQuestion->getQuestionContent(),$this->VALID_QUESTIONCONTENT);
 		$this->assertEquals($pdoQuestion->getQuestionValue(), $this->VALID_QUESTIONVALUE);
 	}
+
+	public function testGetAllQuestions() {
+		$numRows = $this->getConnection()->getRowCount("question");
+
+		//create the user object
+		$questionId = generateUuidV4();
+		$question = new Question ($questionId, $this->VALID_QUESTIONCONTENT, $this->VALID_QUESTIONVALUE);
+		//insert the user object
+		$question->insert($this->getPDO());
+
+		$results = Question::getAllQuestions($this->getPDO());
+		$this->assertEquals($numRows +1, $this->getConnection()->getRowCount("question"));
+		$this->assertCount(1, $results);
+		$this->assertContainsOnlyInstancesOf("DeepDiveDatingApp\\DeepDiveDating\\Question", $results);
+		$pdoQuestion = $results[0];
+		$this->assertEquals($pdoQuestion->getQuestionId(), $questionId);
+		$this->assertEquals($pdoQuestion->getQuestionContent(),$this->VALID_QUESTIONCONTENT);
+		$this->assertEquals($pdoQuestion->getQuestionValue(), $this->VALID_QUESTIONVALUE);
+	}
 }

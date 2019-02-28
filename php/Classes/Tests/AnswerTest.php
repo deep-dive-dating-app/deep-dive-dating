@@ -95,8 +95,7 @@ $answer = new Answer($this->question->getQuestionId(), $this->user->getUserId(),
 $answer->insert($this->getPDO());
 
 //grab the data from MySQL and enforce that it meets expectations
-$pdoAnswer = Answer::getAnswerByAnswerQuestionIdAndUserId($this->getPDO(), $answer->getAnswerQuestionId(), $answer->getAnswerUserId());
-var_dump($pdoAnswer);
+$pdoAnswer = Answer::getAnswerByAnswerQuestionIdAndUserId($this->getPDO(),$answer->getAnswerQuestionId(), $answer->getAnswerUserId());
 $this->assertEquals($numRows +1, $this->getConnection()->getRowCount("answer"));
 $this->assertEquals($pdoAnswer->getAnswerUserId(), $this->user->getUserId());
 $this->assertEquals($pdoAnswer->getAnswerQuestionId(), $this->question->getQuestionId());
@@ -114,13 +113,13 @@ $this->assertEquals($pdoAnswer->getAnswerScore(), $this->VALID_ANSWERSCORE);
 
 
 	//create the answer object
-	$answer = new Answer($this->user->getUserId(), $this->question->getQuestionId(), $this->VALID_ANSWERRESULT, $this->VALID_ANSWERSCORE);
+	$answer = new Answer($this->question->getQuestionId(),$this->user->getUserId() , $this->VALID_ANSWERRESULT, $this->VALID_ANSWERSCORE);
 
 	//insert the answer object
 	$answer->insert($this->getPDO());
 
 	//delete the answer from the database
-	$this->assertSame($numRows +1, $this->getConnection()->getRowCount("answer"));
+	$this->assertSame($numRows + 1, $this->getConnection()->getRowCount("answer"));
 	$answer->delete($this->getPDO());
 
 	//enforce that the deletion was successful
@@ -148,7 +147,7 @@ $numRows = $this->getConnection()->getRowCount("answer");
 
 
 //create a answer object and insert it into the database
-$answer = new Answer($this->user->getUserId(), $this->question->getQuestionId(), $this->VALID_ANSWERRESULT, $this->VALID_ANSWERSCORE);
+$answer = new Answer($this->question->getQuestionId(), $this->user->getUserId(), $this->VALID_ANSWERRESULT, $this->VALID_ANSWERSCORE);
 
 //insert the answer into the database
 $answer->insert($this->getPDO());

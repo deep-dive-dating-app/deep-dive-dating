@@ -170,7 +170,6 @@ class Question implements \JsonSerializable {
 	 * @throws \TypeError if $pdo is not a PDO connection object
 	 * @throws \Exception for when an exception is thrown
 	 * @throws \RangeException if $newQuestionValue is not positive
-	 **/
 	public function delete(\PDO $pdo): void {
 
 		// create query template
@@ -181,6 +180,7 @@ class Question implements \JsonSerializable {
 		$parameters = ["questionId" => $this->questionId->getBytes()];
 		$statement->execute($parameters);
 	}
+	 **/
 
 	/**
 	 * gets the Question by questionId

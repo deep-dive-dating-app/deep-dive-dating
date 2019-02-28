@@ -247,7 +247,7 @@ class Answer implements \JsonSerializable {
 		}
 
 		// create query template
-		$query = "SELECT answerUserId, answerQuestionId, answerResult, answerScore FROM answer WHERE answerUserId = :answerUserId";
+		$query = "SELECT answerQuestionId, answerUserId, answerResult, answerScore FROM answer WHERE answerUserId = :answerUserId";
 		$statement = $pdo->prepare($query);
 
 		// bind the answer user id to the place holder in the template
@@ -258,7 +258,7 @@ class Answer implements \JsonSerializable {
 		// grab the Answer from mySQL
 		while (($row = $statement->fetch()) !== false) {
 			try {
-					$answer = new Answer($row["answerUserId"], $row["answerQuestionId"], $row["answerResult"], $row["answerScore"]);
+					$answer = new Answer($row["answerQuestionId"], $row["answerUserId"], $row["answerResult"], $row["answerScore"]);
 					$answers[$answers->key()] = $answer;
 					$answers->next();
 			} catch(\Exception $exception) {
@@ -329,24 +329,24 @@ class Answer implements \JsonSerializable {
 		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
-
 		// create query template
 		$query = "SELECT answerQuestionId, answerUserId, answerResult, answerScore FROM answer WHERE answerQuestionId = :answerQuestionId AND answerUserId = :answerUserId";
 		$statement = $pdo->prepare($query);
 
 		// bind the getAnswerByAnswerQuestionIdAndUserId to the place holder in the template
-		$parameters = ["answerQuestionId" => $answerQuestionId, "answerUserId" => $answerUserId];
+		$parameters = ["answerQuestionId" => $answerQuestionId->getBytes(), "answerUserId" => $answerUserId->getBytes()];
 		$statement->execute($parameters);
+
+
 
 		// grab the Answer from mySQL
 		try {
-			var_dump("hello World");
 			$answer = null;
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
 			if($row !== false) {
 				$answer = new Answer($row["answerQuestionId"], $row["answerUserId"], $row["answerResult"], $row["answerScore"]);
-				var_dump($row);
+
 			}
 
 		} catch(\Exception $exception) {

@@ -1,11 +1,11 @@
 ALTER	DATABASE dateadan CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
-DROP TABLE IF EXISTS user;
-DROP TABLE IF EXISTS userDetail;
-DROP TABLE IF EXISTS question;
-DROP TABLE IF EXISTS answer;
-DROP TABLE IF EXISTS `match`;
 DROP TABLE IF EXISTS report;
+DROP TABLE IF EXISTS `match`;
+DROP TABLE IF EXISTS answer;
+DROP TABLE IF EXISTS question;
+DROP TABLE IF EXISTS userDetail;
+DROP TABLE IF EXISTS user;
 
 CREATE TABLE user (
 	userId BINARY(16) NOT NULL,
@@ -58,7 +58,7 @@ CREATE TABLE answer (
 	INDEX (answerUserId),
 	FOREIGN KEY (answerUserId) REFERENCES user(userId),
 	FOREIGN KEY (answerQuestionId) REFERENCES question(questionId),
-	PRIMARY KEY (answerUserId, answerQuestionId)
+	PRIMARY KEY (answerQuestionId, answerUserId)
 
 );
 
