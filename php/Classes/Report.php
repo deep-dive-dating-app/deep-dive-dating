@@ -62,7 +62,6 @@ class Report implements \JsonSerializable {
 	 * @throws \TypeError if data types violate type hints
 	 * @throws \Exception if some other exception occurs
 	 **/
-	//todo add type hints
 	public function __construct($newReportUserId, $newReportAbuserId, string $newReportAgent, string $newReportContent, $newReportDate, string $newReportIp) {
 		try {
 			$this->setReportUserId($newReportUserId);
@@ -215,7 +214,6 @@ class Report implements \JsonSerializable {
 	 * @throws \TypeError if $newReportDate is not a \DateTime object
 	 * @throws \Exception if some other exception occurs
 	 **/
-	//todo add all exceptions and throws in doc block and in mutator
 	public function setReportDate( $newReportDate ) : void {
 		//if date time is null use current date and time
 		if($newReportDate === null) {
@@ -281,7 +279,7 @@ class Report implements \JsonSerializable {
 	 * @param \PDO $pdo PDO connection object
 	 * @throws \PDOException when mySQL errors occur
 	 * @throws \TypeError if $pdo is not a PDO connection object
-	 **/
+
 	public function delete(\PDO $pdo) : void {
 		//query template
 		$query = "DELETE FROM report WHERE reportUserId = :reportUserId";
@@ -290,6 +288,7 @@ class Report implements \JsonSerializable {
 		$parameters = ["reportUserId" => $this->reportUserId->getBytes()];
 		$statement->execute($parameters);
 	}
+	 **/
 
 	/**
 	 * Updates report in mySQL
@@ -317,7 +316,7 @@ class Report implements \JsonSerializable {
 	 * @throws \PDOException if mySQL errors occur
 	 * @throws \TypeError if a variable is not of the correct data type
 	 **/
-	public static function getReportByUserId(\PDO $pdo, $reportUserId) : \SplFixedArray {
+	public static function getReportByReportUserId(\PDO $pdo, $reportUserId) : \SplFixedArray {
 		//sanitize user id before search
 		try {
 			$reportUserId = self::validateUuid($reportUserId);
@@ -354,7 +353,7 @@ class Report implements \JsonSerializable {
 	 * @throws \PDOException if mySQL errors occur
 	 * @throws \TypeError if a variable is not of the correct data type
 	 **/
-	public static function getReportByAbuserId(\PDO $pdo, $reportAbuserId) : \SplFixedArray {
+	public static function getReportByReportAbuserId(\PDO $pdo, $reportAbuserId) : \SplFixedArray {
 		//sanitize string before search
 		try {
 			$reportAbuserId = self::validateUuid($reportAbuserId);
@@ -382,8 +381,6 @@ class Report implements \JsonSerializable {
 		return $reports;
 	}
 
-
-	//todo write getReportByReportUserIdAndReportAbuserId
 	/**
 	 * Gets Reports By Report User Id And Report Abuser Id
 	 *
@@ -394,7 +391,7 @@ class Report implements \JsonSerializable {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError if $pdo is not a PDO connection object
 	 **/
-	public static function getReportByReportUserIdAndReportAbuserId(\PDO $pdo, Uuid $reportUserId, Uuid $reportAbuserId) : \SplFixedArray {
+	public static function getReportByReportUserIdAndReportAbuserId(\PDO $pdo, $reportUserId, $reportAbuserId) : \SplFixedArray {
 		//sanitize both Uuids
 		try {
 			$reportUserId = self::validateUuid($reportUserId);
@@ -413,14 +410,14 @@ class Report implements \JsonSerializable {
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$report = new Report($row["reportAbuserId"], $row["reportAbuserId"], $row["reportAgent"], $row["reportContent"], $row["reportDate"], $row["reportIp"]);
+				$report = new Report($row["reportUserId"], $row["reportAbuserId"], $row["reportAgent"], $row["reportContent"], $row["reportDate"], $row["reportIp"]);
 				$reports[$reports->key()] = $report;
 				$reports->next();
-			} catch( \Exception $exception) {
+			} catch(\Exception $exception) {
 				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
 		}
-		return ($reports);
+		return $reports;
 	}
 
 	/**

@@ -29,12 +29,6 @@ class ReportTest extends DeepDiveDatingAppTest {
 	protected $VALID_REPORT_AGENT = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36";
 
 	/**
-	 * protect Constant for the actual Report Agent that is used for the test
-	 * @var string $VALID_REPORT_AGENT1 value of test user agent info
-	 **/
-	protected $VALID_REPORT_AGENT1 = "Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_1 like Mac OS X) AppleWebKit/603.1.30 (KHTML, like Gecko) Version/10.0 Mobile/14E304 Safari/602.1";
-
-	/**
 	 * protect Constant for the actual Report Content that is used for the test
 	 * @var string $VALID_REPORT_CONTENT value of test report content
 	 **/
@@ -53,22 +47,10 @@ class ReportTest extends DeepDiveDatingAppTest {
 	protected $VALID_REPORT_DATE = "2018-02-14 14:16:18";
 
 	/**
-	 * protect Constant for the Report Date and Time
-	 * @var \DateTime $VALID_REPORT_DATE1 actual value of test date and time
-	 **/
-	protected $VALID_REPORT_DATE1 = "2018-01-14 4:16:18";
-
-	/**
 	 * protect Constant actual value for the Report Ip Address
 	 * @var string $VALID_REPORT_IP actual value for test Ip
 	 **/
 	protected $VALID_REPORT_IP = "192.0.2.16";
-
-	/**
-	 * protect Constant actual value for the Report Ip Address
-	 * @var string $VALID_REPORT_IP1 actual value for test Ip
-	 **/
-	protected $VALID_REPORT_IP1 = "192.0.2.7";
 
 	/**
 	 * Variables for test users (reporter and abuser)
@@ -89,79 +71,6 @@ class ReportTest extends DeepDiveDatingAppTest {
 	 * @var Uuid $VALID_USERID2
 	 */
 	protected $VALID_USERID2= "190671de-177d-4034-86ac-a598887f3ae6";
-
-	/**
-	 * placeholder activation token for the initial profile creation
-	 * @var string $VALID_USERACTIVATIONTOKEN
-	 */
-	protected $VALID_USERACTIVATIONTOKEN = "10101010101010101010101010101010";
-
-	/**
-	 * placeholder for user agent
-	 * @var string $VALID_USERAGENT
-	 */
-	protected $VALID_USERAGENT = "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0 Mozilla/5.0 (Macintosh; Intel Mac OS X x.y; rv:42.0) Gecko/20100101 Firefox/42.0.";
-	/**
-	 * 2nd placeholder for user agent
-	 * @var string $VALID_USERAGENT1
-	 */
-	protected $VALID_USERAGENT1 = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36.";
-
-	/**
-	 * valid url for the user avatar
-	 * @var string $VALID_USERAVATARURL
-	 */
-	protected $VALID_USERAVATARURL = "avatarSAREUS.com";
-	/**
-	 * valid url for the user avatar
-	 * @var string $VALID_USERAVATARURL1
-	 */
-	protected $VALID_USERAVATARURL1 = "allTheAvatars.com";
-
-	/**
-	 * valid int to tell if a user is blocked or not
-	 * @var int $VALID_USERBLOCKED
-	 */
-	protected $VALID_USERBLOCKED = 0;
-	/**
-	 * valid int to tell if a user is blocked or not
-	 * @var int $VALID_USERBLOCKED1
-	 */
-	protected $VALID_USERBLOCKED1 = 1;
-
-	/**
-	 * valid email address for user
-	 * @var int $VALID_USEREMAIL
-	 */
-	protected $VALID_USEREMAIL = "exampleemail@test.com";
-	/**
-	 * valid email address for user
-	 * @var string $VALID_USEREMAIL1
-	 */
-	protected $VALID_USEREMAIL1 = "anotherEmail@test.com";
-
-	/**
-	 * valid handle for user account
-	 * @var string $VALID_USERHANDLE
-	 */
-	protected $VALID_USERHANDLE = "lonelyBoy";
-	/**
-	 * valid handle for user account
-	 * @var string $VALID_USERHANDLE1
-	 */
-	protected $VALID_USERHANDLE1 = "lonelyGirl";
-
-	/**
-	 * valid hash for user password
-	 * @var string $VALID_USERHASH
-	 */
-	protected $VALID_USERHASH = "weakpassword";
-
-	/**
-	 * valid binary of the user ip address
-	 * @var string $VALID_USERIPADDRESS
-	 */
-	protected $VALID_USERIPADDRESS = "177.108.73.111";
 
 	/**
 	 * create dependent objects before running each test
@@ -196,7 +105,7 @@ class ReportTest extends DeepDiveDatingAppTest {
 		$report->insert($this->getPDO());
 
 		//grab data my database and enforce expectations
-		$results = Report::getReportByUserId($this->getPDO(), $report->getReportUserId());
+		$results = Report::getReportByReportUserId($this->getPDO(), $report->getReportUserId());
 		$pdoReport = $results[0];
 
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("report"));
@@ -224,7 +133,7 @@ class ReportTest extends DeepDiveDatingAppTest {
 		//edit the report object and insert back into the database
 		$report->setReportContent($this->VALID_REPORT_CONTENT1);
 		$report->update($this->getPDO());
-		$results = Report::getReportByUserId($this->getPDO(), $report->getReportUserId());
+		$results = Report::getReportByReportUserId($this->getPDO(), $report->getReportUserId());
 		$pdoReport = $results[0];
 		
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("report"));
@@ -236,5 +145,54 @@ class ReportTest extends DeepDiveDatingAppTest {
 		$this->assertEquals($pdoReport->getReportIp(), $report->getReportIp());
 	}
 	// todo test get report by report abuser id
-	//todo test get report by repoprt user id and report abuser
+	/**
+	 * Create Report Object, insert into database, get by Abuser ID, enforce the expectations
+	 **/
+	public function testValidGetByAbuserId() {
+		//get number of rows and save it for the test
+		$numRows = $this->getConnection()->getRowCount("report");
+		//create report object
+		$report = new Report($this->VALID_USERID, $this->VALID_USERID2, $this->VALID_REPORT_AGENT, $this->VALID_REPORT_CONTENT, $this->VALID_REPORT_DATE, $this->VALID_REPORT_IP);
+		//insert report into database
+		$report->insert($this->getPDO());
+
+		//grab data my database and enforce expectations
+		$results = Report::getReportByReportAbuserId($this->getPDO(), $report->getReportAbuserId());
+		$pdoReport = $results[0];
+
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("report"));
+		$this->assertEquals($pdoReport->getReportUserId(), $report->getReportUserId());
+		$this->assertEquals($pdoReport->getReportAbuserId(), $report->getReportAbuserId());
+		$this->assertEquals($pdoReport->getReportAgent(), $report->getReportAgent());
+		$this->assertEquals($pdoReport->getReportContent(), $report->getReportContent());
+		$this->assertEquals($pdoReport->getReportDate(), $report->getReportDate());
+		$this->assertEquals($pdoReport->getReportIp(), $report->getReportIp());
+	}
+	//todo test get report by report user id and report abuser
+	/**
+	 * Create Report Object, insert into database, get by User Id AND Abuser Id, enforce the expectations
+	 **/
+	public function testValidGetByUserIdAndAbuserId() {
+		//get number of rows and save it for the test
+		$numRows = $this->getConnection()->getRowCount("report");
+		//create report object
+		$report = new Report($this->VALID_USERID, $this->VALID_USERID2, $this->VALID_REPORT_AGENT, $this->VALID_REPORT_CONTENT, $this->VALID_REPORT_DATE, $this->VALID_REPORT_IP);
+		//insert report into database
+		$report->insert($this->getPDO());
+		//print_r($report);
+		//grab data my database and enforce expectations
+		$results = Report::getReportByReportUserIdAndReportAbuserId($this->getPDO(), $report->getReportUserId(), $report->getReportAbuserId());
+		$this->assertEquals($numRows +1, $this->getConnection()->getRowCount("report"));
+		$this->assertCount(1, $results);
+		$this->assertContainsOnlyInstancesOf("DeepDiveDatingApp\\DeepDiveDating\\Report", $results);
+		$pdoReport = $results[0];
+
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("report"));
+		$this->assertEquals($pdoReport->getReportUserId(), $report->getReportUserId());
+		$this->assertEquals($pdoReport->getReportAbuserId(), $report->getReportAbuserId());
+		$this->assertEquals($pdoReport->getReportAgent(), $report->getReportAgent());
+		$this->assertEquals($pdoReport->getReportContent(), $report->getReportContent());
+		$this->assertEquals($pdoReport->getReportDate(), $report->getReportDate());
+		$this->assertEquals($pdoReport->getReportIp(), $report->getReportIp());
+	}
 }

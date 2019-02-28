@@ -43,7 +43,6 @@ class Match implements \JsonSerializable {
 	 * @throws \TypeError if data types violate provided hints
 	 * @throws \Exception for other exceptions
 	 **/
-	//todo add type hints
 	public function __construct( $newMatchUserId, $newMatchToUserId, int $newMatchApproved) {
 		try {
 			$this->setMatchUserId($newMatchUserId);
@@ -183,7 +182,6 @@ class Match implements \JsonSerializable {
 		$parameters = ["matchUserId" => $this->matchUserId->getBytes(), "matchToUserId" => $this->matchToUserId->getBytes(), "matchApproved" => $this->matchApproved];
 		$statement->execute($parameters);
 	}
-// todo write getMatchByMatchUserIdAndMatchToUserId
 	/**
 	 * Gets Match by Match User Id and Match To User Id
 	 *
@@ -269,7 +267,6 @@ class Match implements \JsonSerializable {
 	 * @throws \PDOException if mySQL errors occur
 	 * @throws \TypeError if a variable is not of the correct data type
 	 **/
-	//todo recompose getAllMatches to getMatchesByMatchToUserId
 	public static function getMatchByMatchToUserId(\PDO $pdo, $matchToUserId): \SplFixedArray {
 		//sanitize Uuid
 		try {
