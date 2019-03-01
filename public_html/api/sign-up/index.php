@@ -35,32 +35,74 @@ try {
 		$requestObject = json_decode($requestContent);
 		//assert that all sign in fields are valid
 		if(empty($requestObject->userAvatarUrl) === true) {
-			throw(new \InvalidArgumentException("User Avatar Picture is Empty", 405));
+			throw(new \InvalidArgumentException("User Avatar Picture is Empty", 400));
 		}
+		// possibly set url to accept null value and or use default icon
 		if(empty($requestObject->userEmail) == true) {
-			throw(new \InvalidArgumentException("User Email is Empty", 405));
+			throw(new \InvalidArgumentException("User Email is Empty", 400));
 		}
 		if(empty($requestObject->userHandle) === true) {
-			throw(new \InvalidArgumentException("User Handle is Empty", 405));
+			throw(new \InvalidArgumentException("User Handle is Empty", 400));
 		}
 
 		if(empty($requestObject->userPassword) === true) {
-			throw(new \InvalidArgumentException("User Password is Empty", 405));
+			throw(new \InvalidArgumentException("User Password is Empty", 400));
 		}
 		if(empty($requestObject->userPasswordConfirm) === true) {
-			throw(new \InvalidArgumentException ("Passwords Do Not Match", 405));
+			throw(new \InvalidArgumentException ("Passwords Do Not Match", 400));
 		}
 		//confirm that passwords match
-		if ($requestObject->userPassword !== $requestObject->userPasswordConfirm) {
-			throw(new \InvalidArgumentException("Passwords Do Not Match"));
+		if($requestObject->userPassword !== $requestObject->userPasswordConfirm) {
+			throw(new \InvalidArgumentException("Passwords Do Not Match", 400));
 		}
+
+		if(empty($requestObject->userDetailAboutMe) === true) {
+			$requestObject->userDetailAboutMe = null;
+		}
+		if(empty($requestObject->userDetailAge) === true) {
+			throw(new \InvalidArgumentException("Please, select your age."));
+		}
+		if(empty($requestObject->userDetailCareer) === true) {
+			throw(new \InvalidArgumentException("Please enter your Career."));
+		}
+		if(empty($requestObject->userDeatilDisplayEmail) === true) {
+			throw(new \InvalidArgumentException("Please select a display email."));
+		}
+		if(empty($requestObject->userDeatilEducation) === true) {
+			throw(new \InvalidArgumentException("Please enter your education."));
+		}
+		if(empty($requestObject->userDeatilGender) === true) {
+			throw(new \InvalidArgumentException("Please enter your gender."));
+		}
+		//why do we have Interests? is it like the about me or do we have a specific question?
+		if(empty($requestObject->userDetailInterests) === true) {
+			$requestObject->userDetailInterests = null;
+		}
+		if(empty($requestObject->userDetailRace) === true) {
+			throw(new \InvalidArgumentException("Please enter your race."));
+		}
+		if(empty($requestObject->userDetailReligion) === true) {
+			throw(new \InvalidArgumentException("Please enter your religion."));
+		}
+
+		//........................ do the values below  get assigned on sign up or after activation?
+		//user agent
+		$userAgent = null;
+		//user Ip address?
+		$userIpAddress =  null;
+		//user Detail Id?
+		$userDetailId = null;
+		//user Detail User Id?
+		$userDetailUserId = null;
+		//user blocker?
+		$userBlocked = null;
 
 		$userHash = password_hash($requestObject->userPassword, PASSWORD_ARGON2I, ["time_cost" => 384]);
 		$userActivationToken = bin2hex(random_bytes(16));
 		$userId = generateUuidV4();
 
 		//create user object
-		$user = new User($userId, $userActivationToken, $requestObject->userAgent, $requestObject->userAvatarUrl, $requestObject->userBlocked, $requestObject->userEmail, $requestObject->userHandle, $userHash, $requestObject->userIpAddress);
+		$user = new User($userId, $userActivationToken, $requestObject->userAgent, $requestObject->userAvatarUrl, $userBlocked, $requestObject->userEmail, $requestObject->userHandle, $userHash, $requestObject->userIpAddress);
 		$user->insert($pdo);
 
 	}
