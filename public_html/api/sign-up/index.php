@@ -85,17 +85,14 @@ try {
 			throw(new \InvalidArgumentException("Please enter your religion."));
 		}
 
-		//........................ do the values below  get assigned on sign up or after activation?
-		//user agent
-		$userAgent = null;
-		//user Ip address?
-		$userIpAddress =  null;
-		//user Detail Id?
-		$userDetailId = null;
-		//user Detail User Id?
+		//do the values below  get assigned on sign up or after activation?
+		$userAgent = $_SERVER['HTTP_USER_AGENT'];
+		$userIpAddress =  $_SERVER['SERVER_ADDR'];
+		$userDetailId = generateUuidV4();
+		//user detail id cant be set until user is made
 		$userDetailUserId = null;
-		//user blocker?
-		$userBlocked = null;
+		//user blocked? using 0 as default
+		$userBlocked = 0;
 
 		$userHash = password_hash($requestObject->userPassword, PASSWORD_ARGON2I, ["time_cost" => 384]);
 		$userActivationToken = bin2hex(random_bytes(16));
@@ -106,4 +103,11 @@ try {
 		$user->insert($pdo);
 
 	}
+} catch(\Exception | \TypeError $exception) {
+	$reply->status = $exception->getCode();
+	$reply->message = $exception->getMessage();
 }
+
+// encode and return reply to front end caller
+header("Content-type: application/json");
+echo json_encode($reply);
