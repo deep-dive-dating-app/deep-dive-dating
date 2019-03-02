@@ -321,6 +321,7 @@ class Answer implements \JsonSerializable {
 	 * @throws \TypeError when a variable are not the correct data type
 	 * @throws \RangeException if answer user id is not positive
 	 **/
+	
 	public static function getAnswerByAnswerQuestionIdAndUserId(\PDO $pdo, $answerQuestionId, $answerUserId): ?Answer {
 		// sanitize the getAnswerByAnswerQuestionIdAndUserId before searching
 		try {
