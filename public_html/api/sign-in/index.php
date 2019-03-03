@@ -32,86 +32,86 @@ try {
 	$pdo = $secrets->getPdoObject();
 
 	// Determine which HTTP method was used.
-	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ?? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
+	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ?? $_SERVER["REQUEST_METHOD"];
 
 	// sanitize inputs
 	//$userId = filter_input(INPUT_GET, "userId", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 
 	//$userEmail = filter_input(INPUT_GET, "userEmail", FILTER_SANITIZE_EMAIL);
-			
+
 	//$userHash = filter_input(INPUT_GET, "userHash", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 
 	//make sure the userId is valid for methods that require it
 	//if(($method === "DELETE" || $method === "PUT") && (empty($userId) === true)) {
-			//throw(new InvalidArgumentException("id cannot be empty or negative", 405));
-			//}
+	//throw(new InvalidArgumentException("id cannot be empty or negative", 405));
+	//}
 	//}
 
 	// If the method is POST, handle the sign -in logic.
 	if($method === "POST") {
 
-			// Make sure the XSRF Token is valid.
-			verifyXsrf();
+		// Make sure the XSRF Token is valid.
+		verifyXsrf();
 
-			// Process the request content and decode the json object into a PHP object.
-			$requestContent = file_get_contents("php://input");
-			$requestObject = json_decode($requestContent);
+		// Process the request content and decode the json object into a PHP object.
+		$requestContent = file_get_contents("php://input");
+		$requestObject = json_decode($requestContent);
 
-			// Check for the email (required field)
-			if(empty($requestObject->userEmail) === true) {
-				throw (new \InvalidArgumentException("An email address must be entered.", 401));
-				} else {
-					$userEmail = filter_var($requestObject->userEmail, FILTER_SANITIZE_EMAIL);
-				}
+		// Check for the email (required field)
+		if(empty($requestObject->userEmail) === true) {
+			throw (new \InvalidArgumentException("An email address must be entered.", 401));
+		} else {
+			$userEmail = filter_var($requestObject->userEmail, FILTER_SANITIZE_EMAIL);
+		}
 
-				// Check for the password (required field).
-				if(empty($requestObject->userHash) === true) {
-					throw (new \InvalidArgumentException("A password must be entered.", 401));
-				} else {
-					$userHash = $requestObject->userHash;
-				}
+		// Check for the password (required field).
+		if(empty($requestObject->userHash) === true) {
+			throw (new \InvalidArgumentException("A password must be entered.", 401));
+		} else {
+			$userHash = $requestObject->userHash;
+		}
 
-				// Grab the user from the database by the email address provided.
-				$user = User::getUserByEmail($pdo, $userEmail);
-				if(empty($user) === true) {
-						throw(new \InvalidArgumentException("Invalid Email", 401));
-				}
-				$user->setUserActivationToken(null);
-				$user->update($pdo);
+		// Grab the user from the database by the email address provided.
+		$user = User::getUserByEmail($pdo, $userEmail);
+		if(empty($user) === true) {
+			throw(new \InvalidArgumentException("Invalid Email", 401));
+		}
+		$user->setUserActivationToken(null);
+		$user->update($pdo);
 
-				// If the profile activation is not null throw an error
-				if($user->getUserActivationToken() !== null){
-						throw (new \InvalidArgumentException("You are not allowed to sing in unless you have activate your account", 403));
-				}
+		// If the profile activation is not null throw an error
+		if($user->getUserActivationToken() !== null) {
+			throw (new \InvalidArgumentException("You are not allowed to sing in unless you have activate your account", 403));
+		}
 
-				// Verify hash is correct
-				if(password_verify($requestObject->userHash, $user->getUserHash()) === false) {
-					throw(new \InvalidArgumentException("Invalid password.", 401));
-				}
+		// Verify hash is correct
+		if(password_verify($requestObject->userHash, $user->getUserHash()) === false) {
+			throw(new \InvalidArgumentException("Invalid password.", 401));
+		}
 
-				// Grab the user from the database and put it into a session.
-				$user = User::getUserByUserId($pdo, $user->getUserId());
-				$_SESSION["user"] = $user;
+		// Grab the user from the database and put it into a session.
+		$user = User::getUserByUserId($pdo, $user->getUserId());
+		$_SESSION["user"] = $user;
 
-				// Create the authorization payload
-				$authObject = (object)[
-					"userId" => $user->getUserId(),
-					"userHandle" => $user->getUserHandle()
-				];
+		// Create the authorization payload
+		$authObject = (object)[
+			"userId" => $user->getUserId(),
+			"userHandle" => $user->getUserHandle()
+		];
 
-				// Create and set the JWT
-				setJwtAndAuthHeader("auth", $authObject);
+		// Create and set the JWT
+		setJwtAndAuthHeader("auth", $authObject);
 
-				$reply->message = "Sign in was successful.";
-			} else {
-				throw (new \InvalidArgumentException("Invalid HTTP request!"));
-					} catch(\Exception | \TypeError $exception) {
-						$reply->status = $exception->getCode();
-						$reply->mesage = $exception->getMessage();
-						}
+		$reply->message = "Sign in was successful.";
+	} else {
+		throw (new \InvalidArgumentException("Invalid HTTP request!"));
+	}
+}catch(\Exception | \TypeError $exception) {
+		$reply->status = $exception->getCode();
+		$reply->mesage = $exception->getMessage();
+	}
 
-
-// Sets up the response header.
+	// Sets up the response header.
 header("Content-type: application/json");
 
 // JSON encode the $reply object and echo it back to the front end
