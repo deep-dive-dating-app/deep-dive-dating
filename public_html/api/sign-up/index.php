@@ -23,6 +23,7 @@ $reply->status = 200;
 $reply->data = null;
 try {
 	//grab the MySQL connection
+	//$secrets = new \Secrets("/etc/apache2/capstone-mysql/ddctwitter.ini");
 	$secrets = new \Secrets("/etc/apache2/capstone-mysql/Secrets.php");
 	$pdo = $secrets->getPdoObject();
 	//determine which of the HTTP methods was used
