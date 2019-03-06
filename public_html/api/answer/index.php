@@ -5,11 +5,11 @@ require_once dirname(__DIR__, 3) . "/php/lib/xsrf.php";
 require_once dirname(__DIR__, 3) . "/php/lib/uuid.php";
 require_once("/etc/apache2/capstone-mysql/Secrets.php");
 
-use DeepDiveDatingApp\DeepDiveDating\{ Match, User };
+use DeepDiveDatingApp\DeepDiveDating\{Answer, User};
 
 
 /*
- * API for the match class
+ * API for the answer class
  *
  * @author Kathleen Mattos
  */
