@@ -24,7 +24,7 @@ $reply->status = 200;
 $reply->data = null;
 try {
 	//grab the mySQL connection
-	$secrets = new \Secrets("");  // todo tell me secrets
+	$secrets = new \Secrets("");  // todo tell me the secret
 	$pdo = $secrets->getPdoObject();
 	//determine what method is used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["REQUEST_METHOD"] : $_SERVER["REQUEST_METHOD"];
