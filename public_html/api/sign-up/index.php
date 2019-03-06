@@ -1,6 +1,6 @@
 <?php
 require_once dirname(__DIR__, 3) . "/vendor/autoload.php";
-require_once dirname(__DIR__, 3) . "/php/classes/autoload.php";
+require_once dirname(__DIR__, 3) . "/php/Classes/autoload.php";
 require_once dirname(__DIR__, 3) . "/php/lib/xsrf.php";
 require_once dirname(__DIR__, 3) . "/php/lib/uuid.php";
 require_once("/etc/apache2/capstone-mysql/Secrets.php");
@@ -24,7 +24,7 @@ $reply->data = null;
 try {
 	//grab the MySQL connection
 	//$secrets = new \Secrets("/etc/apache2/capstone-mysql/ddctwitter.ini");
-	$secrets = new \Secrets("/etc/apache2/capstone-mysql/Secrets.php");
+	$secrets = new \Secrets("/etc/apache2/capstone-mysql/cohort23/dateadan.ini");
 	$pdo = $secrets->getPdoObject();
 	//determine which of the HTTP methods was used
 	$method = $_SERVER["HTTP_X_HTTP_METHOD"] ?? $_SERVER["REQUEST_METHOD"];
@@ -56,7 +56,7 @@ try {
 		if($requestObject->userPassword !== $requestObject->userPasswordConfirm) {
 			throw(new \InvalidArgumentException("Passwords Do Not Match", 400));
 		}
-
+/**
 		if(empty($requestObject->userDetailAboutMe) === true) {
 			$requestObject->userDetailAboutMe = null;
 		}
@@ -67,7 +67,7 @@ try {
 			throw(new \InvalidArgumentException("Please enter your Career."));
 		}
 		if(empty($requestObject->userDeatilDisplayEmail) === true) {
-			throw(new \InvalidArgumentException("Please select a display email."));
+			$requestObject->userDeatilDisplayEmail = $requestObject->userEmail;
 		}
 		if(empty($requestObject->userDeatilEducation) === true) {
 			throw(new \InvalidArgumentException("Please enter your education."));
@@ -85,13 +85,13 @@ try {
 		if(empty($requestObject->userDetailReligion) === true) {
 			throw(new \InvalidArgumentException("Please enter your religion."));
 		}
-
+**/
 		//do the values below  get assigned on sign up or after activation?
 		$userAgent = $_SERVER['HTTP_USER_AGENT'];
 		$userIpAddress =  $_SERVER['SERVER_ADDR'];
-		$userDetailId = generateUuidV4();
+		//$userDetailId = generateUuidV4();
 		//user detail id cant be set until user is made
-		$userDetailUserId = null;
+		//$userDetailUserId = null;
 		//user blocked? using 0 as default
 		$userBlocked = 0;
 
@@ -100,7 +100,7 @@ try {
 		$userId = generateUuidV4();
 
 		//create user object
-		$user = new User($userId, $userActivationToken, $requestObject->userAgent, $requestObject->userAvatarUrl, $userBlocked, $requestObject->userEmail, $requestObject->userHandle, $userHash, $requestObject->userIpAddress);
+		$user = new User($userId, $userActivationToken, $userAgent, $requestObject->userAvatarUrl, $userBlocked, $requestObject->userEmail, $requestObject->userHandle, $userHash, $userIpAddress);
 		$user->insert($pdo);
 
 		//compose the email message to send with th activation token
