@@ -476,7 +476,8 @@ class User implements \JsonSerializable {
 		}
 
 		//create query template
-		$query = "SELECT user.userId, user.userActivationToken, user.userAgent, user.userAvatarUrl, user.userBlocked, user.userEmail, user.userHandle, user.userHash, user.userIpAddress FROM `user` INNER JOIN userDetail ON user.userId = userDetail.userDetailUserId WHERE userActivationToken = :userActivationToken";
+		/**$query = "SELECT user.userId, user.userActivationToken, user.userAgent, user.userAvatarUrl, user.userBlocked, user.userEmail, user.userHandle, user.userHash, user.userIpAddress FROM `user` INNER JOIN userDetail ON user.userId = userDetail.userDetailUserId WHERE userActivationToken = :userActivationToken";**/
+		$query = "SELECT userId, userActivationToken, userAgent, userAvatarUrl, userBlocked, userEmail, userHandle, userHash, userIpAddress FROM `user` WHERE userActivationToken = :userActivationToken";
 		$statement = $pdo->prepare($query);
 
 		//bind activation token to placeholder in template

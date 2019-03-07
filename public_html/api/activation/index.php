@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__DIR__,3)."/php/classes/autoload.php";
+require_once dirname(__DIR__,3)."/php/Classes/autoload.php";
 require_once dirname(__DIR__,3)."/php/lib/xsrf.php";
 require_once("/etc/apache2/capstone-mysql/Secrets.php");
 use DeepDiveDatingApp\DeepDiveDating\User;
@@ -18,7 +18,7 @@ $reply->data = null;
 try{
 	// grab the MySQL connection
 	//todo ask about ini file for date a dan
-	$secrets = new \Secrets("/etc/apache2/capstone-mysql/dateadan.ini");
+	$secrets = new \Secrets("/etc/apache2/capstone-mysql/cohort23/dateadan.ini");
 	$pdo = $secrets->getPdoObject();
 	//check the HTTP method being used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];

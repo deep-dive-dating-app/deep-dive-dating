@@ -23,7 +23,6 @@ $reply->status = 200;
 $reply->data = null;
 try {
 	//grab the MySQL connection
-	//$secrets = new \Secrets("/etc/apache2/capstone-mysql/ddctwitter.ini");
 	$secrets = new \Secrets("/etc/apache2/capstone-mysql/cohort23/dateadan.ini");
 	$pdo = $secrets->getPdoObject();
 	//determine which of the HTTP methods was used
@@ -36,25 +35,25 @@ try {
 		$requestObject = json_decode($requestContent);
 		//assert that all sign in fields are valid
 		if(empty($requestObject->userAvatarUrl) === true) {
-			throw(new \InvalidArgumentException("User Avatar Picture is Empty", 400));
+			throw(new \InvalidArgumentException("User Avatar Picture is Empty", 405));
 		}
 		// possibly set url to accept null value and or use default icon
 		if(empty($requestObject->userEmail) == true) {
-			throw(new \InvalidArgumentException("User Email is Empty", 400));
+			throw(new \InvalidArgumentException("User Email is Empty", 405));
 		}
 		if(empty($requestObject->userHandle) === true) {
-			throw(new \InvalidArgumentException("User Handle is Empty", 400));
+			throw(new \InvalidArgumentException("User Handle is Empty", 405));
 		}
 
 		if(empty($requestObject->userPassword) === true) {
-			throw(new \InvalidArgumentException("User Password is Empty", 400));
+			throw(new \InvalidArgumentException("User Password is Empty", 405));
 		}
 		if(empty($requestObject->userPasswordConfirm) === true) {
-			throw(new \InvalidArgumentException ("Passwords Do Not Match", 400));
+			throw(new \InvalidArgumentException ("Passwords Do Not Match", 405));
 		}
 		//confirm that passwords match
 		if($requestObject->userPassword !== $requestObject->userPasswordConfirm) {
-			throw(new \InvalidArgumentException("Passwords Do Not Match", 400));
+			throw(new \InvalidArgumentException("Passwords Do Not Match", 405));
 		}
 /**
 		if(empty($requestObject->userDetailAboutMe) === true) {
@@ -161,7 +160,7 @@ try {
 			"localhost", 25);
 		$mailer = new Swift_Mailer($smtp);
 		//send the message
-		$numSent = $mailer->send($swiftMessage, $failedRecipients);
+		$numSent = $mailer->send($swiftMessage);
 		/**
 		 * the send method returns the number of recipients that accepted the Email
 		 * so, if the number attempted is not the number accepted, this is an Exception
