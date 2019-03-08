@@ -5,7 +5,7 @@ require_once dirname(__DIR__, 3) . "/php/lib/xsrf.php";
 require_once dirname(__DIR__, 3) . "/php/lib/uuid.php";
 require_once("/etc/apache2/capstone-mysql/Secrets.php");
 
-use DeepDiveDatingApp\DeepDiveDating\User;
+use DeepDiveDatingApp\DeepDiveDating\{User, UserDetail};
 
 /**
  * API for signing up for Blame Dan Date Dan
@@ -55,9 +55,9 @@ try {
 		if($requestObject->userPassword !== $requestObject->userPasswordConfirm) {
 			throw(new \InvalidArgumentException("Passwords Do Not Match", 405));
 		}
-/**
+
 		if(empty($requestObject->userDetailAboutMe) === true) {
-			$requestObject->userDetailAboutMe = null;
+			$requestObject->userDetailAboutMe = "";
 		}
 		if(empty($requestObject->userDetailAge) === true) {
 			throw(new \InvalidArgumentException("Please, select your age."));
@@ -65,13 +65,13 @@ try {
 		if(empty($requestObject->userDetailCareer) === true) {
 			throw(new \InvalidArgumentException("Please enter your Career."));
 		}
-		if(empty($requestObject->userDeatilDisplayEmail) === true) {
+		if(empty($requestObject->userDetailDisplayEmail) === true) {
 			$requestObject->userDeatilDisplayEmail = $requestObject->userEmail;
 		}
-		if(empty($requestObject->userDeatilEducation) === true) {
+		if(empty($requestObject->userDetailEducation) === true) {
 			throw(new \InvalidArgumentException("Please enter your education."));
 		}
-		if(empty($requestObject->userDeatilGender) === true) {
+		if(empty($requestObject->userDetailGender) === true) {
 			throw(new \InvalidArgumentException("Please enter your gender."));
 		}
 		//why do we have Interests? is it like the about me or do we have a specific question?
@@ -84,13 +84,11 @@ try {
 		if(empty($requestObject->userDetailReligion) === true) {
 			throw(new \InvalidArgumentException("Please enter your religion."));
 		}
-**/
+
 		//do the values below  get assigned on sign up or after activation?
 		$userAgent = $_SERVER['HTTP_USER_AGENT'];
 		$userIpAddress =  $_SERVER['SERVER_ADDR'];
-		//$userDetailId = generateUuidV4();
-		//user detail id cant be set until user is made
-		//$userDetailUserId = null;
+		$userDetailId = generateUuidV4();
 		//user blocked? using 0 as default
 		$userBlocked = 0;
 
@@ -101,6 +99,8 @@ try {
 		//create user object
 		$user = new User($userId, $userActivationToken, $userAgent, $requestObject->userAvatarUrl, $userBlocked, $requestObject->userEmail, $requestObject->userHandle, $userHash, $userIpAddress);
 		$user->insert($pdo);
+		$userDetail = new UserDetail($userDetailId, $requestObject->userId, $requestObject->userDetailAboutMe, $requestObject->userDetailAge, $requestObject->userDetailCareer, $requestObject->userDetailDisplayEmail, $requestObject->userDetailEducation, $requestObject->userDetailGender, $requestObject->userDetailInterests, $requestObject->userDetailRace, $requestObject->userDetailReligion);
+		$userDetail->insert($pdo);
 
 		//compose the email message to send with th activation token
 		$messageSubject = "One step closer to Account Activation!";
