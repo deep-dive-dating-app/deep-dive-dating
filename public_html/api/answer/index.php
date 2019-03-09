@@ -40,7 +40,7 @@ try {
 
 	//make sure the id is valid for methods that require it
 	if (($method === "DELETE" || $method === "PUT") && (empty($answerUserId) === true)){
-		throw(new InvalidArgumentException("id cannot be empty or negative", 405));
+		throw(new InvalidArgumentException("Id cannot be empty or negative", 405));
 	}
 
 if($method === "POST") {
@@ -73,7 +73,7 @@ if($method === "POST") {
 
 		//enforce the user is signed in and only trying to edit their own answer
 		if(empty($_SESSION["user"]) === true || $_SESSION["user"]->getUserId()->toString() !== $answer->getAnserUserId()->toString()) {
-			throw(new \InvalidArgumentException("You are not allows to edit this answer.", 403));
+			throw(new \InvalidArgumentException("You are not allowed to edit this answer.", 403));
 		}
 
 		//update all attributes
