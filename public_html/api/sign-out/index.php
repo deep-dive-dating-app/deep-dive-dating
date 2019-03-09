@@ -24,7 +24,7 @@ try {
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["REQUEST_METHOD"] : $_SERVER["REQUEST_METHOD"];
 	if($method === "GET") {
 		$_SESSION =[];
-		$reply->message = "You are Now signed out.";
+		$reply->message = "You are now signed out.";
 	}
 	else {
 			throw (new \InvalidArgumentException("Invalid HTTP method request."));
