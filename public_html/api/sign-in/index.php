@@ -1,8 +1,8 @@
 <?php
-require_once dirname(__DIR__, 3) . "/vendor/autoload.php";
 require_once dirname(__DIR__, 3) . "/php/Classes/autoload.php";
 require_once dirname(__DIR__, 3) . "/php/lib/xsrf.php";
 require_once dirname(__DIR__, 3) . "/php/lib/uuid.php";
+require_once dirname(__DIR__, 3) . "/php/lib/jwt.php";
 require_once("/etc/apache2/capstone-mysql/Secrets.php");
 
 use DeepDiveDatingApp\DeepDiveDating\User;
@@ -32,7 +32,7 @@ try {
 	$pdo = $secrets->getPdoObject();
 
 	// Determine which HTTP method was used.
-	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ?? $_SERVER["REQUEST_METHOD"];
+	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
 
 	// sanitize inputs
 	//$userId = filter_input(INPUT_GET, "userId", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
@@ -65,10 +65,10 @@ try {
 		}
 
 		// Check for the password (required field).
-		if(empty($requestObject->userHash) === true) {
+		if(empty($requestObject->userPassword) === true) {
 			throw (new \InvalidArgumentException("A password must be entered.", 401));
 		} else {
-			$userHash = $requestObject->userHash;
+			$userPassword = $requestObject->userPassword;
 		}
 
 		// Grab the user from the database by the email address provided.
@@ -81,11 +81,11 @@ try {
 
 		// If the profile activation is not null throw an error
 		if($user->getUserActivationToken() !== null) {
-			throw (new \InvalidArgumentException("You are not allowed to sing in unless you have activate your account", 403));
+			throw (new \InvalidArgumentException("You are not allowed to sing in unless you have activated your account", 403));
 		}
 
 		// Verify hash is correct
-		if(password_verify($requestObject->userHash, $user->getUserHash()) === false) {
+		if(password_verify($requestObject->userPassword, $user->getUserHash()) === false) {
 			throw(new \InvalidArgumentException("Invalid password.", 401));
 		}
 

@@ -89,7 +89,7 @@ class UserDetail implements \JsonSerializable {
 	 *
 	 ************************************************************/
 //todo add type hints
-	public function __construct($newUserDetailId, $newUserDetailUserId, string $newUserDetailAboutMe, int $newUserDetailAge, ?string $newUserDetailCareer, string $newUserDetailDisplayEmail, string $newUserDetailEducation, string $newUserDetailGender, string $newUserDetailInterests, string $newUserDetailRace, string $newUserDetailReligion) {
+	public function __construct($newUserDetailId, $newUserDetailUserId, ?string $newUserDetailAboutMe, int $newUserDetailAge, ?string $newUserDetailCareer, ?string $newUserDetailDisplayEmail, string $newUserDetailEducation, string $newUserDetailGender, ?string $newUserDetailInterests, string $newUserDetailRace, string $newUserDetailReligion) {
 		try {
 			$this->setUserDetailId($newUserDetailId);
 			$this->setUserDetailUserId($newUserDetailUserId);
@@ -105,7 +105,7 @@ class UserDetail implements \JsonSerializable {
 		} //determine the exception that was thrown
 		catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
 			$exceptionType = get_class($exception);
-			throw(new $exceptionType($exception->getMessage(), 0, $exception));
+			throw(new $exceptionType($exception->getMessage(), $exception->getCode(), $exception));
 		}
 	}
 
@@ -185,7 +185,7 @@ class UserDetail implements \JsonSerializable {
 		$newUserDetailAboutMe = trim($newUserDetailAboutMe);
 		$newUserDetailAboutMe = filter_var($newUserDetailAboutMe, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		if(empty($newUserDetailAboutMe) === true) {
-			throw(new \InvalidArgumentException("About me is empty or insecure"));
+			throw(new \InvalidArgumentException("About me is empty or insecure", 403));
 		}
 		//verify the education will fit in the database
 		if(strlen($newUserDetailAboutMe) > 1024) {
@@ -211,11 +211,7 @@ class UserDetail implements \JsonSerializable {
 	 * */
 
 	public function setUserDetailAge(int $newUserDetailAge): void {
-		//if $userDetailAge is null return it right away
-		if($newUserDetailAge === null) {
-			$this->userDetailAge = null;
-			return;
-		}
+
 		//verify the age is secure
 		$newUserDetailAge = trim($newUserDetailAge);
 		$newUserDetailAge = filter_var($newUserDetailAge, FILTER_SANITIZE_NUMBER_INT, FILTER_FLAG_NO_ENCODE_QUOTES);
@@ -289,7 +285,7 @@ class UserDetail implements \JsonSerializable {
 			throw(new \InvalidArgumentException("Display email is empty or insecure"));
 		}
 		//verify the email will fit in the database
-		if(strlen(@$newUserDetailDisplayEmail) > 128) {
+		if(strlen($newUserDetailDisplayEmail) > 128) {
 			throw(new \RangeException("Email is too large"));
 		}
 		//store the email
@@ -383,7 +379,7 @@ class UserDetail implements \JsonSerializable {
 	 * @throws \TypeError if $newUserDetailInterests is not a string
 	 **/
 
-	public function setUserDetailInterests(string $newUserDetailInterests): void {
+	public function setUserDetailInterests(?string $newUserDetailInterests): void {
 		//if $userDetailInterests is null return it right away
 		if($newUserDetailInterests === null) {
 			$this->userDetailInterests = null;

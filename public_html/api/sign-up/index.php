@@ -57,7 +57,7 @@ try {
 		}
 
 		if(empty($requestObject->userDetailAboutMe) === true) {
-			$requestObject->userDetailAboutMe = "";
+			$requestObject->userDetailAboutMe = "This person does not have an about me, yet.";
 		}
 		if(empty($requestObject->userDetailAge) === true) {
 			throw(new \InvalidArgumentException("Please, select your age."));
@@ -66,8 +66,9 @@ try {
 			throw(new \InvalidArgumentException("Please enter your Career."));
 		}
 		if(empty($requestObject->userDetailDisplayEmail) === true) {
-			$requestObject->userDeatilDisplayEmail = $requestObject->userEmail;
+			$requestObject->userDetailDisplayEmail = $requestObject->userEmail;
 		}
+		var_dump($requestObject->userDetailDisplayEmail);
 		if(empty($requestObject->userDetailEducation) === true) {
 			throw(new \InvalidArgumentException("Please enter your education."));
 		}
@@ -98,8 +99,8 @@ try {
 
 		//create user object
 		$user = new User($userId, $userActivationToken, $userAgent, $requestObject->userAvatarUrl, $userBlocked, $requestObject->userEmail, $requestObject->userHandle, $userHash, $userIpAddress);
+		$userDetail = new UserDetail($userDetailId, $userId, $requestObject->userDetailAboutMe, $requestObject->userDetailAge, $requestObject->userDetailCareer, $requestObject->userDetailDisplayEmail, $requestObject->userDetailEducation, $requestObject->userDetailGender, $requestObject->userDetailInterests, $requestObject->userDetailRace, $requestObject->userDetailReligion);
 		$user->insert($pdo);
-		$userDetail = new UserDetail($userDetailId, $requestObject->userId, $requestObject->userDetailAboutMe, $requestObject->userDetailAge, $requestObject->userDetailCareer, $requestObject->userDetailDisplayEmail, $requestObject->userDetailEducation, $requestObject->userDetailGender, $requestObject->userDetailInterests, $requestObject->userDetailRace, $requestObject->userDetailReligion);
 		$userDetail->insert($pdo);
 
 		//compose the email message to send with th activation token
@@ -178,6 +179,7 @@ try {
 	$reply->status = $exception->getCode();
 	$reply->message = $exception->getMessage();
 	$reply->trace = $exception->getTraceAsString();
+	$reply->lineNumber = $exception->getLine();
 }
 
 // encode and return reply to front end caller
