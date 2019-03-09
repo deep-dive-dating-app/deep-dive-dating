@@ -1,6 +1,6 @@
 <?php
 require_once(dirname(__DIR__, 3) . "/vendor/autoload.php");
-require_once(dirname(__DIR__, 3) . "/php/classes/autoload.php");
+require_once(dirname(__DIR__, 3) . "/php/Classes/autoload.php");
 require_once(dirname(__DIR__, 3) . "/php/lib/jwt.php");
 require_once(dirname(__DIR__, 3) . "/php/lib/xsrf.php");
 require_once(dirname(__DIR__, 3) . "/php/lib/uuid.php");
@@ -22,7 +22,7 @@ $reply->status = 200;
 $reply->data = null;
 try {
 	//grab the mySQL connection
-	$secrets = new \Secrets("/etc/apache2/capstone-mysql/dateadan.ini");
+	$secrets = new \Secrets("/etc/apache2/capstone-mysql/cohort23/dateadan.ini");
 	$pdo = $secrets->getPdoObject();
 	//determine which HTTP method was used
 	$method = $_SERVER["HTTP_X_HTTP_METHOD"] ?? $_SERVER["REQUEST_METHOD"];
@@ -43,7 +43,7 @@ try {
 		} else if(empty($userHandle) === false) {
 			$reply->data = User::getUserByUserHandle($pdo, $userHandle);
 		} else if(empty($userEmail) === false) {
-			$reply->data = User::getUserByUserEmail($pdo, $userEmail);
+			$reply->data = User::getUserByEmail($pdo, $userEmail);
 		}
 	} elseif($method === "PUT") {
 		//enforce that the XSRF token is present in the header
