@@ -5,7 +5,7 @@ require_once dirname(__DIR__, 3) . "/php/lib/xsrf.php";
 require_once dirname(__DIR__, 3) . "/php/lib/uuid.php";
 require_once("/etc/apache2/capstone-mysql/Secrets.php");
 
-use DeepDiveDatingApp\DeepDiveDating\User;
+use DeepDiveDatingApp\DeepDiveDating\Question;
 
 /**
  *  API for app sign in, User class
@@ -32,7 +32,8 @@ try {
 	$pdo = $secrets->getPdoObject();
 
 	// Determine which HTTP method was used.
-	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ?? $_SERVER["REQUEST_METHOD"];
+	$method = $_SERVER["HTTP_X_HTTP_METHOD"] ?? $_SERVER["REQUEST_METHOD"];
+
 
 	// Sanitize input
 	$questionId = filter_input(INPUT_GET, "id", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
@@ -44,6 +45,8 @@ try {
 		throw(new \InvalidArgumentException("id cannot be empty or negative", 405));
 	}
 
+	
+
 	// Handle GET request - if id is present, that question is returned, otherwise all questions are returned
 	if($method === "GET") {
 		// Set xsrf token
@@ -53,7 +56,7 @@ try {
 		if(empty($questionId) === false) {
 			$reply->data = Question::getQuestionByQuestionId($pdo, $questionId);
 		} else if(empty($questionContent) === false) {
-			$reply->data = Question::getQuestionContentbyQuestionContent($pdo, $questionContent);
+			$reply->data = Question::getQuestionbyQuestionContent($pdo, $questionContent);
 		} else {
 			$reply->data = Question::getAllQuestions($pdo)->toArray();
 		}
