@@ -44,6 +44,8 @@ try {
 			$reply->data = User::getUserByUserHandle($pdo, $userHandle);
 		} else if(empty($userEmail) === false) {
 			$reply->data = User::getUserByEmail($pdo, $userEmail);
+		} else {
+			$reply->data = User::getAllUsers($pdo)->toArray();
 		}
 	} elseif($method === "PUT") {
 		//enforce that the XSRF token is present in the header
