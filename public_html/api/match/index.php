@@ -3,6 +3,7 @@ require_once dirname(__DIR__, 3) . "/vendor/autoload.php";
 require_once dirname(__DIR__, 3) . "/php/Classes/autoload.php";
 require_once dirname(__DIR__, 3) . "/php/lib/xsrf.php";
 require_once dirname(__DIR__, 3) . "/php/lib/uuid.php";
+require_once dirname(__DIR__, 3) . "/php/lib/jwt.php";
 require_once("/etc/apache2/capstone-mysql/Secrets.php");
 
 use DeepDiveDatingApp\DeepDiveDating\{ Match, User };
@@ -13,7 +14,7 @@ use DeepDiveDatingApp\DeepDiveDating\{ Match, User };
  *
  * @author Kathleen Mattos
  *
- * needs post, put, get by detail id, and get by user id
+ * needs post, put, and get by's
  */
 
 if(session_status() !== PHP_SESSION_ACTIVE) {
@@ -36,43 +37,48 @@ try {
 	$method = $_SERVER["HTTP_X_HTTP_METHOD"] ?? $_SERVER["REQUEST_METHOD"];
 
 	//sanitize input
-	$id = filter_input(INPUT_GET, "id", FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES);
-	$matchUserId = filter_input(INPUT_GET, "matchUserId", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-	$matchToUserId = filter_input(INPUT_GET, "matchToUserId", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$matchUserId = $id = filter_input(INPUT_GET, "matchUserId", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$matchToUserId = $id = filter_input(INPUT_GET, "matchToUserId", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	$matchApproved = filter_input(INPUT_GET, "matchApproved", FILTER_SANITIZE_NUMBER_INT);
 
-	//make sure the id is valid for methods that require it
-	if(($method === "PUT") && (empty($id) === true)) {
-		throw(new InvalidArgumentException("id cannot be empty or negative", 405));
-	}
 
 	if($method === "GET") {
 		setXsrfCookie();
 
-		if((empty($matchUserId) === false) && (empty($matchToUserId) === false)) {
-			$reply->data = Match::getMatchByMatchUserIdAndMatchToUserId($pdo, $matchUserId, $matchToUserId)->toArray();
+		if ($matchUserId !== null && $matchToUserId !== null) {
+			$match = Match::getMatchByMatchUserIdAndMatchToUserId($pdo, $matchUserId, $matchToUserId);
+			if($match !== null) {
+				$reply->data = $match;
+			}
 		} else if(empty($matchToUserId) === false) {
 			$reply->data = Match::getMatchByMatchToUserId($pdo, $matchToUserId)->toArray();
 		} else if(empty($matchUserId) === false) {
 			$reply->data = Match::getMatchByMatchUserId($pdo, $matchUserId)->toArray();
 		} else {
-			throw(new \InvalidArgumentException("Id cannot be empty or negative", 405));
+			throw(new \InvalidArgumentException("Incorrect Search Parameters", 405));
 		}
-	} else if($method === "PUT" || $method === "POST") {
+	} else if($method === "POST" || $method === "PUT") {
 		verifyXsrf();
 
 		$requestContent = file_get_contents("php://input");
 		$requestObject = json_decode($requestContent);
 
-		//make sure tweet content is available (required field)
-		if(empty($requestObject->matchApproved) === true) {
+		if(empty($requestObject->matchUserId) === true) {
+			throw (new \InvalidArgumentException("No User linked to this Match", 405));
+		}
+		if(empty($requestObject->matchToUserId) === true) {
+			throw (new \InvalidArgumentException("No Matched User linked to this Match", 405));
+		}
+		if(($requestObject->matchApproved) === null) {
 			throw(new \InvalidArgumentException ("Match value is undefined", 405));
 		}
 
 		if($method === "PUT") {
 
-			// retrieve the tweet to update
-			$match = Match::getMatchByMatchUserIdAndMatchToUserId($pdo, $matchUserId, $matchToUserId);
+			verifyXsrf();
+			validateJwtHeader();
+
+			$match = Match::getMatchByMatchUserIdAndMatchToUserId($pdo, $requestObject->matchUserId, $requestObject->matchToUserId);
 			if($match === null) {
 				throw(new RuntimeException("Match does not exist", 404));
 			}
@@ -89,6 +95,8 @@ try {
 			// update reply
 			$reply->message = "Match has been updated";
 		} else if($method === "POST") {
+			verifyXsrf();
+			validateJwtHeader();
 
 			// enforce the user is signed in
 			if(empty($_SESSION["user"]) === true) {
@@ -113,4 +121,7 @@ try {
 
 // encode and return reply to front end caller
 header("Content-type: application/json");
+if($reply->data === null) {
+	unset($reply->data);
+}
 echo json_encode($reply);
