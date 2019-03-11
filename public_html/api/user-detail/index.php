@@ -5,7 +5,7 @@ require_once(dirname(__DIR__, 3) . "/php/lib/jwt.php");
 require_once(dirname(__DIR__, 3) . "/php/lib/xsrf.php");
 require_once(dirname(__DIR__, 3) . "/php/lib/uuid.php");
 require_once("/etc/apache2/capstone-mysql/Secrets.php");
-use DeepDiveDatingApp\DeepDiveDating\{User, UserDetail};
+use DeepDiveDatingApp\DeepDiveDating\UserDetail;
 
 	/**
 	 * API for UserDetail
@@ -13,7 +13,6 @@ use DeepDiveDatingApp\DeepDiveDating\{User, UserDetail};
 	 * @author Nwoodard1
 	 * @version 1.0
 	 **/
-
 
 //verify the session, start if not active
 			if(session_status() !== PHP_SESSION_ACTIVE) {
@@ -27,7 +26,7 @@ use DeepDiveDatingApp\DeepDiveDating\{User, UserDetail};
 
 			try {
 				//grab the mySQL connection
-				$secrets = new \Secrets("/etc/apache2/capstone-mysql/dateadan.ini");
+				$secrets = new \Secrets("/etc/apache2/capstone-mysql/cohort23/dateadan.ini");
 				$pdo = $secrets->getPdoObject();
 
 				//determine which HTTP method was used
@@ -52,7 +51,7 @@ use DeepDiveDatingApp\DeepDiveDating\{User, UserDetail};
 				//make sure the id is valid for methods that require it
 				if(($method === "PUT") && (empty($id) === true)) {
 					throw(new InvalidArgumentException("id cannot be empty or negative", 405));
-				} else if($method === "PUT" || $method === "POST") {
+				} else if($method === "PUT") {
 
 					// enforce the user has a XSRF token
 					verifyXsrf();
@@ -63,41 +62,96 @@ use DeepDiveDatingApp\DeepDiveDating\{User, UserDetail};
 					// This Line Then decodes the JSON package and stores that result in $requestObject
 					$requestObject = json_decode($requestContent);
 
-					//make sure tweet content is available (required field)
-					if(empty($requestObject->userDetail) === true) {
-						throw(new \InvalidArgumentException ("No content for user detail.", 405));
+					//make sure user detail user id (required field)
+					if(empty($requestObject->userDetailUserId) === true) {
+						throw(new \InvalidArgumentException ("No detail user id for user detail.", 405));
 					}
 
-
-					//perform the actual put or post
-					if($method === "PUT") {
-
-						// retrieve the tweet to update
-						$user = UserDetail::getUserDetailByUserDetailId($pdo, $id);
-						if($user === null) {
-							throw(new RuntimeException("user detail does not exist", 404));
-						}
-
-						//enforce the user is signed in and only trying to edit their own tweet
-						if(empty($_SESSION["userDetail"]) === true || $_SESSION["userDetail"]->getUserDetailId()->toString() !== $user->getUserDetailId()->toString()) {
-							throw(new \InvalidArgumentException("You are not allowed to edit this user detail", 403));
-						}
-
-						// update all attributes
-						$user->setUserDetail($requestObject->userDetail);
-						$user->update($pdo);
-
-						// update reply
-						$reply->message = "user detail updated OK";
-
+					//make sure user detail user about me(required field)
+					if(empty($requestObject->userDetailAboutMe) === true) {
+						throw(new \InvalidArgumentException ("No about me for user detail.", 405));
 					}
+						//make sure user detail age (required field)
+						if(empty($requestObject->userDetailAge) === true) {
+							throw(new \InvalidArgumentException ("No age for user detail.", 405));
+						}
+							//make sure user detail user id (required field)
+							if(empty($requestObject->userDetailCareer) === true) {
+								throw(new \InvalidArgumentException ("No career for user detail.", 405));
+						}
+								//make sure user detail user id (required field)
+								if(empty($requestObject->userDetailDisplayEmail) === true) {
+									throw(new \InvalidArgumentException ("No display email for user detail.", 405));
+								}
+									//make sure user detail user id (required field)
+									if(empty($requestObject->userDetailEducation) === true) {
+										throw(new \InvalidArgumentException ("No education for user detail.", 405));
+									}
 
-				}
+										//make sure user detail user id (required field)
+										if(empty($requestObject->userDetailGender) === true) {
+											throw(new \InvalidArgumentException ("No gender for user detail.", 405));
+										}
+											//make sure user detail user id (required field)
+											if(empty($requestObject->userDetailInterests) === true) {
+												throw(new \InvalidArgumentException ("No interests for user detail.", 405));
+											}
+												//make sure user detail user id (required field)
+												if(empty($requestObject->userDetailRace) === true) {
+													throw(new \InvalidArgumentException ("No race for user detail.", 405));
+												}
+													//make sure user detail user id (required field)
+													if(empty($requestObject->userDetailReligion) === true) {
+														throw(new \InvalidArgumentException ("No religion for user detail.", 405));
+													}
+														//perform the actual put
+														if($method === "PUT") {
+
+															// retrieve the user detail to update
+															$userDetail = UserDetail::getUserDetailByUserDetailId($pdo, $id);
+															if($userDetail === null) {
+																throw(new RuntimeException("user detail does not exist", 404));
+															}
+
+															//enforce the user is signed in and only trying to edit their own user detail
+															if(empty($_SESSION["userDetail"]) === true || $_SESSION["userDetail"]->getUserDetailId()->toString() !== $userDetail->getUserDetailId()->toString()) {
+																throw(new \InvalidArgumentException("You are not allowed to edit this user detail", 403));
+															}
+
+															// update all attributes
+															$userDetail->setUserDetail($requestObject->userDetail);
+															$userDetail->update($pdo);
+
+															// update reply
+															$reply->message = "user detail updated OK";
+
+														}
+
+														// enforce the user is signed in
+														if(empty($_SESSION["userDetail"]) === true) {
+															throw(new \InvalidArgumentException("you must be logged in to update user detail", 403));
+														}
+
+													}
+
+													$userDetail->setUserDetailUser($requestObject->userDetailUserId);
+													$userDetail->setUserDetailAboutMe($requestObject->userDetailAboutMe);
+													$userDetail->setUserDetailAge($requestObject->userDetailAge);
+													$userDetail->setUserDetailCareer($requestObject->userDetailCareer);
+													$userDetail->setUserDetailDisplayEmail($requestObject->userDetailDisplayEmail);
+													$userDetail->setUserDetailEducation($requestObject->userDetailEducation);
+													$userDetail->setUserDetailGender($requestObject->userDetailGender);
+													$userDetail->setUserDetailInterests($requestObject->userDetailInterests);
+													$userDetail->setUserDetailRace($requestObject->userDetailRace);
+													$userDetail->setUserDetailReligion($requestObject->userDetailReligion);
+
 // update the $reply->status $reply->message
-			} catch(\Exception | \TypeError $exception) {
-				$reply->status = $exception->getCode();
-				$reply->message = $exception->getMessage();
-			}
+												}
+											catch
+												(\Exception | \TypeError $exception) {
+													$reply->status = $exception->getCode();
+													$reply->message = $exception->getMessage();
+												}
 
 // encode and return reply to front end caller
 			header("Content-type: application/json");
