@@ -46,7 +46,7 @@ try {
 		setXsrfCookie();
 
 		if ($matchUserId !== null && $matchToUserId !== null) {
-			$match = Match::getMatchByMatchUserIdAndMatchToUserId($pdo, $matchUserId, $matchToUserId);
+			$match = Match::getMatchByMatchUserIdAndMatchToUserId($pdo, $matchUserId, $matchToUserId)->toArray();
 			if($match !== null) {
 				$reply->data = $match;
 			}
@@ -73,7 +73,23 @@ try {
 			throw(new \InvalidArgumentException ("Match value is undefined", 405));
 		}
 
-		if($method === "PUT") {
+		if($method === "POST") {
+			verifyXsrf();
+			validateJwtHeader();
+
+			// enforce the user is signed in
+			if(empty($_SESSION["user"]) === true) {
+				throw(new \InvalidArgumentException("you must be logged in to make a match", 403));
+			}
+
+			// create new tweet and insert into the database
+			$match = new Match($_SESSION["user"]->getUserId(), $requestObject->matchToUserId, 0);
+			$match->insert($pdo);
+
+			// update reply
+			$reply->message = "Match has been created";
+
+		} else if ($method === "PUT") {
 
 			verifyXsrf();
 			validateJwtHeader();
@@ -94,21 +110,7 @@ try {
 
 			// update reply
 			$reply->message = "Match has been updated";
-		} else if($method === "POST") {
-			verifyXsrf();
-			validateJwtHeader();
 
-			// enforce the user is signed in
-			if(empty($_SESSION["user"]) === true) {
-				throw(new \InvalidArgumentException("you must be logged in to make a match", 403));
-			}
-
-			// create new tweet and insert into the database
-			$match = new Match($_SESSION["user"]->getUserId(), $requestObject->matchToUserId, 0);
-			$match->insert($pdo);
-
-			// update reply
-			$reply->message = "Match has been created";
 		}
 	} else {
 		throw (new InvalidArgumentException("Invalid HTTP method request"));

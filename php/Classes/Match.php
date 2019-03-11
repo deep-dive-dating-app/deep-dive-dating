@@ -188,11 +188,11 @@ class Match implements \JsonSerializable {
 	 * @param \PDO $pdo PDO connection object
 	 * @param Uuid|string $matchUserId
 	 * @param Uuid|string $matchToUserId
-	 * @return \SplFixedArray instance when two users match each other
+	 * @return Match instance when two users match each other
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError if $pdo is not a PDO connection object
 	 **/
-	public static function getMatchByMatchUserIdAndMatchToUserId(\PDO $pdo, $matchUserId, $matchToUserId) : \SplFixedArray {
+	public static function getMatchByMatchUserIdAndMatchToUserId(\PDO $pdo, $matchUserId, $matchToUserId) : Match {
 		//sanitize both Uuids
 		try {
 			$matchUserId = self::validateUuid($matchUserId);
@@ -207,18 +207,17 @@ class Match implements \JsonSerializable {
 		$parameters = ["matchUserId" => $matchUserId->getBytes(), "matchToUserId" => $matchToUserId->getBytes()];
 		$statement->execute($parameters);
 		//build array
-		$matches = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
-		while(($row = $statement->fetch()) !== false ) {
 			try {
+			$row = $statement->fetch();
+			$match = null;
+			if($row !== false)
 				$match = new Match($row["matchUserId"], $row["matchToUserId"], $row["matchApproved"]);
-				$matches[$matches->key()] = $match;
-				$matches->next();
 			} catch(\Exception $exception) {
 				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
-		}
-		return ($matches);
+
+		return ($match);
 	}
 
 	/**
