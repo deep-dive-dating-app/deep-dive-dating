@@ -85,7 +85,7 @@ try {
 		//validateJwtHeader();
 		$user = User::getUserByUserId($pdo, $id);
 		if($user === null) {
-			throw (new RuntimeException("User does not exist"));
+			throw(new RuntimeException("User does not exist"));
 		}
 		//enforce the user is signed in and only trying to edit their own user
 		if(empty($_SESSION["user"]) === true || $_SESSION["user"]->getUserId()->toString() !== $user->getUserId()->toString()) {
