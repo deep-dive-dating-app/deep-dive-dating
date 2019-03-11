@@ -85,7 +85,7 @@ if($method === "POST") {
 		$reply->message = "Answer updated OK";
 	}
 }	else {
-		throw(new \InvalidArgumentException("Inavlid HTTP request", 418));
+		throw(new \InvalidArgumentException("Invalid HTTP request", 418));
 
 	}
 	//update the $reply->status $reply->message

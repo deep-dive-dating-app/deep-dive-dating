@@ -392,7 +392,8 @@ class User implements \JsonSerializable {
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @throws \PDOException when mySQL related errors occur
-	 * @throws \TypeError if $pdo is not a PDO connection object
+	 * @throws \TypeError if $pdo is not a PDO connecti
+	 * on object
 	 */
 	public function delete(\PDO $pdo): void {
 
