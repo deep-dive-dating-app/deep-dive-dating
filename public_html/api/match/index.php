@@ -46,7 +46,7 @@ try {
 		setXsrfCookie();
 
 		if ($matchUserId !== null && $matchToUserId !== null) {
-			$match = Match::getMatchByMatchUserIdAndMatchToUserId($pdo, $matchUserId, $matchToUserId)->toArray();
+			$match = Match::getMatchByMatchUserIdAndMatchToUserId($pdo, $matchUserId, $matchToUserId);
 			if($match !== null) {
 				$reply->data = $match;
 			}
