@@ -34,22 +34,18 @@ try {
 	$reportId = null;
 	$reportAbuserId = $id = filter_input(INPUT_GET, "reportAbuserId", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	$reportUserId = $id =  filter_input(INPUT_GET, "reportUserId", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-	$reportAgent = $_SERVER['HTTP_USER_AGENT'];
 	$reportContent = filter_input(INPUT_GET, "reportContent", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	$reportDate = null;
-	$reportIp =  $_SERVER['SERVER_ADDR'];
+
 
 	if($method === "GET") {
 		setXsrfCookie();
 
-		if (($reportUserId !== null) && ($reportAbuserId !== null)) {
-			$report = Report::getReportByReportUserIdAndReportAbuserId($pdo, $reportUserId, $reportAbuserId)->toArray();
-			if($report !== null) {
-				$reply->data = $report;
-			}
-		} else if(empty($reportUserId) === false) {
+		if (($reportAbuserId !== null) && ($reportUserId !== null)) {
+			$reply->data = Report::getReportByReportUserIdAndReportAbuserId($pdo, $reportUserId, $reportAbuserId)->toArray();
+		} else if($reportUserId !== null) {
 			$reply->data = Report::getReportByReportUserId($pdo, $reportUserId)->toArray();
-		} else if(empty($reportAbuserId) === false) {
+		} else if($reportAbuserId !== null) {
 			$reply->data = Report::getReportByReportAbuserId($pdo, $reportAbuserId)->toArray();
 		} else {
 			throw(new \InvalidArgumentException("Incorrect Search Parameters", 405));
@@ -81,6 +77,8 @@ try {
 
 		// create new tweet and insert into the database
 		$reportId = generateUuidV4();
+		$reportAgent = $_SERVER['HTTP_USER_AGENT'];
+		$reportIp =  $_SERVER['SERVER_ADDR'];
 		$report = new Report($reportId, $_SESSION["user"]->getUserId(), $requestObject->reportAbuserId, $reportAgent, $requestObject->reportContent, $requestObject->reportDate, $reportIp);
 		$report->insert($pdo);
 		// update reply
