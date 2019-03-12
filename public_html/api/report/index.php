@@ -42,13 +42,17 @@ try {
 	if($method === "GET") {
 		setXsrfCookie();
 
-
-		if(empty($userId) === false) {
+		if (($reportUserId !== null) && ($reportAbuserId !== null)) {
+			$report = Report::getReportByReportUserIdAndReportAbuserId($pdo, $reportUserId, $reportAbuserId)->toArray();
+			if($report !== null) {
+				$reply->data = $report;
+			}
+		} else if(empty($reportUserId) === false) {
 			$reply->data = Report::getReportByReportUserId($pdo, $reportUserId)->toArray();
-		} else if(empty($abuserId) === false) {
+		} else if(empty($reportAbuserId) === false) {
 			$reply->data = Report::getReportByReportAbuserId($pdo, $reportAbuserId)->toArray();
-		} else if((empty($userId) === false) && (empty($abuserId) === false)) {
-			$reply->data = Report::getReportByReportUserIdAndReportAbuserId($pdo, $reportUserId, $reportAbuserId);
+		} else {
+			throw(new \InvalidArgumentException("Incorrect Search Parameters", 405));
 		}
 
 	} else if($method == "POST") {

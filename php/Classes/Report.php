@@ -417,11 +417,11 @@ class Report implements \JsonSerializable {
 	 * @param \PDO $pdo PDO connection object
 	 * @param Uuid|string $reportUserId
 	 * @param Uuid|string $reportAbuserId
-	 * @return Report Spl Fixed Array of Reports found
+	 * @return \SplFixedArray Spl Fixed Array of Reports found
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError if $pdo is not a PDO connection object
 	 **/
-	public static function getReportByReportUserIdAndReportAbuserId(\PDO $pdo, $reportUserId, $reportAbuserId) : ?Report {
+	public static function getReportByReportUserIdAndReportAbuserId(\PDO $pdo, $reportUserId, $reportAbuserId) : \SplFixedArray {
 		//sanitize both Uuids
 		try {
 			$reportUserId = self::validateUuid($reportUserId);
@@ -437,18 +437,19 @@ class Report implements \JsonSerializable {
 		$statement->execute($parameters);
 		//build array of reports
 
+		$reports = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+
+		while(($row = $statement->fetch()) !== false) {
 			try {
-				$statement->setFetchMode(\PDO::FETCH_ASSOC);
-				$report = null;
-				$row = $statement->fetch();
-				if ($row !== false) {
-					$report = new Report($row["reportId"], $row["reportUserId"], $row["reportAbuserId"], $row["reportAgent"], $row["reportContent"], $row["reportDate"], $row["reportIp"]);
-				}
+				$report = new Report($row["reportId"], $row["reportUserId"], $row["reportAbuserId"], $row["reportAgent"], $row["reportContent"], $row["reportDate"], $row["reportIp"]);
+				$reports[$reports->key()] = $report;
+				$reports->next();
 			} catch(\Exception $exception) {
 				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
-
-		return $report;
+		}
+		return $reports;
 	}
 
 	/**
