@@ -18,6 +18,11 @@ class Report implements \JsonSerializable {
 	use ValidateUuid;
 	use ValidateDate;
 	/**
+	 * id for the report
+	 * @var uuid|string $reportId
+	 **/
+	private $reportId;
+	/**
 	 * id for the user who submitted the report
 	 * @var uuid|string $reportUserId
 	 **/
@@ -51,6 +56,7 @@ class Report implements \JsonSerializable {
 	/**
 	 * Constructor Method for Report
 	 *
+	 * @param uuid|string $newReportId id for each report
 	 * @param uuid|string $newReportUserId user id for the account making the report
 	 * @param uuid|string $newReportAbuserId user id for the account detailed in the report
 	 * @param string $newReportAgent agent information for the user who made the report
@@ -62,8 +68,9 @@ class Report implements \JsonSerializable {
 	 * @throws \TypeError if data types violate type hints
 	 * @throws \Exception if some other exception occurs
 	 **/
-	public function __construct($newReportUserId, $newReportAbuserId, string $newReportAgent, string $newReportContent, $newReportDate, string $newReportIp) {
+	public function __construct($newReportId, $newReportUserId, $newReportAbuserId, string $newReportAgent, string $newReportContent, $newReportDate, string $newReportIp) {
 		try {
+			$this->setReportId($newReportId);
 			$this->setReportUserId($newReportUserId);
 			$this->setReportAbuserId($newReportAbuserId);
 			$this->setReportAgent($newReportAgent);
@@ -78,6 +85,31 @@ class Report implements \JsonSerializable {
 		}
 	}
 
+	/**
+	 * Accessor Method for Report Id
+	 *
+	 * @return uuid value of the report
+	 **/
+	public function getReportId() : uuid {
+		return($this->reportId);
+	}
+
+	/**
+	 * Mutator Method for Report Id
+	 *
+	 * @param uuid new value of Report Id
+	 * @throws \RangeException if $newReportId is not positive
+	 * @throws \TypeError if $newReportId is not a Uuid or string
+	 **/
+	public function setReportId( $newReportId ) : void {
+		try {
+			$uuid = self::validateUuid($newReportId);
+		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+			$exceptionType = get_class($exception);
+			throw(new $exceptionType($exception->getMessage(), 0, $exception));
+		}
+		$this->reportId = $uuid;
+	}
 	/**
 	 * Accessor Method for Report User Id
 	 *
@@ -265,47 +297,45 @@ class Report implements \JsonSerializable {
 	 **/
 	public function insert(\PDO $pdo) : void {
 		//query template
-		$query = "INSERT INTO report (reportUserId, reportAbuserId, reportAgent, reportContent, reportDate, reportIp) VALUES (:reportUserId, :reportAbuserId, :reportAgent, :reportContent, :reportDate, :reportIp)";
+		$query = "INSERT INTO report (reportId, reportUserId, reportAbuserId, reportAgent, reportContent, reportDate, reportIp) VALUES (:reportId, :reportUserId, :reportAbuserId, :reportAgent, :reportContent, :reportDate, :reportIp)";
 		$statement = $pdo->prepare($query);
 		//bind variables to the template
 		$formattedDate = $this->reportDate->format("Y-m-d H:i:s.u");
-		$parameters = ["reportUserId" => $this->reportUserId->getBytes(), "reportAbuserId" => $this->reportAbuserId->getBytes(), "reportAgent" => $this->reportAgent, "reportContent" => $this->reportContent, "reportDate" => $formattedDate, "reportIp" => $this->reportIp];
+		$parameters = ["reportId" => $this->reportId->getBytes(), "reportUserId" => $this->reportUserId->getBytes(), "reportAbuserId" => $this->reportAbuserId->getBytes(), "reportAgent" => $this->reportAgent, "reportContent" => $this->reportContent, "reportDate" => $formattedDate, "reportIp" => $this->reportIp];
 		$statement->execute($parameters);
 	}
 
-	/**
-	 * Deletes report from mySQL
-	 *
-	 * @param \PDO $pdo PDO connection object
-	 * @throws \PDOException when mySQL errors occur
-	 * @throws \TypeError if $pdo is not a PDO connection object
-
-	public function delete(\PDO $pdo) : void {
-		//query template
-		$query = "DELETE FROM report WHERE reportUserId = :reportUserId";
-		$statement = $pdo->prepare($query);
-		//bind variables to the template
-		$parameters = ["reportUserId" => $this->reportUserId->getBytes()];
-		$statement->execute($parameters);
-	}
-	 **/
-
-	/**
-	 * Updates report in mySQL
-	 *
-	 * @param \PDO $pdo PDO connection object
-	 * @throws \PDOException when mySQL errors occur
-	 * @throws \TypeError if $pdo is not a PDO connection object
-	 **/
-	public function update(\PDO $pdo) :void {
-		//query template
-		$query = "UPDATE report SET reportAgent = :reportAgent, reportContent = :reportContent, reportDate = :reportDate, reportIp = :reportIp WHERE reportUserId = :reportUserId AND reportAbuserId = :reportAbuserId";
-		$statement = $pdo->prepare($query);
-		//bind variables to the template
-		$formattedDate = $this->reportDate->format("Y-m-d H:i:s.u");
-		$parameters = ["reportUserId" => $this->reportUserId->getBytes(), "reportAbuserId" => $this->reportAbuserId->getBytes(), "reportAgent" => $this->reportAgent, "reportContent" => $this->reportContent, "reportDate" => $formattedDate, "reportIp" => $this->reportIp];
-		$statement->execute($parameters);
-	}
+//	/**
+//	 * Deletes report from mySQL
+//	 *
+//	 * @param \PDO $pdo PDO connection object
+//	 * @throws \PDOException when mySQL errors occur
+//	 * @throws \TypeError if $pdo is not a PDO connection object
+//	 **/
+//	public function delete(\PDO $pdo) : void {
+//		//query template
+//		$query = "DELETE FROM report WHERE reportUserId = :reportUserId";
+//		$statement = $pdo->prepare($query);
+//		//bind variables to the template
+//		$parameters = ["reportUserId" => $this->reportUserId->getBytes()];
+//		$statement->execute($parameters);
+//	}
+//	/**
+//	 * Updates report in mySQL
+//	 *
+//	 * @param \PDO $pdo PDO connection object
+//	 * @throws \PDOException when mySQL errors occur
+//	 * @throws \TypeError if $pdo is not a PDO connection object
+//	 **/
+//	public function update(\PDO $pdo) :void {
+//		//query template
+//		$query = "UPDATE report SET reportAgent = :reportAgent, reportContent = :reportContent, reportDate = :reportDate, reportIp = :reportIp WHERE reportUserId = :reportUserId AND reportAbuserId = :reportAbuserId";
+//		$statement = $pdo->prepare($query);
+//		//bind variables to the template
+//		$formattedDate = $this->reportDate->format("Y-m-d H:i:s.u");
+//		$parameters = ["reportUserId" => $this->reportUserId->getBytes(), "reportAbuserId" => $this->reportAbuserId->getBytes(), "reportAgent" => $this->reportAgent, "reportContent" => $this->reportContent, "reportDate" => $formattedDate, "reportIp" => $this->reportIp];
+//		$statement->execute($parameters);
+//	}
 
 	/**
 	 * Gets Reports by User Id
@@ -324,7 +354,7 @@ class Report implements \JsonSerializable {
 			throw(new \PDOException($exception->getMessage(), 0 ,$exception));
 		}
 		//query template
-		$query = "SELECT reportUserId, reportAbuserId, reportAgent, reportContent, reportDate, reportIp FROM report WHERE reportUserId = :reportUserId";
+		$query = "SELECT reportId, reportUserId, reportAbuserId, reportAgent, reportContent, reportDate, reportIp FROM report WHERE reportUserId = :reportUserId";
 		$statement = $pdo->prepare($query);
 		//bind variables to template
 		$parameters = ["reportUserId" => $reportUserId->getBytes()];
@@ -334,7 +364,7 @@ class Report implements \JsonSerializable {
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while (($row = $statement->fetch()) !== false) {
 			try {
-				$report = new Report($row["reportUserId"], $row["reportAbuserId"], $row["reportAgent"], $row["reportContent"], $row["reportDate"], $row["reportIp"]);
+				$report = new Report($row["reportId"], $row["reportUserId"], $row["reportAbuserId"], $row["reportAgent"], $row["reportContent"], $row["reportDate"], $row["reportIp"]);
 				$reports[$reports->key()] = $report;
 				$reports->next();
 			} catch(\Exception $exception) {
@@ -361,7 +391,7 @@ class Report implements \JsonSerializable {
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
 		//query template
-		$query = "SELECT reportUserId, reportAbuserId, reportAgent, reportContent, reportDate, reportIp FROM report WHERE reportAbuserId = :reportAbuserId";
+		$query = "SELECT reportId, reportUserId, reportAbuserId, reportAgent, reportContent, reportDate, reportIp FROM report WHERE reportAbuserId = :reportAbuserId";
 		$statement = $pdo->prepare($query);
 		//bind variables to template
 		$parameters = ["reportAbuserId" => $reportAbuserId->getBytes()];
@@ -371,7 +401,7 @@ class Report implements \JsonSerializable {
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$report = new Report($row["reportUserId"], $row["reportAbuserId"], $row["reportAgent"], $row["reportContent"], $row["reportDate"], $row["reportIp"]);
+				$report = new Report($row["reportId"], $row["reportUserId"], $row["reportAbuserId"], $row["reportAgent"], $row["reportContent"], $row["reportDate"], $row["reportIp"]);
 				$reports[$reports->key()] = $report;
 				$reports->next();
 			} catch(\Exception $exception) {
@@ -400,7 +430,7 @@ class Report implements \JsonSerializable {
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
 		//create query
-		$query = "SELECT reportUserId, reportAbuserId, reportAgent, reportContent, reportDate, reportIp FROM report WHERE reportUserId = :reportUserId AND reportAbuserId = :reportAbuserId";
+		$query = "SELECT reportId, reportUserId, reportAbuserId, reportAgent, reportContent, reportDate, reportIp FROM report WHERE reportUserId = :reportUserId AND reportAbuserId = :reportAbuserId";
 		$statement = $pdo->prepare($query);
 		//bind variables to query template
 		$parameters = ["reportUserId" => $reportUserId->getBytes(), "reportAbuserId" => $reportAbuserId->getBytes()];
@@ -412,7 +442,7 @@ class Report implements \JsonSerializable {
 				$report = null;
 				$row = $statement->fetch();
 				if ($row !== false) {
-					$report = new Report($row["reportUserId"], $row["reportAbuserId"], $row["reportAgent"], $row["reportContent"], $row["reportDate"], $row["reportIp"]);
+					$report = new Report($row["reportId"], $row["reportUserId"], $row["reportAbuserId"], $row["reportAgent"], $row["reportContent"], $row["reportDate"], $row["reportIp"]);
 				}
 			} catch(\Exception $exception) {
 				throw(new \PDOException($exception->getMessage(), 0, $exception));
@@ -429,6 +459,7 @@ class Report implements \JsonSerializable {
 	public function jsonSerialize() : array {
 		$fields = get_object_vars($this);
 
+		$fields["reportId"] = $this->reportId->toString();
 		$fields["reportUserId"] = $this->reportUserId->toString();
 		$fields["reportAbuserId"] = $this->reportAbuserId->toString();
 

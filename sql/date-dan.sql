@@ -74,6 +74,7 @@ CREATE TABLE `match` (
 );
 
 CREATE TABLE report (
+   reportId BINARY(16) NOT NULL,
 	reportUserId BINARY(16) NOT NULL,
 	reportAbuserId BINARY(16) NOT NULL,
 	reportAgent VARCHAR(255) NOT NULL,
@@ -84,5 +85,5 @@ CREATE TABLE report (
 	INDEX (reportAbuserId),
 	FOREIGN KEY (reportUserId) REFERENCES user(userId),
 	FOREIGN KEY (reportAbuserId) REFERENCES user(userId),
-	PRIMARY KEY (reportUserId, reportAbuserId)
+	PRIMARY KEY (reportId)
 );
