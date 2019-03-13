@@ -116,13 +116,14 @@ try {
 			verifyXsrf();
 
 			// retrieve answer to be deleted
-			$answer = Answer::getAnswerByAnswerUserId($pdo, $id);
+			$answer = Answer::getAnswerByAnswerUserId($pdo, $answerUserId);
 			if($answer === null) {
 					throw(new RuntimeException("That answer does not exist", 404));
 			}
 
 			// enforce the user is signed in and only trying to edith their own answer
-			if(empty($_SESSION["user"]) === true || $_SESSION["user"]->getUserId()->toString() !== $answer->getAnswerUserId()->toString()) {
+			if(empty($_SESSION["user"]) === true || $_SESSION["user"]->getUserId()->toString() !==
+				$answer->getAnswerUserId()->toString()) {
 				throw(new \InvalidArgumentException("you are not allowed to delete this answer.", 403));
 			}
 
