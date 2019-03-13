@@ -1,22 +1,24 @@
 <header>
-	<nav class="navbar navbar-expand-lg navbar-primary">
-		<div class="row">
-			<div class="col-12">
-				<div class="navbar-brand" href="#">
-					<a href="#"><i>Logo</i></a>
-					Deep Dive Dating
-				</div>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-12">
-				<div class="text-center">
-					<a href="profile.php">My Profile</a>
-					<a href="browse.php">Browse</a>
-					<a href="my-matches.php">My Matches</a>
-					<a href="logout-modal.php">Sign Out</a>
-				</div>
-			</div>
-		</div>
-	</nav>
+	<div class="text-center">
+
+			<p class="h1">
+				<a href="login-modal.php"><i>Logo</i></a>
+				Deep Dive Dating
+			</p>
+
+	</div>
+		<ul class="nav justify-content-center">
+			<li class="nav-item">
+				<a class="nav-link" href="profile.php">My Profile</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="browse.php">Browse</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="my-matches.php">My Matches</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="logout-modal.php">Sign Out</a>
+			</li>
+		</ul>
 </header>

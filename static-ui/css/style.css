@@ -2,6 +2,6 @@ body {
 	background-color: deepskyblue;
 }
 
-.navbar {
+.navbar, header {
 	background-color: whitesmoke;
 }
