@@ -2,8 +2,6 @@
 
 <?php require_once("navbar.php"); ?>
 
-<?php require_once("css/style.css"); ?>
-
 
 <main class="gray">
 	<div class="container">
