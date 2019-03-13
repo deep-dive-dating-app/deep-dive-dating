@@ -7,8 +7,7 @@
 	<div class="container">
 		<div class="container-fluid p-2">
 			<h1>Browse</h1>
-			<div class="row">
-				<div class="row border rounded mt-4">
+				<div class="row border rounded mt-4 bg-light">
 					<div class="col-sm-3">
 						<div class="container my-auto pt-5 d-block d-flex justify-content-center">
 							<img class="img-fluid" src="catgirl.jpg" alt="Catarina">
@@ -28,7 +27,7 @@
 						<i class="far fa-heart"></i>
 					</div>
 				</div>
-				<div class="row border rounded mt-4">
+				<div class="row border rounded mt-4 bg-light">
 					<div class="col-sm-3">
 						<div class="container my-auto pt-5 d-block d-flex justify-content-center">
 							<img class="img-fluid" src="catgirl.jpg" alt="Catarina">
@@ -48,7 +47,7 @@
 						<i class="far fa-heart"></i>
 					</div>
 				</div>
-				<div class="row border rounded mt-4">
+				<div class="row border rounded mt-4 bg-light">
 					<div class="col-sm-3">
 						<div class="container my-auto pt-5 d-block d-flex justify-content-center">
 							<img class="img-fluid" src="catgirl.jpg" alt="Catarina">
@@ -68,7 +67,7 @@
 						<i class="far fa-heart"></i>
 					</div>
 				</div>
-				<div class="row border rounded mt-4">
+				<div class="row border rounded mt-4 bg-light">
 					<div class="col-sm-3">
 						<div class="container my-auto pt-5 d-block d-flex justify-content-center">
 							<img class="img-fluid" src="catgirl.jpg" alt="Catarina">
@@ -88,7 +87,6 @@
 						<i class="far fa-heart"></i>
 					</div>
 				</div>
-			</div>
 		</div>
 	</div>
 </main>
