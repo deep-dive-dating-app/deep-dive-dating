@@ -2,7 +2,7 @@
 	<div class="text-center">
 
 			<p class="h1 p-3">
-				<a href="login-modal.php"><img src="ddd-icon-v1.png" alt="Deep Dive Dating"/></a>
+				<a href="login-modal.php"><img src="images/ddd-icon-v1.png" alt="Deep Dive Dating"/></a>
 				Deep Dive Dating
 			</p>
 

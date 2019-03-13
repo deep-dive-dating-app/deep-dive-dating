@@ -12,6 +12,8 @@ export const routes: Routes = [
 ];
 
 export const appRoutingProviders: any[] = [
+	SessionService,
+	PostService
 ];
 
 export const routing = RouterModule.forRoot(routes);
