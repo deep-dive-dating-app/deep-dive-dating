@@ -14,12 +14,12 @@
 							<img class="img-fluid" src="catgirl.jpg" alt="Catarina">
 						</div>
 					</div>
-					<div class="col-sm-6">
+					<div class="col-sm-5">
 						<div class="container my-auto py-5">
 							<p class="lorem"> bird bird bird human why take bird out i could have eaten that.</p>
 						</div>
 					</div>
-					<div class="col-sm-1">
+					<div class="col-sm-2">
 						<!--todo add letter grade-->
 						<p>letter grade</p>
 					</div>
@@ -34,12 +34,12 @@
 							<img class="img-fluid" src="catgirl.jpg" alt="Catarina">
 						</div>
 					</div>
-					<div class="col-sm-6">
+					<div class="col-sm-5">
 						<div class="container my-auto py-5">
 							<p class="lorem"> bird bird bird human why take bird out i could have eaten that.</p>
 						</div>
 					</div>
-					<div class="col-sm-1">
+					<div class="col-sm-2">
 						<!--todo add letter grade-->
 						<p>letter grade</p>
 					</div>
@@ -54,12 +54,12 @@
 							<img class="img-fluid" src="catgirl.jpg" alt="Catarina">
 						</div>
 					</div>
-					<div class="col-sm-6">
+					<div class="col-sm-5">
 						<div class="container my-auto py-5">
 							<p class="lorem"> bird bird bird human why take bird out i could have eaten that.</p>
 						</div>
 					</div>
-					<div class="col-sm-1">
+					<div class="col-sm-2">
 						<!--todo add letter grade-->
 						<p>letter grade</p>
 					</div>
@@ -74,12 +74,12 @@
 							<img class="img-fluid" src="catgirl.jpg" alt="Catarina">
 						</div>
 					</div>
-					<div class="col-sm-6">
+					<div class="col-sm-5">
 						<div class="container my-auto py-5">
 							<p class="lorem"> bird bird bird human why take bird out i could have eaten that.</p>
 						</div>
 					</div>
-					<div class="col-sm-1">
+					<div class="col-sm-2">
 						<!--todo add letter grade-->
 						<p>letter grade</p>
 					</div>
