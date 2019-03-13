@@ -6,7 +6,7 @@
 <main class="gray">
 	<div class="container">
 		<div class="container-fluid p-2">
-			<h1>Browse</h1>
+			<h1>Matches</h1>
 			<div class="row">
 				<div class="row border rounded">
 					<div class="col-sm-3">
@@ -25,7 +25,7 @@
 					</div>
 					<div class="col-sm-2">
 						<!--todo add matching ability to heart-->
-						<i class="far fa-heart"></i>
+						<i class="fas fa-heart"></i>
 					</div>
 				</div>
 				<div class="row border rounded">
@@ -45,7 +45,7 @@
 					</div>
 					<div class="col-sm-2">
 						<!--todo add matching ability to heart-->
-						<i class="far fa-heart"></i>
+						<i class="fas fa-heart"></i>
 					</div>
 				</div>
 				<div class="row border rounded">
@@ -65,7 +65,7 @@
 					</div>
 					<div class="col-sm-2">
 						<!--todo add matching ability to heart-->
-						<i class="far fa-heart"></i>
+						<i class="fas fa-heart"></i>
 					</div>
 				</div>
 				<div class="row border rounded">
@@ -85,7 +85,7 @@
 					</div>
 					<div class="col-sm-2">
 						<!--todo add matching ability to heart-->
-						<i class="far fa-heart"></i>
+						<i class="fas fa-heart"></i>
 					</div>
 				</div>
 			</div>
