@@ -523,7 +523,7 @@ class UserDetail implements \JsonSerializable {
 	}
 
 	/**
-	 * gets the userDetail by by userDetailId
+	 * gets the userDetail by userDetailId
 	 * @param \PDO $pdo PDO connection object
 	 * @param Uuid|string $userDetailId user detail id to search for
 	 * @return UserDetail|null User detail if found or null if not found
