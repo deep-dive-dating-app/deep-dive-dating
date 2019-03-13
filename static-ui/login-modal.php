@@ -1,31 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
 <?php require_once ("head-utils.php");?>
 
-<?php require_once("navbar.php");?>
+	<body>
+		<?php require_once("navbar.php");?>
 
-<main>
+		<main>
 
-	<!-- Modal -->
-	<div class="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="true">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content gray">
-				<div class="modal-header gray">
-					<h5 class="modal-title" id="login">Login</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-				<div class="modal-body gray">
-					<form class="form-control-lg" id="form" action="" method="post">
-						<div class="info">
-							<input class="form-control" id="email" type="email" name="email" placeholder=" Email"/>
-							<input class="form-control" id="password" type="text" name="password" placeholder=" Password">
+			<!-- Modal -->
+			<div class="container">
+				<div class="" role="document">
+					<div class="p-5"></div>
+					<div class="card">
+						<div class="card-body">
+							<form action="#" novalidate>
+								<div class="form-group">
+									<div class="input-group">
+										<input id="signInEmail" name="signInEmail" type="email" class="form-control" placeholder="Email">
+									</div>
+									<div class="form-group">
+										<div class="input-group">
+											<input id="signInPassword" name="signInPassword" type="password" class="form-control" placeholder="Password">
+										</div>
+									</div>
+								</div>
+								<div>
+									<button class="btn btn-primary"><i class="fa fa-sign-in"></i>Login!</button>
+								</div>
+							</form>
+							<div>
+								<span>Don't Have an Account?</span><button class="btn-link" data-toggle="modal" data-target="#signUpModal">Sign Up!</button>
+							</div>
 						</div>
-					</form>
-					<div class="modal-footer">
-						<input class="btn" type="submit" value="Login!">
 					</div>
 				</div>
 			</div>
-		</div>
-	</div>
-</main>
+		</main>
+
+
+	</body>
+</html>
