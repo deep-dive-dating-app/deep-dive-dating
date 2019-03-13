@@ -35,7 +35,7 @@ try {
 
 	//sanitize the input
 	$id = filter_input(INPUT_GET, "id", FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES);
-	$answerQuestionId = filter_input(INPUT_GET, "answerQuestionId", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$answerUserId = filter_input(INPUT_GET, "answerUserId", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	$answerResult = filter_input(INPUT_GET, "answerResult", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	$answerScore = filter_input(INPUT_GET, "answerScore", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 
@@ -43,18 +43,18 @@ try {
 	if (($method === "DELETE" || $method === "PUT") && (empty($id) === true)){
 		throw(new InvalidArgumentException("Id cannot be empty or negative", 405));
 	}
-	// handle Get request - if id is present, that answer is returned, otherwise all beers are returned
+	// handle Get request - if id is present, that answer is returned, otherwise all answers are returned
 	if($method === "GET") {
 		// set XSRF cookie
 		setXsrfCookie();
 
 		// get a specific answer or all answers and update reply
-		if(empty($id) === false) {
-			$reply->data = Answer::getAnswerByAnswerUserId($pdo, $id);
-		} else if(empty($answerUserId, $answerQuestionId) === false) {
-			$reply->data = Answer::getAnswerByAnswerQuestionIdAndUserId($pdo, $answerUserId, $answerQuestionId);
+		if(empty($answerUserId) === false) {
+			$reply->data = Answer::getAnswerByAnswerUserId($pdo, $answerUserId);
+		} else if(empty($id) === false) {
+			$reply->data = Answer::getAnswerByAnswerQuestionIdAndUserId($pdo, $id, $answerUserId);
 		}
-	} else if($method === "PUT"|| $method === "POST") {
+	} 	else if($method === "PUT"|| $method === "POST") {
 
 		// enforce the user has a XSRF token
 		verifyXsrf();
@@ -117,12 +117,12 @@ try {
 
 			// retrieve answer to be deleted
 			$answer = Answer::getAnswerByAnswerUserId($pdo, $id);
-			if($beer === null) {
-					throw(new RuntimeException("That answer does not exitst", 404));
+			if($answer === null) {
+					throw(new RuntimeException("That answer does not exist", 404));
 			}
 
 			// enforce the user is signed in and only trying to edith their own answer
-			if(empty($_SESSION["user"]) === true || $_SESSION["profile"]->getUserId()->toString() !== $answer->getAnswerUserId()->toString()) {
+			if(empty($_SESSION["user"]) === true || $_SESSION["user"]->getUserId()->toString() !== $answer->getAnswerUserId()->toString()) {
 				throw(new \InvalidArgumentException("you are not allowed to delete this answer.", 403));
 			}
 
