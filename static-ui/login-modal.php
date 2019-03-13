@@ -29,13 +29,14 @@
 									<button class="btn btn-primary"><i class="fa fa-sign-in"></i>Login!</button>
 								</div>
 							</form>
-							<div>
-								<span>Don't Have an Account?</span><button class="btn-link" data-toggle="modal" data-target="#signUpModal">Sign Up!</button>
+							<div class="float-right">
+								<span class="font-weight-light font-italic">Don't Have an Account?&nbsp</span><button class="btn-link" data-toggle="modal" data-target="#signUpModal">Sign Up!</button>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
+			<?php require_once("sign-up-modal.php");?>
 		</main>
 
 

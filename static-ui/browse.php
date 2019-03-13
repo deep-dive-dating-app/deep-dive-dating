@@ -3,9 +3,9 @@
 <?php require_once("navbar.php"); ?>
 
 
-<main class="browse">
+<main class="gray">
 	<div class="container">
-		<div class="container-fluid p-2">
+		<div class="p-2">
 			<h1>Browse</h1>
 				<div class="row border rounded mt-4 bg-light">
 					<div class="col-sm-3">

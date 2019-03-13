@@ -5,3 +5,7 @@ body {
 .navbar, header {
 	background-color: whitesmoke;
 }
+
+img {
+	height: 10rem;
+}

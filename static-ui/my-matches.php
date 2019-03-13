@@ -5,7 +5,7 @@
 
 <main class="gray">
 	<div class="container">
-		<div class="container-fluid p-2">
+		<div class="p-2">
 			<h1>Matches</h1>
 				<div class="row border rounded bg-light mt-4">
 					<div class="col-sm-3">
@@ -23,8 +23,10 @@
 						<p>letter grade</p>
 					</div>
 					<div class="col-sm-2">
+
 						<!--todo add matching ability to heart-->
 						<i class="fas fa-heart"></i>
+
 					</div>
 				</div>
 				<div class="row border rounded bg-light mt-4">
