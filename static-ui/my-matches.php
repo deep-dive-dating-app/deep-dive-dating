@@ -8,7 +8,7 @@
 		<div class="container-fluid p-2">
 			<h1>Matches</h1>
 			<div class="row">
-				<div class="row border rounded">
+				<div class="row border rounded bg-light mt-4">
 					<div class="col-sm-3">
 						<div class="container my-auto pt-5 d-block d-flex justify-content-center">
 							<img class="img-fluid" src="catgirl.jpg" alt="Catarina">
@@ -28,7 +28,7 @@
 						<i class="fas fa-heart"></i>
 					</div>
 				</div>
-				<div class="row border rounded">
+				<div class="row border rounded bg-light mt-4">
 					<div class="col-sm-3">
 						<div class="container my-auto pt-5 d-block d-flex justify-content-center">
 							<img class="img-fluid" src="catgirl.jpg" alt="Catarina">
@@ -48,7 +48,7 @@
 						<i class="fas fa-heart"></i>
 					</div>
 				</div>
-				<div class="row border rounded">
+				<div class="row border rounded bg-light mt-4">
 					<div class="col-sm-3">
 						<div class="container my-auto pt-5 d-block d-flex justify-content-center">
 							<img class="img-fluid" src="catgirl.jpg" alt="Catarina">
@@ -68,7 +68,7 @@
 						<i class="fas fa-heart"></i>
 					</div>
 				</div>
-				<div class="row border rounded">
+				<div class="row border rounded bg-light mt-4">
 					<div class="col-sm-3">
 						<div class="container my-auto pt-5 d-block d-flex justify-content-center">
 							<img class="img-fluid" src="catgirl.jpg" alt="Catarina">
