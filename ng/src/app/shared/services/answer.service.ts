@@ -25,7 +25,7 @@ export class AnswerService {
 
 
 	AnswerByAnswerQuestionIdAndUserId(AnswerQuestionId: string,UserId ) : Observable<Answer> {
-		return(this.http.get<Answer>(this.answerUrl + answerQuestionId + userId));
+		return(this.http.get<Answer>(this.answerUrl + AnswerQuestionId + UserId));
 
 	}
 
@@ -34,6 +34,6 @@ export class AnswerService {
 	}
 
 	editAnswer(answer: Answer) : Observable<Status> {
-		return(this.http.put<Status>(this.answerUrl + answer.answerId, answer));
+		return(this.http.put<Status>(this.answerUrl + answer.answerQuestionId, answer));
 	}
 }
