@@ -1,4 +1,4 @@
-export interface signUp{
+export interface SignUp{
 	userId: string,
 	userActivationToken: string,
 	userAgent: string,
