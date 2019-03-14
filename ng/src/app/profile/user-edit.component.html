@@ -1,0 +1,95 @@
+<div class="modal fade" id="userEditModal" tabindex="-1" role="dialog" aria-labelledby="userEditModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="userEditModalLabel">Edit your Profile for Deep Dive Dating</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+
+				<form name="signUpForm" id="signUpForm" novalidate>
+
+					<!-- avatar url group -->
+					<div class="form-group">
+						<label for="userAvatarUrl" class="sr-only">Choose a new photo</label>
+						<div class="input-group">
+							<input type="file" class="form-control" id="userAvatarUrl" name="userAvatarUrl" formControlName="userAvatarUrl" placeholder="Choose a new photo">
+						</div>
+					</div>
+
+					<!-- about me group -->
+					<div class="form-group">
+						<label for="userDetailAboutMe" class="sr-only">Edit About Me</label>
+						<div class="input-group">
+							<input type="text" class="form-control" id="userDetailAboutMe" name="userDetailAboutMe" formControlName="userDetailAboutMe" placeholder="Edit About Me (optional)">
+						</div>
+					</div>
+
+					<!-- career group -->
+					<div class="form-group">
+						<label for="userDetailCareer" class="sr-only">Edit Career</label>
+						<div class="input-group">
+							<input type="text" class="form-control" id="userDetailCareer" name="userDetailCareer" formControlName="userDetailCareer" placeholder="Edit Career">
+						</div>
+					</div>
+
+					<!-- display email group -->
+					<div class="form-group">
+						<label for="userDetailDisplayEmail" class="sr-only">Edit Display Email</label>
+						<div class="input-group">
+							<input type="email" class="form-control" id="userDetailDisplayEmail" name="userDetailDisplayEmail" formControlName="userDetailDisplayEmail" placeholder="Edit Display Email (choose preferred email for contact)">
+						</div>
+					</div>
+
+					<!-- education group -->
+					<div class="form-group">
+						<label for="userDetailEducation" class="sr-only">Edit Education</label>
+						<div class="input-group">
+							<input type="text" class="form-control" id="userDetailEducation" name="userDetailEducation" formControlName="userDetailEducation" placeholder="Edit Education">
+						</div>
+					</div>
+
+					<!-- gender group -->
+					<div class="form-group">
+						<label for="userDetailGender" class="sr-only">Edit Gender</label>
+						<div class="input-group">
+							<input type="text" class="form-control" id="userDetailGender" name="userDetailGender" formControlName="userDetailGender" placeholder="Gender">
+						</div>
+					</div>
+
+					<!-- interests group -->
+					<div class="form-group">
+						<label for="userDetailInterests" class="sr-only">Edit Your Interests</label>
+						<div class="input-group">
+							<input type="text" class="form-control" id="userDetailInterests" name="userDetailInterests" formControlName="userDetailInterests" placeholder="Your Interests (optional)">
+						</div>
+					</div>
+
+					<!-- race group -->
+					<div class="form-group">
+						<label for="userDetailRace" class="sr-only">Edit Race</label>
+						<div class="input-group">
+							<input type="text" class="form-control" id="userDetailRace" name="userDetailRace" formControlName="userDetailRace" placeholder="Race">
+						</div>
+					</div>
+
+					<!-- religion group -->
+					<div class="form-group">
+						<label for="userDetailReligion" class="sr-only">Edit Religion</label>
+						<div class="input-group">
+							<input type="text" class="form-control" id="userDetailReligion" name="userDetailReligion" formControlName="userDetailReligion" placeholder="Religion">
+						</div>
+					</div>
+
+					<!-- submit -->
+					<div class="form-group">
+						<button type="button" class="btn btn-primary">Submit</button>
+					</div>
+				</form>
+
+			</div>
+		</div>
+	</div>
+</div>

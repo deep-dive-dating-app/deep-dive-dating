@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
-import {Post} from "../classes/post";
+import {UserDetail} from "../classes/userDetail";
 import {Status} from "../classes/status";
 import {Observable} from "rxjs";
 
@@ -9,7 +9,7 @@ export class UserDetailService {
 	constructor(protected http: HttpClient) {
 	}
 
-	private userDetailUrl = "apis/user-detail/";
+	private userDetailUrl = "apis/userDetail/";
 
 	editUserDetail(userDetail: UserDetail) : Observable<Status> {
 		return(this.http.put<Status>(this.http.userDetailUrl + userDetail.userDetailId, userDetail));
