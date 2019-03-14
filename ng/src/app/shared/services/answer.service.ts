@@ -1,7 +1,7 @@
 import {HttpClient} from "@angular/common/http";
 import {Injectable} from "@angular/core";
 import {Observable} from "rxjs";
-import {Misquote} from "../interfaces/misquote";
+import {Answer} from "../interfaces/answer";
 import {Status} from "../interfaces/status";
 
 @Injectable()
@@ -9,9 +9,9 @@ export class AnswerService {
 
 	constructor(protected http: HttpClient) {}
 
-	private misquoteUrl = "api/answer/";
+	private answerUrl = "api/answer/";
 
-	deleteMisquote(answerId: string) : Observable<Status> {
+	deleteAnswer(answerId: string) : Observable<Status> {
 		return(this.http.delete<Status>(this.answerUrl + answerId));
 	}
 
@@ -19,8 +19,14 @@ export class AnswerService {
 		return(this.http.get<Answer[]>(this.answerUrl));
 	}
 
-	getAnswer(answerId: string) : Observable<Misquote> {
-		return(this.http.get<Answer>(this.misquoteUrl + answerId));
+	getAnswer(answerId: string) : Observable<Answer> {
+		return(this.http.get<Answer>(this.answerUrl + answerId));
+	}
+
+
+	AnswerByAnswerQuestionIdAndUserId(AnswerQuestionId: string,UserId ) : Observable<Answer> {
+		return(this.http.get<Answer>(this.answerUrl + answerQuestionId + userId));
+
 	}
 
 	createAnswer(answer: Answer) : Observable<Status> {
