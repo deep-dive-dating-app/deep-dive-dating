@@ -9,7 +9,7 @@ export class UserService {
 	constructor(protected http: HttpClient) {
 	}
 
-	private userUrl = "https://bootcamp-coders.cnm.edu/~tsmith179/deep-dive-dating/public_html/api/user/";
+	private userUrl = "api/user/";
 
 	getAllUsers() : Observable<User[]> {
 		return(this.http.get<User[]>(this.userUrl));
