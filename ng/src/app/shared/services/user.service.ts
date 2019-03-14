@@ -27,7 +27,7 @@ export class UserService {
 		return(this.http.get<User>(this.userUrl + userHandle));
 	}
 
-	getUserbyUserActivationToken(userActivationToken : number) : Observable<User> {
+	getUserByUserActivationToken(userActivationToken : number) : Observable<User> {
 		return(this.http.get<User>(this.userUrl + userActivationToken));
 	}
 
