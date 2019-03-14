@@ -2,10 +2,19 @@ body {
 	background-color: deepskyblue;
 }
 
-.navbar, header {
+.navbar, header, footer {
 	background-color: whitesmoke;
 }
 
 img {
 	height: 10rem;
+}
+
+i {
+	font-size: 10rem;
+	color: hotpink;
+}
+
+button > i {
+	font-size: 1rem;
 }

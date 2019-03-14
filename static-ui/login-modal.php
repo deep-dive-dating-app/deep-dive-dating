@@ -38,7 +38,7 @@
 			</div>
 			<?php require_once("sign-up-modal.php");?>
 		</main>
-
+		<?php require_once("footer.php"); ?>
 
 	</body>
 </html>
