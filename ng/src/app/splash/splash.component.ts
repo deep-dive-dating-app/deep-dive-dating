@@ -1,8 +1,11 @@
-
-import {Component, OnInit} from "@angular/core";
+import {Component} from "@angular/core";
 
 @Component({
-	templateUrl: "./splash.component.html"
+	templateUrl:"./splash.component.html"
 })
+export class SplashComponent{
 
-export class SplashComponent {}
+//	status : Status = null;
+
+	constructor() {}
+}
