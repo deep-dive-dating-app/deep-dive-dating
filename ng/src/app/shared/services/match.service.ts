@@ -28,6 +28,6 @@ export class MatchService {
 	}
 
 	editMatch(match : Match) : Observable<Status> {
-		return(this.http.put<Status>(this.matchUrl));
+		return(this.http.put<Status>(this.matchUrl, match));
 	}
 }
