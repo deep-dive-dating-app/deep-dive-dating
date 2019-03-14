@@ -1,6 +1,6 @@
 export interface User{
-	userId: number,
-	userActivationToken: number,
+	userId: string,
+	userActivationToken: string,
 	userAgent: string,
 	userAvatarUrl: string,
 	userBlocked: number,
