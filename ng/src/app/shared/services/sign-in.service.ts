@@ -1,15 +1,15 @@
 import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs/Observable";
-import {Status} from "../interface/status";
-import {SignIn} from "../interface/sign.in";
+import {Status} from "../interfaces/status";
+import {SignIn} from "../interfaces/sign-in";
 
 @Injectable()
 export class SignInService {
 	constructor(protected http : HttpClient) {
 
 	}
-	private signInUrl = "api/sign-in";
+	private signInUrl = "api/sign-in/";
 	private signOutUrl = "api/sign-out/";
 
 	//preform the post to initiate sign in
