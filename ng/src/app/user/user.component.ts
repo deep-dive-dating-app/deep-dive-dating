@@ -20,6 +20,13 @@ import {UserDetailService} from "../shared/services/user-detail.service";
 export class UserComponent implements OnInit{
 
 	jwtToken: any = this.jwt.decodeToken(localStorage.getItem("jwt-token"));
+	user: User = {userHandle: null, userAvatarUrl: null};
+	userDetail: UserDetailService[];
+	//todo probably add match stuff, answer, question stuff, not sure yet
+	status: Status = {status:null, message:null, type:null};
+
+	constructor(private userService: UserService, private userDetailService: UserDetailService,)
+
 }
 
 
