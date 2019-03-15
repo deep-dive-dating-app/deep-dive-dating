@@ -26,7 +26,7 @@
 						<label for="userHandle" class="sr-only">Handle</label>
 						<div class="input-group" *ngIf="signUpForm.controls.userHandle?.invalid && signUpForm.controls.userHandle?.touched">
 							<input type="text" class="form-control" id="userHandle" name="userHandle" formControlName="userHandle" placeholder="Handle"/>
-							<p *nfIf="signUpForm.controls.userHandle?.errors.maxlength">Username is too long</p>
+							<p *ngIf="signUpForm.controls.userHandle?.errors.maxlength">Username is too long</p>
 							<p *ngIf="signUpForm.controls.userHandle?.errors.required">Username is required</p>
 						</div>
 					</div>
@@ -34,10 +34,10 @@
 					<!-- password group -->
 					<div class="form-group">
 						<label for="userPassword" class="sr-only">Password</label>
-						<div class="input-group" *nfIf="signUpForm.controls.userPassword?.invalid && signUpForm.controls.userPassword?.touched">
+						<div class="input-group" *ngIf="signUpForm.controls.userPassword?.invalid && signUpForm.controls.userPassword?.touched">
 							<input type="password" class="form-control" id="userPassword" name="userPassword" formControlName="userPassword" placeholder="Password"/>
-							<p *nfIf="signUpForm.controls.userPassword?.errors.maxlength">Password is too long</p>
-							<p *nfIf="signUpForm.controls.userPassword?.errors.maxlength">Password is required</p>
+							<p *ngIf="signUpForm.controls.userPassword?.errors.maxlength">Password is too long</p>
+							<p *ngIf="signUpForm.controls.userPassword?.errors.maxlength">Password is required</p>
 						</div>
 					</div>
 
