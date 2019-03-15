@@ -4,7 +4,6 @@
 
 //import needed modules for the sign-up component
 import {Component, OnInit, ViewChild,} from "@angular/core";
-import {Observable} from "rxjs/Observable"
 import {Router} from "@angular/router";
 import {Status} from "../../interfaces/status";
 import {SignIn} from "../../interfaces/sign-in";
@@ -14,7 +13,8 @@ import {SignInService} from "../../services/sign-in.service";
 
 // set the template url and the selector for the ng powered html tag
 @Component({
-	templateUrl: require("./sign-in.component.html")
+	templateUrl: ("./sign-in.component.html"),
+	selector: "sign-in"
 })
 
 export class SignInComponent implements OnInit{
