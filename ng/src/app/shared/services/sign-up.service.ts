@@ -2,7 +2,7 @@ import {HttpClient} from "@angular/common/http";
 import {Injectable} from "@angular/core";
 import {Observable} from "rxjs";
 import {Status} from "../interfaces/status";
-import {User} from "../interfaces/user";
+import {SignUp} from "../interfaces/sign-up";
 
 @Injectable()
 export class SignUpService {
@@ -11,7 +11,7 @@ export class SignUpService {
 
 	private signUpUrl = "apis/sign-up/";
 
-	postUser(user: User) : Observable<Status> {
-		return(this.http.post<Status>(this.signUpUrl, user));
+	createUser(signUp: SignUp) : Observable<Status> {
+		return(this.http.post<Status>(this.signUpUrl, signUp));
 	}
 }

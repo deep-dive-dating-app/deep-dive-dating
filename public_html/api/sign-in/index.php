@@ -81,7 +81,7 @@ try {
 
 		// If the profile activation is not null throw an error
 		if($user->getUserActivationToken() !== null) {
-			throw (new \InvalidArgumentException("You are not allowed to sing in unless you have activated your account", 403));
+			throw (new \InvalidArgumentException("You are not allowed to sign in unless you have activated your account", 403));
 		}
 
 		// Verify hash is correct
