@@ -13,7 +13,6 @@ import {SignUp} from "../shared/interfaces/sign-up";
 
 export class SignUpComponent implements OnInit {
 	signUpForm: FormGroup;
-	signUp : SignUp = SignUp(null, null, null, null, null, null, null, null, null, null, null);
 	status : Status = {status: null, message: null, type: null};
 
 	constructor(private signUpService : SignUpService, private formBuilder : FormBuilder, private router : Router) {}
@@ -36,19 +35,13 @@ export class SignUpComponent implements OnInit {
 
 	createSignUp(): void {
 
-		let signUp = new SignUp(this.signUpForm.value.userAvatarUrl, this.signUpForm.value.userEmail, this.signUpForm.value.userHandle, this.signUpForm.value.userPassword, this.signUpForm.value.userPasswordConfirm, this.signUpForm.value.userDetailAge, this.signUpForm.value.userDetailCareer, this.signUpForm.value.userDetailEducation, this.signUpForm.value.userDetailGender, this.signUpForm.value.userDetailRace, this.signUpForm.value.userDetailReligion);
-
+		let signUp : SignUp = {userAvatarUrl:"placeholder.jpg", userEmail: this.signUpForm.value.userEmail, userHandle: this.signUpForm.value.userHandle, userHash: this.signUpForm.value.userHash, userHashConfirm: this.signUpForm.value.userHashConfirm, userDetailAge: this.signUpForm.value.userDetailAge, userDetailCareer: this.signUpForm.value.userDetailCareer, userDetailEducation: this.signUpForm.value.userDetailEducation, userDetailGender: this.signUpForm.value.userDetailGender, userDetailRace: this.signUpForm.value.userDetailRace, userDetailReligion: this.signUpForm.value.userDetailReligion};
 		this.signUpService.createUser(signUp)
 			.subscribe(status => {
 				this.status = status;
 
 				if(this.status.status === 200) {
 					alert(status.message);
-					setTimeout(function() {
-						$("#signUpForm").modal('hide');
-					}, 500);
-					this.router.navigate([""]);
-				}
-			});
-	}
-}
+			}
+	})
+}}
