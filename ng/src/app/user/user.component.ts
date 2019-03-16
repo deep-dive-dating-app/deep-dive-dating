@@ -25,7 +25,7 @@ export class UserComponent implements OnInit{
 
 	jwtToken: any = this.jwt.decodeToken(localStorage.getItem("jwt-token"));
 	user: User;
-	userDetail: UserDetail[];
+	userDetail: UserDetail;
 	match: Match[];
 	answer: Answer;
 	status: Status = {status:null, message:null, type:null};
