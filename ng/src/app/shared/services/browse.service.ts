@@ -15,7 +15,7 @@ export class BrowseService {
 		return (this.http.get<User[]>(this.userUrl));
 	}
 
-	getUserByUserHandle(): Observable<User[]> {
+	getUserByUserHandle(userHandle: string): Observable<User[]> {
 		return (this.http.get<User[]>(this.userUrl + userHandle));
 	}
 }
