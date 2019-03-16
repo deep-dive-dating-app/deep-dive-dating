@@ -1,8 +1,10 @@
 import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {User} from "../interfaces/user";
-import {Status} from "../interfaces/status";
 import {Observable} from "rxjs";
+import {UserDetail} from "../interfaces/user-detail";
+import {Answer} from "../interfaces/answer";
+import {Match} from "../interfaces/match";
 
 @Injectable()
 export class BrowseService {
@@ -15,7 +17,23 @@ export class BrowseService {
 		return (this.http.get<User[]>(this.userUrl));
 	}
 
+	getUserAvatarUrl(userAvatarUrl: string): Observable<User[]> {
+		return(this.http.get<User[]>(this.userUrl + userAvatarUrl));
+	}
+
 	getUserByUserHandle(userHandle: string): Observable<User[]> {
 		return (this.http.get<User[]>(this.userUrl + userHandle));
+	}
+
+	getUserDetailAboutMe(userDetailAboutMe: string): Observable<UserDetail[]> {
+		return (this.http.get<UserDetail[]>(this.userUrl + userDetailAboutMe));
+	}
+
+	getAnswerResult(answerScore: int): Observable<Answer[]> {
+		return (this.http.get<Answer[]>(this.userUrl + answerResult));
+	}
+
+	getMatchApproved(matchApproved: int): Observable<Match[]> {
+		return (this.http.get<Match[]> (this.userUrl + matchApproved));
 	}
 }
