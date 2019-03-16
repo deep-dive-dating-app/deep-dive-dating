@@ -19,7 +19,7 @@ export class MatchService {
 		return(this.http.get<Match[]>(this.matchUrl + matchToUserId));
 	}
 
-	getMatchByMatchUserId(matchUserId : number) : Observable<Match[]> {
+	getMatchByMatchUserId(matchUserId : string) : Observable<Match[]> {
 		return(this.http.get<Match[]>(this.matchUrl + matchUserId));
 	}
 

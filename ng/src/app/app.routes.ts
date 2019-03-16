@@ -10,6 +10,7 @@ import {AboutUsComponent} from "./about-us/about-us.component";
 import {APP_BASE_HREF} from "@angular/common";
 import {UserComponent} from "./user/user.component";
 import {BrowseComponent} from "./browse/browse.component";
+import {MatchService} from "./shared/services/match.service";
 
 
 export const allAppComponents = [AppComponent, SplashComponent, SignInComponent, SignUpComponent, MyMatchesComponent, AboutUsComponent, UserComponent, BrowseComponent];
@@ -30,7 +31,8 @@ export const appRoutingProviders: any[] = [
 	SignUpComponent,
 	MyMatchesComponent,
 	AboutUsComponent,
-	BrowseComponent
+	BrowseComponent,
+	MatchService
 ];
 
 export const routing = RouterModule.forRoot(routes);
