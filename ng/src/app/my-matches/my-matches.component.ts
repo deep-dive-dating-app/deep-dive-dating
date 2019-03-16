@@ -18,7 +18,7 @@ export class MyMatchesComponent implements OnInit{
 
 	constructor(private matchService : MatchService, private router : Router) {}
 
-	loadMatches() {
+	ngOnInit() {
 		this.matchService.getMatchByMatchUserId(this.user.userId).subscribe(reply=> this.matches = reply);
 	}
 }
