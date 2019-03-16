@@ -8,7 +8,8 @@ import {SignUp} from "../shared/interfaces/sign-up";
 
 
 @Component({
-	templateUrl: ("./sign-up.component.html")
+	templateUrl: ("./sign-up.component.html"),
+	selector: "sign-up"
 })
 
 export class SignUpComponent implements OnInit {
