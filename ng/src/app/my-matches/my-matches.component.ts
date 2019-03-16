@@ -7,13 +7,13 @@ import {Router} from "@angular/router";
 
 
 @Component({
-	templateUrl: "my-matches.component.html",
+	templateUrl: ("my-matches.component.html"),
 	selector: "my-matches"
 })
 
 export class MyMatchesComponent implements OnInit{
-	matches : Match[] = [];
 	user : User;
+	matches : Match[];
 	status : Status = {status: null, message: null, type: null};
 
 	constructor(private matchService : MatchService, private router : Router) {}
