@@ -11,6 +11,11 @@ import {APP_BASE_HREF} from "@angular/common";
 import {UserComponent} from "./user/user.component";
 import {BrowseComponent} from "./browse/browse.component";
 import {MatchService} from "./shared/services/match.service";
+import {UserService} from "./shared/services/user.service";
+import {UserDetailService} from "./shared/services/user-detail.service";
+import {SignUpService} from "./shared/services/sign-up.service";
+import {HTTP_INTERCEPTORS} from "@angular/common/http";
+import {DeepDiveInterceptor} from "./shared/interceptors/deep-dive.interceptor";
 
 
 export const allAppComponents = [AppComponent, SplashComponent, SignInComponent, SignUpComponent, MyMatchesComponent, AboutUsComponent, UserComponent, BrowseComponent];
@@ -28,11 +33,8 @@ export const routes: Routes = [
 export const appRoutingProviders: any[] = [
 	SessionService,
 	SignInService,
-	SignUpComponent,
-	MyMatchesComponent,
-	AboutUsComponent,
-	BrowseComponent,
-	MatchService
+	MatchService, UserService, UserDetailService, SignUpService,
+	{provide: HTTP_INTERCEPTORS, useClass: DeepDiveInterceptor, multi: true}
 ];
 
 export const routing = RouterModule.forRoot(routes);
