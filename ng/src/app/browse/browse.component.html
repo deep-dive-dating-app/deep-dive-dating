@@ -1,9 +1,11 @@
-<div class="container" *ngFor = "let user of users">
+<div class="container" *ngFor = "let user of users"
+>
 
 	<div class="row border rounded bg-light mt-4">
 		<div class="col-sm-3">
-			<div class="my-auto pt-5 d-block d-flex justify-content-center">
-				<img class="img-fluid" [src]="user.user.userAvatarUrl" alt="{{user.user.userAvatarUrl}}">
+			<div class="my-auto pt-5 d-block d-flex justify-content-center" (click) = "getDetailedView(user)"
+			>
+				<img class="img-fluid" [src]="user.user.userAvatarUrl" alt="{{user.user.userAvatarUrl}}" >
 			</div>
 		</div>
 		<div class="col-sm-5">

@@ -46,7 +46,7 @@ export class BrowseComponent implements OnInit {
 		userDetailReligion: null
 	};
 
-	constructor( private userService: UserService) {
+	constructor( private userService: UserService, private router: Router) {
 	}
 
 
@@ -55,6 +55,9 @@ export class BrowseComponent implements OnInit {
 	}
 	getUsers() {
 		this.userService.getAllUsers().subscribe(reply => this.users= reply)
+	}
+	getDetailedView(user : UserWithUserDetail) : void {
+		this.router.navigate(["/user/", user.user.userId]);
 	}
 
 }
