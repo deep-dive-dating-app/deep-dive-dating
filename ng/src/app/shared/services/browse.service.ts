@@ -17,6 +17,10 @@ export class BrowseService {
 		return (this.http.get<User[]>(this.userUrl));
 	}
 
+	getUserByUserId(userId: string): Observable<User[]> {
+		return(this.http.get<User[]> (this.userUrl + userId));
+	}
+
 	getUserAvatarUrl(userAvatarUrl: string): Observable<User[]> {
 		return(this.http.get<User[]>(this.userUrl + userAvatarUrl));
 	}

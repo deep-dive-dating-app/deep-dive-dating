@@ -1,6 +1,6 @@
 import {RouterModule, Routes} from "@angular/router";
 import {SplashComponent} from "./splash/splash.component";
-import{AppComponent} from "./app.component";
+import {AppComponent} from "./app.component";
 import {SignInService} from "./shared/services/sign-in.service";
 import {SignInComponent} from "./shared/components/sign-in/sign-in.component";
 import {SessionService} from "./shared/services/session.service";
