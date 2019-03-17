@@ -11,6 +11,7 @@ import {AnswerService} from "../shared/services/answer.service";
 import {MatchService} from "../shared/services/match.service";
 import {UserDetail} from "../shared/interfaces/user-detail";
 import {UserDetailService} from "../shared/services/user-detail.service";
+import {UserWithUserDetail} from "../shared/interfaces/userWithUserDetail";
 
 @Component({
 	templateUrl: "./browse.component.html"
@@ -18,7 +19,7 @@ import {UserDetailService} from "../shared/services/user-detail.service";
 })
 
 export class BrowseComponent implements OnInit {
-	users: User[] = [];
+	users: UserWithUserDetail[] = [];
 	user: User = {
 		userId: null,
 		userActivationToken: null,

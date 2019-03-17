@@ -3,13 +3,13 @@
 	<div class="row border rounded bg-light mt-4">
 		<div class="col-sm-3">
 			<div class="my-auto pt-5 d-block d-flex justify-content-center">
-				<img class="img-fluid" [src]="user.userAvatarUrl" alt="{{user.userAvatarUrl}}">
+				<img class="img-fluid" [src]="user.user.userAvatarUrl" alt="{{user.user.userAvatarUrl}}">
 			</div>
 		</div>
 		<div class="col-sm-5">
 			<div class="my-auto py-5">
-				<p class="userHandle">{{user.userHandle}}</p>
-				<p class="userAboutMe">this is where about me will be</p>
+				<p class="userHandle">{{user.user.userHandle}}</p>
+				<p class="userAboutMe">{{user.userDetail.userDetailAboutMe}}</p>
 			</div>
 		</div>
 		<div class="col-sm-2">

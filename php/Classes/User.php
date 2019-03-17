@@ -601,7 +601,11 @@ class User implements \JsonSerializable {
 			while(($row = $statement->fetch()) !== false) {
 					try {
 						$user = new User($row["userId"], $row["userActivationToken"], $row["userAgent"], $row["userAvatarUrl"], $row["userBlocked"], $row["userEmail"], $row["userHandle"], $row["userHash"], $row["userIpAddress"]);
-						$users[$users->key()] = $user;
+						$usersWithUserDetail = (object)[
+						"user" => $user,
+						"userDetail" => UserDetail::getUserDetailByUserDetailUserId($pdo, $user->getUserId())
+						];
+						$users[$users->key()] = $usersWithUserDetail;
 						$users->next();
 					} catch(\Exception $exception) {
 						// if row couldn't be converted, rethrow it
