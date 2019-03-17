@@ -40,7 +40,7 @@ export class BrowseComponent implements OnInit {
 
 	}
 	getUserHandle() : void{
-		this.userService.getAllUsers(this.userId).suscribe()
+		this.userService.getUserByUserHandle(this.userId).subscribe(users => this.user = users);
 	}
 	getAllUsers(): void {
 		this.userService.getAllUsers(this.user).subscribe(browse => this.user = browse)
