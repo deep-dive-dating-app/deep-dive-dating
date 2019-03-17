@@ -29,11 +29,11 @@ export class BrowseService {
 		return (this.http.get<UserDetail[]>(this.userUrl + userDetailAboutMe));
 	}
 
-	getAnswerResult(answerScore: int): Observable<Answer[]> {
+	getAnswerResult(answerResult: string): Observable<Answer[]> {
 		return (this.http.get<Answer[]>(this.userUrl + answerResult));
 	}
 
-	getMatchApproved(matchApproved: int): Observable<Match[]> {
+	getMatchApproved(matchApproved: string): Observable<Match[]> {
 		return (this.http.get<Match[]> (this.userUrl + matchApproved));
 	}
 }
