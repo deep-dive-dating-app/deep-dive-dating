@@ -178,8 +178,6 @@ try {
 } catch(\Exception | \TypeError $exception) {
 	$reply->status = $exception->getCode();
 	$reply->message = $exception->getMessage();
-	$reply->trace = $exception->getTraceAsString();
-	$reply->lineNumber = $exception->getLine();
 }
 
 // encode and return reply to front end caller
