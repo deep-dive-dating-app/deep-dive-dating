@@ -19,11 +19,13 @@ import {SignInService} from "../../services/sign-in.service";
 
 export class SignInComponent implements OnInit{
 
-	signInForm : FormGroup;
+signInForm : FormGroup;
 	status: Status = null;
 
 
-	constructor(private formBuilder : FormBuilder, private router: Router, private signInService: SignInService) {}
+	constructor( private formBuilder : FormBuilder, private router: Router, private signInService: SignInService) {
+
+	}
 
 	ngOnInit() : void {
 		this.signInForm = this.formBuilder.group({
@@ -35,7 +37,7 @@ export class SignInComponent implements OnInit{
 
 	signIn(): void {
 
-		let signIn: SignIn = {userEmail: this.signInForm.value.userEmail, userHash: this.signInForm.value.userHash};
+		let signIn: SignIn = {userEmail: this.signInForm.value.userEmail, userPassword: this.signInForm.value.userHash};
 
 		window.localStorage.removeItem("jwt-token");
 
