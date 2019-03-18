@@ -52,7 +52,7 @@ try {
 	$reply->data = $cloudinaryResult["secure_url"];
 
 	// update reply
-	$reply->message = "Image uploaded ok."
+	$reply->message = "Image uploaded ok.";
 
 } catch(Exception | \TypeError $exception) {
 	$reply->status = $exception->getCode();

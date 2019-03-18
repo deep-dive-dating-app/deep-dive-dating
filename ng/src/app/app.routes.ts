@@ -34,7 +34,12 @@ export const routes: Routes = [
 export const appRoutingProviders: any[] = [
 	SessionService,
 	SignInService,
-	MatchService, UserService, UserDetailService, SignUpService, SessionService, JwtHelperService,
+	MatchService,
+	UserService,
+	UserDetailService,
+	SignUpService,
+	SessionService,
+	JwtHelperService,
 	{provide: HTTP_INTERCEPTORS, useClass: DeepDiveInterceptor, multi: true}
 ];
 
