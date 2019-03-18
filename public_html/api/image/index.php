@@ -26,40 +26,45 @@ try {
 
 	$secrets = new \Secrets("/etc/apache2/capstone-mysql/cohort23/dateadan.ini");
 	$pdo = $secrets->getPdoObject();
+	$cloudinary = json_decode($config["cloudinary"]);
 
 	$method = $_SERVER["HTTP_X_HTTP_METHOD"] ?? $_SERVER["REQUEST_METHOD"];
 
-	$imageUserId = filter_input(INPUT_GET, "imageUserId", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$userId = filter_input(INPUT_GET, "imageUserId", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	$id = filter_input(INPUT_GET, "id", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 
-	$config = readConfig("/etc/apache2/capstone-mysql/cohort23/dateadan.ini");
-	$cloudinary = json_decode($config["cloudinary"]);
+	//$config = readConfig("/etc/apache2/capstone-mysql/cohort23/dateadan.ini");
 	\Cloudinary::config(["dt4vdvdap" => $cloudinary->cloudName, "586793469126844" => $cloudinary->apiKey, "pBInJOl4iRq6UQOeprKg8yW-yNw" => $cloudinary->apiSecret]);
 
 	if($method === "GET") {
 		setXsrfCookie();
+		$reply->data = Image::getAllImages($pdo)->toArray();
+		}
 
 		//get a specific image by id and update reply
-		if(empty($id) === false) {
+		/*if(empty($id) === false) {
 			$image = Image::getImageByImageId($pdo, $id);
 		} elseif(empty($tweetId) === false) {
 			$reply->data = Image::getImageByImageUserId($pdo, $userId)->toArray();
-		}
-	} else if($method === "POST") {
+		}*/
+		else if($method === "POST") {
 		//enforce that the end user has a XSRF token.
 		verifyXsrf();
 
+		//use $_Post super global to grab the needed Id
+		$userId = filter_input(INPUT_POST, "userId", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+
 		// assigning variable to the user profile, add image extension
 		$tempUserFileName = $_FILES["image"]["tmp_name"];
+
 		// upload image to cloudinary and get public id
 		$cloudinaryResult = \Cloudinary\Uploader::upload($tempUserFileName, array("width" => 500, "crop" => "scale"));
+
 		// after sending the image to Cloudinary, create a new image
-		$image = new Image(generateUuidV4(), $imageUserId, $cloudinaryResult["signature"], $cloudinaryResult["secure_url"]);
-		$image->update($pdo);
+		$image = new Image(generateUuidV4(), $userId, $cloudinaryResult["signature"], $cloudinaryResult["secure_url"]);
+		$image->insert($pdo);
 		// update reply
 		$reply->message = "Image uploaded Ok";
-	} else {
-		throw (new InvalidArgumentException("Invalid HTTP request", 400));
 	}
 
 } catch(Exception $exception) {
