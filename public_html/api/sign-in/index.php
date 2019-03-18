@@ -102,7 +102,7 @@ try {
 		// Create and set the JWT
 		setJwtAndAuthHeader("auth", $authObject);
 
-		$reply->message = "Sign in was successful.";
+		$reply->message = $authObject->userId;
 	} else {
 		throw (new \InvalidArgumentException("Invalid HTTP request!"));
 	}
