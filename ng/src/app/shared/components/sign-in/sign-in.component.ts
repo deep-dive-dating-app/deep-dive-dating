@@ -3,7 +3,7 @@
  */
 
 //import needed modules for the sign-up component
-import {Component, OnInit, ViewChild,} from "@angular/core";
+import {Component, OnInit, ViewChild} from "@angular/core";
 import {Router} from "@angular/router";
 import {Status} from "../../interfaces/status";
 import {SignIn} from "../../interfaces/sign-in";
