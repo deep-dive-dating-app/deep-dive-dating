@@ -45,7 +45,7 @@ signInForm : FormGroup;
 			.subscribe(status => {
 				this.status = status;
 			if(status.status === 200) {
-				this.signInForm.reset();
+				this.router.navigate(["/user/user.userId"]);
 				console.log("Sign In Success!");
 			} else {
 				alert("Incorrect Email or Password. Please Try Again.")
