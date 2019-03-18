@@ -18,7 +18,7 @@ import {ActivatedRoute} from "@angular/router";
 
 //set the template url and the selector for the ng powered html tag
 @Component({
-	templateUrl: "user.component.html",
+	templateUrl: "./user.component.html",
 	selector: "user"
 })
 
