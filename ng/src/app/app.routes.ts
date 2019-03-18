@@ -16,6 +16,7 @@ import {UserDetailService} from "./shared/services/user-detail.service";
 import {SignUpService} from "./shared/services/sign-up.service";
 import {HTTP_INTERCEPTORS} from "@angular/common/http";
 import {DeepDiveInterceptor} from "./shared/interceptors/deep-dive.interceptor";
+import {JwtHelperService} from "@auth0/angular-jwt";
 
 
 export const allAppComponents = [AppComponent, SplashComponent, SignInComponent, SignUpComponent, MyMatchesComponent, AboutUsComponent, UserComponent, BrowseComponent];
@@ -33,7 +34,7 @@ export const routes: Routes = [
 export const appRoutingProviders: any[] = [
 	SessionService,
 	SignInService,
-	MatchService, UserService, UserDetailService, SignUpService, SessionService,
+	MatchService, UserService, UserDetailService, SignUpService, SessionService, JwtHelperService,
 	{provide: HTTP_INTERCEPTORS, useClass: DeepDiveInterceptor, multi: true}
 ];
 

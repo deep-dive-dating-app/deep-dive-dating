@@ -68,7 +68,6 @@ try {
 		if(empty($requestObject->userDetailDisplayEmail) === true) {
 			$requestObject->userDetailDisplayEmail = $requestObject->userEmail;
 		}
-		var_dump($requestObject->userDetailDisplayEmail);
 		if(empty($requestObject->userDetailEducation) === true) {
 			throw(new \InvalidArgumentException("Please enter your education."));
 		}

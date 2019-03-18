@@ -23,7 +23,7 @@ const JwtHelper = JwtModule.forRoot({
 const moduleDeclarations = [AppComponent];
 
 @NgModule({
-  imports:      [BrowserModule, HttpClientModule, ReactiveFormsModule, FormsModule, routing],
+  imports:      [BrowserModule, HttpClientModule, ReactiveFormsModule, FormsModule, routing, JwtHelper],
   declarations: [...moduleDeclarations, ...allAppComponents],
   bootstrap:    [AppComponent],
   providers:    [appRoutingProviders]

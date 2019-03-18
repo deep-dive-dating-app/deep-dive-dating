@@ -35,7 +35,7 @@ export class SignUpComponent implements OnInit {
 
 	postSignUp(): void {
 
-		let signUp : SignUp = {userAvatarUrl: "https://www.fillmurray.com/200/200", userEmail: this.signUpForm.value.userEmail, userHandle: this.signUpForm.value.userHandle, userHash: this.signUpForm.value.userHash, userHashConfirm: this.signUpForm.value.userHashConfirm, userDetailAge: this.signUpForm.value.userDetailAge, userDetailCareer: this.signUpForm.value.userDetailCareer, userDetailEducation: this.signUpForm.value.userDetailEducation, userDetailGender: this.signUpForm.value.userDetailGender, userDetailRace: this.signUpForm.value.userDetailRace, userDetailReligion: this.signUpForm.value.userDetailReligion};
+		let signUp : SignUp = {userAvatarUrl: "https://www.fillmurray.com/200/200", userEmail: this.signUpForm.value.userEmail, userHandle: this.signUpForm.value.userHandle, userPassword: this.signUpForm.value.userPassword, userPasswordConfirm: this.signUpForm.value.userPasswordConfirm, userDetailAge: this.signUpForm.value.userDetailAge, userDetailCareer: this.signUpForm.value.userDetailCareer, userDetailEducation: this.signUpForm.value.userDetailEducation, userDetailGender: this.signUpForm.value.userDetailGender, userDetailRace: this.signUpForm.value.userDetailRace, userDetailReligion: this.signUpForm.value.userDetailReligion};
 		this.signUpService.createUser(signUp)
 			.subscribe(status => {
 				this.status = status;

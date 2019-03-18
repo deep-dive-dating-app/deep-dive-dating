@@ -6,110 +6,111 @@
 					<div class="form-group">
 						<label for="userAvatarUrl" class="sr-only">Upload a photo of yourself</label>
 						<input type="file" class="form-control" id="userAvatarUrl" name="userAvatarUrl" formControlName="userAvatarUrl" placeholder="Upload a photo of yourself"/>
-						<!--<div class="input-group" *ngIf="signUpForm.controls.userAvatarUrl?.invalid && signUpForm.controls.userAvatarUrl?.touched">-->
-							<!--<p *ngIf="signUpForm.controls.userAvatarUrl?.errors.maxlength">URL is too long</p>-->
-						<!--</div>-->
+						<div class="alert alert-danger" *ngIf="signUpForm.controls.userAvatarUrl?.invalid && signUpForm.controls.userAvatarUrl?.touched">
+							<p *ngIf="signUpForm.controls.userAvatarUrl?.errors.required">A profile image is required</p>
+						</div>
 					</div>
 
 					<!-- email group -->
+					<div class="form-group">
 						<label for="userEmail" class="sr-only">Email</label>
 						<input type="email" class="form-control" id="userEmail" name="userEmail" formControlName="userEmail" placeholder="Email"/>
-						<!--<div class="form-group" *ngIf="signUpForm.controls.userEmail?.invalid && signUpform.controls.userEmail?.touched">-->
+						<div class="alert alert-danger" *ngIf="signUpForm.controls.userEmail?.invalid && signUpForm.controls.userEmail?.touched">
 
-				<!--&lt;!&ndash;<div class="input-group">&ndash;&gt;-->
-							<!--&lt;!&ndash;<p *ngIf="signUpForm.controls.userEmail?.errors.maxlength">Email is too long</p>&ndash;&gt;-->
-							<!--&lt;!&ndash;<p *ngIf="signUpForm.controls.userEmail?.errors.required">Valid email address required</p>&ndash;&gt;-->
-						<!--&lt;!&ndash;</div>&ndash;&gt;-->
-					<!--</div>-->
+							<p *ngIf="signUpForm.controls.userEmail?.errors.maxlength">Email is too long</p>
+							<p *ngIf="signUpForm.controls.userEmail?.errors.required">An email address required</p>
+							<p *ngIf="signUpForm.controls.userEmail?.errors.email">A valid email address is required</p>
+						</div>
+					</div>
 
 					<!-- handle group -->
 					<div class="form-group">
 						<label for="userHandle" class="sr-only">Handle</label>
 						<input type="text" class="form-control" id="userHandle" name="userHandle" formControlName="userHandle" placeholder="Handle"/>
-						<!--<div class="input-group" *ngIf="signUpForm.controls.userHandle?.invalid && signUpForm.controls.userHandle?.touched">-->
-							<!--<p *ngIf="signUpForm.controls.userHandle?.errors.maxlength">Username is too long</p>-->
-							<!--<p *ngIf="signUpForm.controls.userHandle?.errors.required">Username is required</p>-->
-						<!--</div>-->
+						<div class="alert alert-danger" *ngIf="signUpForm.controls.userHandle?.invalid && signUpForm.controls.userHandle?.touched">
+							<p *ngIf="signUpForm.controls.userHandle?.errors.maxlength">Username is too long</p>
+							<p *ngIf="signUpForm.controls.userHandle?.errors.required">Username is required</p>
+						</div>
 					</div>
 
 					<!-- password group -->
 					<div class="form-group">
 						<label for="userPassword" class="sr-only">Password</label>
 						<input type="password" class="form-control" id="userPassword" name="userPassword" formControlName="userPassword" placeholder="Password"/>
-						<!--<div class="input-group" *ngIf="signUpForm.controls.userPassword?.invalid && signUpForm.controls.userPassword?.touched">-->
-							<!--<p *ngIf="signUpForm.controls.userPassword?.errors.maxlength">Password is too long</p>-->
-							<!--<p *ngIf="signUpForm.controls.userPassword?.errors.maxlength">Password is required</p>-->
-						<!--</div>-->
+						<div class="alert alert-danger" *ngIf="signUpForm.controls.userPassword?.invalid && signUpForm.controls.userPassword?.touched">
+							<p *ngIf="signUpForm.controls.userPassword?.errors.maxlength">Password is too long</p>
+							<p *ngIf="signUpForm.controls.userPassword?.errors.required">Password is required</p>
+						</div>
 					</div>
 
 					<!-- confirm password group -->
-					<div class="form-group" *ngIf="signUpForm.controls.userConfirmPassword?.invalid && signUpForm.controls.userConfirmPassword?.touched">
-						<label for="userConfirmPassword" class="sr-only">Confirm Password</label>
-						<input type="password" class="form-control" id="userConfirmPassword" name="userConfirmPassword" formControlName="userConfirmPassword" placeholder="Confirm Password"/>
-						<!--<div class="input-group">-->
-							<!--<p *ngIf="signUpForm.controls.userConfirmPassword?.errors.maxlength">Password is too long</p>-->
-							<!--<p *ngIf="signUpForm.controls.userConfirmPassword?.errors.required">Valid email address is required</p>-->
-						<!--</div>-->
+					<div class="form-group" >
+						<label for="userPasswordConfirm" class="sr-only">Confirm Password</label>
+						<input type="password" class="form-control" id="userPasswordConfirm" name="userPasswordConfirm" formControlName="userPasswordConfirm" placeholder="Confirm Password"/>
+						<div class="alert alert-danger" *ngIf="signUpForm.controls.userPasswordConfirm?.invalid && signUpForm.controls.userPasswordConfirm?.touched">
+							<p *ngIf="signUpForm.controls.userPasswordConfirm?.errors.maxlength">Password is too long</p>
+							<p *ngIf="signUpForm.controls.userPasswordConfirm?.errors.required">Valid email address is required</p>
+						</div>
 					</div>
 
 					<!-- age group -->
 					<div class="form-group">
 						<label for="userDetailAge" class="sr-only">Age</label>
 						<input type="text" class="form-control" id="userDetailAge" name="userDetailAge" formControlName="userDetailAge" placeholder="Age"/>
-						<!--<div class="input-group" *ngIf="signUpForm.controls.userDetailAge?.invalid && signUpForm.controls.userDetailAge?.touched">-->
-							<!--<p *ngIf="signUpForm.controls.userDetailAge?.errors.maxlength">Age is too long</p>-->
-							<!--<p *ngIf="signUpForm.controls.userDetailAge?.errors.required">Age is required</p>-->
-						<!--</div>-->
+						<div class="alert alert-danger" *ngIf="signUpForm.controls.userDetailAge?.invalid && signUpForm.controls.userDetailAge?.touched">
+							<p *ngIf="signUpForm.controls.userDetailAge?.errors.maxlength">Age is too long</p>
+							<p *ngIf="signUpForm.controls.userDetailAge?.errors.required">Age is required</p>
+						</div>
 					</div>
 
 					<!-- career group -->
 					<div class="form-group">
 						<label for="userDetailCareer" class="sr-only">Career</label>
 						<input type="text" class="form-control" id="userDetailCareer" name="userDetailCareer" formControlName="userDetailCareer" placeholder="Career"/>
-						<!--<div class="input-group" *ngIf="signUpForm.controls.userDetailCareer?.invalid && signUpForm.controls.userDetailCareer?.touched">-->
-							<!--<p *ngIf="signUpForm.controls.userDetailCareer?.errors.maxlength">Career is too long</p>-->
-							<!--<p *ngIf="signUpForm.controls.userDetailCareer?.errors.required">Career is required</p>-->
-						<!--</div>-->
+						<div class="alert alert-danger" *ngIf="signUpForm.controls.userDetailCareer?.invalid && signUpForm.controls.userDetailCareer?.touched">
+							<p *ngIf="signUpForm.controls.userDetailCareer?.errors.maxlength">Career is too long</p>
+							<p *ngIf="signUpForm.controls.userDetailCareer?.errors.required">Career is required</p>
+						</div>
 					</div>
 
 					<!-- education group -->
 					<div class="form-group">
 						<label for="userDetailEducation" class="sr-only">Education</label>
 						<input type="text" class="form-control" id="userDetailEducation" name="userDetailEducation" formControlName="userDetailEducation" placeholder="Education"/>
-						<!--<div class="input-group" *ngIf="signUpForm.controls.userDetailEducation?.invalid && signUpForm.controls.userDetailEducation?.touched">-->
-							<!--<p *ngIf="signUpForm.controls.userDetailEducation?.errors.maxlength">Education is too long</p>-->
-							<!--<p *ngIf="signUpForm.controls.userDetailEducation?.errors.required">Education is required</p>-->
-						<!--</div>-->
+						<div class="alert alert-danger" *ngIf="signUpForm.controls.userDetailEducation?.invalid && signUpForm.controls.userDetailEducation?.touched">
+							<p *ngIf="signUpForm.controls.userDetailEducation?.errors.maxlength">Education is too long</p>
+							<p *ngIf="signUpForm.controls.userDetailEducation?.errors.required">Education is required</p>
+						</div>
 					</div>
 
 					<!-- gender group -->
 					<div class="form-group">
 						<label for="userDetailGender" class="sr-only">Gender</label>
 						<input type="text" class="form-control" id="userDetailGender" name="userDetailGender" formControlName="userDetailGender" placeholder="Gender"/>
-						<!--<div class="input-group" *ngIf="signUpForm.controls.userDetailGender?.invalid && signUpForm.controls.userDetailGender?.touched">-->
-							<!--<p *ngIf="signUpForm.controls.userDetailGender?.errors.maxlength">Gender is too long</p>-->
-							<!--<p *ngIf="signUpForm.controls.userDetailGender?.errors.required">Gender is required</p>-->
-						<!--</div>-->
+						<div class="alert alert-danger" *ngIf="signUpForm.controls.userDetailGender?.invalid && signUpForm.controls.userDetailGender?.touched">
+							<p *ngIf="signUpForm.controls.userDetailGender?.errors.maxlength">Gender is too long</p>
+							<p *ngIf="signUpForm.controls.userDetailGender?.errors.required">Gender is required</p>
+						</div>
 					</div>
 
 					<!-- race group -->
 					<div class="form-group">
 						<label for="userDetailRace" class="sr-only">Race</label>
 						<input type="text" class="form-control" id="userDetailRace" name="userDetailRace" formControlName="userDetailRace" placeholder="Race"/>
-						<!--<div class="input-group" *ngIf="signUpForm.controls.userRace?.invalid && signUpForm.controls.userRace?.touched">-->
-							<!--<p *ngIf="signUpForm.controls.userDetailRace?.errors.maxlength">Race is too long</p>-->
-							<!--<p *ngIf="signUpForm.controls.userDetailRace?.errors.required">Race is required</p>-->
-						<!--</div>-->
+						<div class="alert alert-danger" *ngIf="signUpForm.controls.userDetailRace?.invalid && signUpForm.controls.userDetailRace?.touched">
+							<p *ngIf="signUpForm.controls.userDetailRace?.errors.maxlength">Race is too long</p>
+							<p *ngIf="signUpForm.controls.userDetailRace?.errors.required">Race is required</p>
+						</div>
 					</div>
 
 					<!-- religion group -->
 					<div class="form-group">
 						<label for="userDetailReligion" class="sr-only">Religion</label>
 						<input type="text" class="form-control" id="userDetailReligion" name="userDetailReligion" formControlName="userDetailReligion" placeholder="Religion"/>
-						<!--<div class="input-group" *ngIf="signUpForm.controls.userDetailReligion?.invalid && signUpForm.controls.userDetailReligion?.touched">-->
-							<!--<p *ngIf="signUpForm.controls.userDetailReligion?.errors.maxlength">Religion is too long</p>-->
-							<!--<p *ngIf="signUpForm.controls.userDetailReligion?.errors.required">Religion is required</p>-->
-						<!--</div>-->
+						<div class="alert alert-danger" *ngIf="signUpForm.controls.userDetailReligion?.invalid && signUpForm.controls.userDetailReligion?.touched">
+							<p *ngIf="signUpForm.controls.userDetailReligion?.errors.maxlength">Religion is too long</p>
+							<p *ngIf="signUpForm.controls.userDetailReligion?.errors.required">Religion is required</p>
+						</div>
 					</div>
 
 					<!-- submit -->
