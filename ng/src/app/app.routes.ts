@@ -24,7 +24,7 @@ import {SignOutComponent} from "./sign-out/sign-out.component";
 import {SignOutService} from "./shared/services/sign-out.service";
 
 
-export const allAppComponents = [AppComponent, SplashComponent, SignInComponent, SignUpComponent, SignOutComponent, MyMatchesComponent, AboutUsComponent, UserComponent, BrowseComponent];
+export const allAppComponents = [AppComponent, SplashComponent, SignInComponent, SignUpComponent, SignOutComponent, MyMatchesComponent, AboutUsComponent, UserComponent, BrowseComponent, QuestionComponent];
 
 export const routes: Routes = [
 	{path: "", component: SplashComponent},
