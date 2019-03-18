@@ -13,6 +13,7 @@ import {User} from "../../interfaces/user";
 import {UserService} from "../../services/user.service";
 import {UserWithUserDetail} from "../../interfaces/userWithUserDetail";
 import {UserDetail} from "../../interfaces/user-detail";
+import {UserComponent} from "../../../user/user.component";
 
 
 // set the template url and the selector for the ng powered html tag
@@ -53,7 +54,7 @@ signInForm : FormGroup;
 	status: Status = null;
 
 
-	constructor( private formBuilder : FormBuilder, private router: Router, private signInService: SignInService, private userService: UserService) {
+	constructor( private formBuilder : FormBuilder, private router: Router, private signInService: SignInService) {
 
 	}
 

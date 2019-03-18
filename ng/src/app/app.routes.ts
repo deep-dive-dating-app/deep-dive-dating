@@ -32,7 +32,7 @@ export const routes: Routes = [
 	{path: "sign-up", component: SignUpComponent},
 	{path: "my-matches", component: MyMatchesComponent},
 	{path: "about-us", component: AboutUsComponent},
-	{path: "user/:id", component: UserComponent},
+	{path: "user/:userId", component: UserComponent},
 	{path: "browse", component: BrowseComponent},
 	{path: "question", component: QuestionComponent},
 	{path: "sign-out", component: SignOutComponent}
