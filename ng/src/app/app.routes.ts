@@ -17,6 +17,9 @@ import {SignUpService} from "./shared/services/sign-up.service";
 import {HTTP_INTERCEPTORS} from "@angular/common/http";
 import {DeepDiveInterceptor} from "./shared/interceptors/deep-dive.interceptor";
 import {JwtHelperService} from "@auth0/angular-jwt";
+import {QuestionComponent} from "./question/question.component";
+import {QuestionService} from "./shared/services/question.service";
+
 import {SignOutComponent} from "./sign-out/sign-out.component";
 import {SignOutService} from "./shared/services/sign-out.service";
 
@@ -31,6 +34,7 @@ export const routes: Routes = [
 	{path: "about-us", component: AboutUsComponent},
 	{path: "user/:userId", component: UserComponent},
 	{path: "browse", component: BrowseComponent},
+	{path: "question", component: QuestionComponent},
 	{path: "sign-out", component: SignOutComponent}
 ];
 
