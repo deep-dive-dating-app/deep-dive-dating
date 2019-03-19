@@ -5,9 +5,8 @@ import {User} from "../shared/interfaces/user";
 import {Router} from "@angular/router";
 import {Status} from "../shared/interfaces/status";
 import {SignUp} from "../shared/interfaces/sign-up";
-import {UserService} from "../shared/services/user.service";
-import {Question} from "../shared/interfaces/question";
-import {QuestionService} from "../shared/services/question.service";
+import {CookieService} from "ngx-cookie";
+import {FileUploader} from "ng2-file-upload";
 
 
 @Component({
@@ -18,7 +17,18 @@ export class SignUpComponent implements OnInit {
 	signUpForm: FormGroup;
 	status : Status = {status: null, message: null, type: null};
 
-	constructor(private signUpService : SignUpService, private formBuilder : FormBuilder, private router : Router) {}
+	public uploader: FileUploader = new FileUploader(
+		{
+			itemAlias: 'image',
+			url: './api/image/',
+			headers: [
+				// you will also want to include a JWT-TOKEN
+				//{name: 'X-XSRF-TOKEN', value: this.cookieService.get('XSRF-TOKEN')}
+			]
+		}
+	);
+
+	constructor(private signUpService : SignUpService, private formBuilder : FormBuilder, private cookieService: CookieService, private router : Router) {}
 
 	ngOnInit() {
 		this.signUpForm = this.formBuilder.group({
@@ -34,6 +44,10 @@ export class SignUpComponent implements OnInit {
 			userDetailRace: ["", [Validators.maxLength(32), Validators.required]],
 			userDetailReligion: ["", [Validators.maxLength(128), Validators.required]]
 		});
+	}
+
+	uploadImage(): void{
+
 	}
 
 	postSignUp(): void {

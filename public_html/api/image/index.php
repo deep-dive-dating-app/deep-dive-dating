@@ -41,10 +41,14 @@ try {
 	// validate header
 	validateJwtHeader();
 
-	$config = readConfig("/etc/apache2/capstone-mysql/cohort23/dateadan.ini");
-	$cloudinary = json_decode($config["cloudinary"]);
-	\Cloudinary::config(["dt4vdvdap" => $cloudinary->cloudName, "586793469126844" => $cloudinary->apiKey, "pBInJOl4iRq6UQOeprKg8yW-yNw" => $cloudinary->apiSecret]);
+	//$config = readConfig("/etc/apache2/capstone-mysql/cohort23/dateadan.ini");
 
+
+	$secrets = new \Secrets("/etc/apache2/capstone-mysql/cohort23/dateadan.ini");
+	$pdo = $secrets->getPdoObject();
+	$cloudinary = $secrets->getSecret("cloudinary");
+	//$cloudinary = json_decode($config["cloudinary"]);
+	\Cloudinary::config(["cloud_name" => $cloudinary->cloudName, "api_key" => $cloudinary->apiKey, "api_secret" => $cloudinary->apiSecret]);
 	//assigning variable to the user image/avatar, add image extenstion
 	$tempUserFileName = $_FILES["image"]["tmp_name"];
 	// upload image to cloudinary and get public id
