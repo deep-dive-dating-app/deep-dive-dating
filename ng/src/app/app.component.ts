@@ -21,8 +21,8 @@ export class AppComponent {
 		this.sessionService.setSession().subscribe(reply => this.status = reply);
 	}
 
-	// getUserId() {
-	// 	this.userId = this.authService.decodeJwt().auth.userId;
-	// 	this.router.navigate(["/user/", this.userId ]);
-	// }
+	getUserId() {
+		this.userId = this.authService.decodeJwt().auth.userId;
+		this.router.navigate(["/user/", this.userId ]);
+	}
 }
