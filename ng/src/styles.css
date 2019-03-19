@@ -22,3 +22,14 @@ i {
 button > i {
 	font-size: 1rem;
 }
+
+#card {
+	display: block;
+	margin: 5px auto;
+	margin-bottom: 30px;
+}
+
+#group-photo {
+	display: block;
+	margin: 0 auto;
+}
