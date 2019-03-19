@@ -19,23 +19,27 @@ import {DeepDiveInterceptor} from "./shared/interceptors/deep-dive.interceptor";
 import {JwtHelperService} from "@auth0/angular-jwt";
 import {QuestionComponent} from "./question/question.component";
 import {QuestionService} from "./shared/services/question.service";
+import {AuthGuardService as AuthGuard} from "./shared/services/auth-guard.service";
 
 import {SignOutComponent} from "./sign-out/sign-out.component";
+import {AuthService} from "./shared/services/auth-service";
 import {SignOutService} from "./shared/services/sign-out.service";
+import {AuthGuardService} from "./shared/services/auth-guard.service";
 
 
 export const allAppComponents = [AppComponent, SplashComponent, SignInComponent, SignUpComponent, SignOutComponent, MyMatchesComponent, AboutUsComponent, UserComponent, BrowseComponent, QuestionComponent];
 
+var AuthGuard;
 export const routes: Routes = [
 	{path: "", component: SplashComponent},
-	{path: "sign-in", component: SignInComponent},
+	//{path: "sign-in", component: SignInComponent, canActivate: [AuthGuard] },
 	{path: "sign-up", component: SignUpComponent},
-	{path: "my-matches", component: MyMatchesComponent},
-	{path: "about-us", component: AboutUsComponent},
-	{path: "user/:userId", component: UserComponent},
-	{path: "browse", component: BrowseComponent},
-	{path: "question", component: QuestionComponent},
-	{path: "sign-out", component: SignOutComponent}
+	{path: "my-matches", component: MyMatchesComponent, canActivate: [AuthGuard]},
+	{path: "about-us", component: AboutUsComponent, canActivate: [AuthGuard]},
+	{path: "user/:userId", component: UserComponent, canActivate: [AuthGuard]},
+	{path: "browse", component: BrowseComponent, canActivate: [AuthGuard]},
+	{path: "question", component: QuestionComponent, canActivate: [AuthGuard]},
+	{path: "sign-out", component: SignOutComponent, canActivate: [AuthGuard]}
 ];
 
 export const appRoutingProviders: any[] = [
