@@ -35,7 +35,7 @@ export class UserComponent implements OnInit{
 	// answer: Answer;
 	status: Status = {status:null, message:null, type:null};
 
-	constructor(private userService: UserService, private userDetailService: UserDetailService, private activatedRoute: ActivatedRoute, private jwt: JwtHelperService, private userWithUserDetialService: UserWithUserDetailService){}
+	constructor(private userService: UserService, private userDetailService: UserDetailService, private activatedRoute: ActivatedRoute, private jwt: JwtHelperService){}
 
 	ngOnInit() {
 		this.userService.getUserByUserId(this.userId).subscribe(user => this.user = user);

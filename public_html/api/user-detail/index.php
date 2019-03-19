@@ -47,6 +47,16 @@ if(session_status() !== PHP_SESSION_ACTIVE) {
 		$userDetailRace = filter_input(INPUT_GET, "userDetailRace", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		$userDetailReligion = filter_input(INPUT_GET, "userDetailReligion", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 
+		if($method === "GET") {
+			// set XSRF cookie
+			setXsrfCookie();
+
+			// get a specific answer or all answers and update reply
+			if(empty($userDetailUserId) === false) {
+				$reply->data = UserDetail::getUserDetailByUserDetailUserId($pdo, $userDetailUserId);
+			}
+		}
+
 
 		//make sure the id is valid for methods that require it
 		if($method === "PUT") {
@@ -55,8 +65,6 @@ if(session_status() !== PHP_SESSION_ACTIVE) {
 
 			// enforce the user has a XSRF token
 			verifyXsrf();
-
-			var_dump($id);
 
 			//  Retrieves the JSON package that the front end sent, and stores it in $requestContent. Here we are using file_get_contents("php://input") to get the request from the front end. file_get_contents() is a PHP function that reads a file into a string. The argument for the function, here, is "php://input". This is a read only stream that allows raw data to be read from the front end request which is, in this case, a JSON package.
 			$requestContent = file_get_contents("php://input");

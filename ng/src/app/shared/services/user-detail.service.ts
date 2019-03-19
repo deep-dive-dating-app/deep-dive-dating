@@ -9,7 +9,7 @@ export class UserDetailService {
 	constructor(protected http: HttpClient) {
 	}
 
-	private userDetailUrl = "api/userDetail/";
+	private userDetailUrl = "api/user-detail/";
 
 	editUserDetail(userDetail: UserDetail) : Observable<Status> {
 		return(this.http.put<Status>(this.userDetailUrl + userDetail.userDetailId, userDetail));

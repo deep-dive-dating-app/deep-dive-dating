@@ -23,7 +23,7 @@ export class UserWithUserDetailService {
 		return(this.http.get<UserDetail>(this.userDetailUrl + "?userDetailUserId=" + UserId));
 	}
 
-	getUserWithUserDetial(UserId) {
+	getUserWithUserDetail(UserId) {
 		this.getUserByUserId(UserId);
 		this.getUserDetailByUserId(UserId);
 		return
