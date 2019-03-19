@@ -1,4 +1,4 @@
-
+<div class="container">
 	<h1 class="py-3">{{user.userHandle}}</h1>
 	<div class="p-3">
 		<div class="row">
@@ -23,7 +23,7 @@
 		<div class="col">
 			<div class=" my-auto py-3">
 				<div class="aboutMe">
-					<h2>About Me:</h2>
+					<h2>About Me:{{userDetail.userDetailAboutMe}}</h2>
 					<p>{{userDetail.userDetailAboutMe}}</p>
 				</div>
 			</div>
@@ -50,29 +50,30 @@
 				<div class="detailQuestionnaire">
 					<h2>Detail Questionnaire:</h2>
 					<h3></h3>
-					<div> <strong>Age: </strong> {{userDetail.age}}</div>
+					<div> <strong>Age: </strong> {{userDetail.userDetailAge}}</div>
 
 					<h3></h3>
-					<div> <strong>Career: </strong> {{userDetail.career}}</div>
+					<div> <strong>Career: </strong> {{userDetail.userDetailCareer}}</div>
 
 					<h3></h3>
-					<div> <strong>Display Email: </strong> {{userDetail.display-email}}</div>
+					<div> <strong>Display Email: </strong> {{userDetail.userDetailDisplayEmail}}</div>
 
 					<h3></h3>
-					<div> <strong>Education: </strong> {{userDetail.education}}</div>
+					<div> <strong>Education: </strong> {{userDetail.userDetailEducation}}</div>
 
 					<h3></h3>
-					<div> <strong>Gender: </strong> {{userDetail.gender}}</div>
+					<div> <strong>Gender: </strong> {{userDetail.userDetailGender}}</div>
 
 					<h3></h3>
-					<div> <strong>Race: </strong> {{userDetail.Race}}</div>
+					<div> <strong>Race: </strong> {{userDetail.userDetailRace}}</div>
 
 					<h3></h3>
-					<div> <strong>Religion: </strong> {{userDetail.Religion}}</div>
+					<div> <strong>Religion: </strong> {{userDetail.userDetailReligion}}</div>
 
 				</div>
 				<button type="button" class="btn btn-primary">edit</button>
 			</div>
 		</div>
 	</div>
+</div>
 </div>

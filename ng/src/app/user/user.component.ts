@@ -3,9 +3,10 @@
 this component is for the user profile page
  */
 
-import {Component, OnInit} from "@angular/core";
+import {Component, Input, OnInit} from "@angular/core";
 import {JwtHelperService} from "@auth0/angular-jwt";
 import {User} from "../shared/interfaces/user";
+import {UserWithUserDetail} from "../shared/interfaces/userWithUserDetail";
 import {Status} from "../shared/interfaces/status";
 import {UserService} from "../shared/services/user.service";
 import {UserDetail} from "../shared/interfaces/user-detail";
@@ -36,14 +37,13 @@ export class UserComponent implements OnInit{
 	constructor(private userService: UserService, private userDetailService: UserDetailService, private activatedRoute: ActivatedRoute, private jwt: JwtHelperService){}
 
 	ngOnInit() {
-		this.userService.getUserByUserId(this.userId).subscribe(users => this.user = users);
+		this.userService.getUserByUserId(this.userId).subscribe(user => this.user = user);
 		this.loadUserDetail();
 	}
 
-	loadUserDetail() : void {
+	loadUserDetail() {
 		this.userDetailService.getUserDetailByUserId(this.userId).subscribe(userDetail => this.userDetail = userDetail);
 	}
-
 
 }
 
