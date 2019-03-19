@@ -14,14 +14,15 @@ import {Router} from "@angular/router";
 
 export class AppComponent {
 	user: User;
-	userId = this.authService.decodeJwt().auth.userId;
+	userId: null;
 	router: Router;
 	status : Status = null;
 	constructor(private sessionService: SessionService, private userService: UserService, private authService: AuthService){
 		this.sessionService.setSession().subscribe(reply => this.status = reply);
 	}
 
-	getUserId() {
-		this.router.navigate(["/user/", this.userId ]);
-	}
+	// getUserId() {
+	// 	this.userId = this.authService.decodeJwt().auth.userId;
+	// 	this.router.navigate(["/user/", this.userId ]);
+	// }
 }
