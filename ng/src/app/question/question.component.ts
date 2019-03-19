@@ -1,5 +1,5 @@
 import {Component, OnInit} from "@angular/core";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder, FormGroup, Validators, FormArray} from "@angular/forms";
 import {Status} from "../shared/interfaces/status";
 import {QuestionService} from "../shared/services/question.service";
 import {Router} from "@angular/router";
@@ -27,7 +27,17 @@ export class QuestionComponent implements OnInit{
 
 	ngOnInit() {
 		this.getQuestions();
+		return this.formBuilder.group({
+			questions: this.formBuilder.array([this.createQuestion()])
+		})
+	}
 
+	createQuestion(): FormGroup {
+		return this.questionForm = this.formBuilder.group({
+			questionId: ['', [Validators.maxLength(32), Validators.required]],
+			answerValue: ['', [Validators.maxLength(32), Validators.required]],
+			questionAnswered: ['', [Validators.maxLength(32), Validators.required]]
+		})
 	}
 
 	getQuestions () {

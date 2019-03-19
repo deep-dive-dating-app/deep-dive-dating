@@ -37,7 +37,7 @@ export const routes: Routes = [
 	{path: "about-us", component: AboutUsComponent, canActivate: [AuthGuardService]},
 	{path: "user/:userId", component: UserComponent, canActivate: [AuthGuardService]},
 	{path: "browse", component: BrowseComponent, canActivate: [AuthGuardService]},
-	{path: "question", component: QuestionComponent, canActivate: [AuthGuardService]},
+	{path: "question", component: QuestionComponent},
 	{path: "sign-out", component: SignOutComponent, canActivate: [AuthGuardService]},
 	{path: "answer", component: AnswerService, canActivate: [AuthGuardService]}
 ];

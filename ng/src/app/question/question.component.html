@@ -1,11 +1,9 @@
-<form [formGroup]="questionForm" id="signUpForm" action="" method="post" (submit)="postAnswer();" novalidate>
 
 	<!-- avatar url group -->
 	<div class="form-group">
 		<label for="questionGender" class="sr-only">Question Gender</label>
-		<input type="file" class="form-control" id="questionGender" name="questionGender" formControlName="questionGender" placeholder="Your answer"/>
-		<div class="alert alert-danger" *ngIf="questionForm.controls.questionGender?.invalid && questionForm.controls.questionGender?.touched">
+		<input type="text" class="form-control" id="questionGender" name="questionGender" formControlName="questionGender" placeholder="Your answer"/>
+		<!--<div class="alert alert-danger" *ngIf="questionForm.controls.questionGender?.invalid && questionForm.controls.questionGender?.touched">-->
 			<p *ngIf="questionForm.controls.questionGender?.errors.required">An answer is required</p>
-		</div>
+		<!--</div>-->
 	</div>
-</form>

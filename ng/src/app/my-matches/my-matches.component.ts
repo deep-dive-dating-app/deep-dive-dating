@@ -10,7 +10,7 @@ import {UserService} from "../shared/services/user.service";
 
 
 @Component({
-	templateUrl: ("my-matches.component.html"),
+	templateUrl: "my-matches.component.html",
 })
 
 export class MyMatchesComponent implements OnInit{
