@@ -4,6 +4,7 @@ import {Status} from "./shared/interfaces/status";
 import {User} from "./shared/interfaces/user";
 import {UserService} from "./shared/services/user.service";
 import {AuthService} from "./shared/services/auth-service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-root',
@@ -13,10 +14,14 @@ import {AuthService} from "./shared/services/auth-service";
 
 export class AppComponent {
 	user: User;
-	userId: null;
+	userId = this.authService.decodeJwt().auth.userId;
+	router: Router;
 	status : Status = null;
 	constructor(private sessionService: SessionService, private userService: UserService, private authService: AuthService){
 		this.sessionService.setSession().subscribe(reply => this.status = reply);
-		this.userId = this.authService.decodeJwt().auth.userId;
+	}
+
+	getUserId() {
+		this.router.navigate(["/user/", this.userId ]);
 	}
 }
