@@ -7,6 +7,7 @@ import {Status} from "../shared/interfaces/status";
 import {SignUp} from "../shared/interfaces/sign-up";
 import {UserService} from "../shared/services/user.service";
 import {Question} from "../shared/interfaces/question";
+import {QuestionService} from "../shared/services/question.service";
 
 
 @Component({
@@ -43,8 +44,8 @@ export class SignUpComponent implements OnInit {
 				this.status = status;
 
 				if(this.status.status === 200) {
-					alert(status.message);
-					this.router.navigate(["/question/", question.questionId]);
+					// alert(status.message);
+					this.router.navigate(["/question/"]);
 
 				}
 	})

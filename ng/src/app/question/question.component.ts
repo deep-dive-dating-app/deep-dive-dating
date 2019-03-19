@@ -11,6 +11,7 @@ import {UserService} from "../shared/services/user.service";
 import {UserDetail} from "../shared/interfaces/user-detail";
 import {UserWithUserDetail} from "../shared/interfaces/userWithUserDetail";
 import {AuthService} from "../shared/services/auth-service";
+import {SignUpService} from "../shared/services/sign-up.service";
 
 @Component({
 	templateUrl: "./question.component.html"
@@ -41,7 +42,7 @@ export class QuestionComponent implements OnInit{
 
 			if(this.status.status === 200) {
 				alert(status.message);
-				this.router.navigate(["/user/", user.user.userId]);
+				this.router.navigate(["/user/"]);
 
 			}
 		})
