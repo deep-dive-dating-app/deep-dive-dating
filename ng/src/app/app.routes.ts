@@ -22,15 +22,15 @@ import {QuestionService} from "./shared/services/question.service";
 import {AuthGuardService, AuthGuardService as Auth} from "./shared/services/auth-guard.service";
 import {SignOutComponent} from "./sign-out/sign-out.component";
 import {SignOutService} from "./shared/services/sign-out.service";
+import {AuthService} from "./shared/services/auth-service";
 
 
 
 export const allAppComponents = [AppComponent, SplashComponent, SignInComponent, SignUpComponent, SignOutComponent, MyMatchesComponent, AboutUsComponent, UserComponent, BrowseComponent, QuestionComponent];
 
-var AuthGuard;
 export const routes: Routes = [
 	{path: "", component: SplashComponent},
-	//{path: "sign-in", component: SignInComponent, canActivate: [AuthGuard] },
+	{path: "sign-in", component: SignInComponent},
 	{path: "sign-up", component: SignUpComponent},
 	{path: "my-matches", component: MyMatchesComponent, canActivate: [AuthGuardService]},
 	{path: "about-us", component: AboutUsComponent, canActivate: [AuthGuardService]},
@@ -43,7 +43,7 @@ export const routes: Routes = [
 export const appRoutingProviders: any[] = [
 	SessionService,
 	SignInService,
-	MatchService, UserService, UserDetailService, SignUpService, SessionService, JwtHelperService, SignOutService,
+	MatchService, UserService, UserDetailService, SignUpService, SessionService, JwtHelperService, SignOutService, AuthService, AuthGuardService,
 	{provide: HTTP_INTERCEPTORS, useClass: DeepDiveInterceptor, multi: true}
 ];
 
