@@ -8,6 +8,9 @@ import {AnswerService} from "../shared/services/answer.service";
 import {User} from "../shared/interfaces/user";
 import {Question} from "../shared/interfaces/question";
 import {UserService} from "../shared/services/user.service";
+import {UserDetail} from "../shared/interfaces/user-detail";
+import {UserWithUserDetail} from "../shared/interfaces/userWithUserDetail";
+import {AuthService} from "../shared/services/auth-service";
 
 @Component({
 	templateUrl: "./question.component.html"
@@ -19,7 +22,7 @@ export class QuestionComponent implements OnInit{
 	answer : Answer[] = [];
 	status : Status = {status: null, message: null, type: null};
 
-	constructor(private userService : UserService, private questionService: QuestionService, private answerService: AnswerService, private formBuilder : FormBuilder, private router : Router) {}
+	constructor(private userService : UserService, private questionService: QuestionService, private authService: AuthService, private answerService: AnswerService, private formBuilder : FormBuilder, private router : Router) {}
 
 	ngOnInit() {
 		this.getQuestions();
@@ -38,7 +41,17 @@ export class QuestionComponent implements OnInit{
 
 			if(this.status.status === 200) {
 				alert(status.message);
+				this.router.navigate(["/user/", user.user.userId]);
+
 			}
 		})
 	}
+	getJwtUserId(): any {
+		if(this.authService.decodeJwt()) {
+			return this.authService.decodeJwt().auth.userId;
+		} else {
+			return false;
+		}
+	}
+
 }

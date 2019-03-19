@@ -5,6 +5,8 @@ import {User} from "../shared/interfaces/user";
 import {Router} from "@angular/router";
 import {Status} from "../shared/interfaces/status";
 import {SignUp} from "../shared/interfaces/sign-up";
+import {UserService} from "../shared/services/user.service";
+import {Question} from "../shared/interfaces/question";
 
 
 @Component({
@@ -42,6 +44,9 @@ export class SignUpComponent implements OnInit {
 
 				if(this.status.status === 200) {
 					alert(status.message);
-			}
+					this.router.navigate(["/question/", question.questionId]);
+
+				}
 	})
-}}
+}
+}

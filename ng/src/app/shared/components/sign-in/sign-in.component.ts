@@ -24,32 +24,6 @@ import {UserComponent} from "../../../user/user.component";
 
 export class SignInComponent implements OnInit{
 	users: UserWithUserDetail[] = [];
-	user: User = {
-		userId: null,
-		userActivationToken: null,
-		userAgent: null,
-		userAvatarUrl: null,
-		userBlocked: null,
-		userEmail: null,
-		userHandle: null,
-		userHash: null,
-		userIpAddress: null
-	};
-	//array for userDetail? userDetail: UserDetail[];
-	userDetail: UserDetail = {
-		userDetailId: null,
-		userDetailUserId: null,
-		userDetailAboutMe: null,
-		userDetailAge: null,
-		userDetailCareer: null,
-		userDetailDisplayEmail: null,
-		userDetailEducation: null,
-		userDetailGender: null,
-		userDetailInterests: null,
-		userDetailRace: null,
-		userDetailReligion: null
-	};
-
 signInForm : FormGroup;
 	status: Status = null;
 

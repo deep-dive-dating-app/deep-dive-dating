@@ -30,7 +30,7 @@ export const allAppComponents = [AppComponent, SplashComponent, SignInComponent,
 
 export const routes: Routes = [
 	{path: "", component: SplashComponent},
-	{path: "sign-in", component: SignInComponent},
+	//{path: "sign-in", component: SignInComponent, canActivate: [AuthGuard] },
 	{path: "sign-up", component: SignUpComponent},
 	{path: "my-matches", component: MyMatchesComponent, canActivate: [AuthGuardService]},
 	{path: "about-us", component: AboutUsComponent, canActivate: [AuthGuardService]},
@@ -43,7 +43,7 @@ export const routes: Routes = [
 export const appRoutingProviders: any[] = [
 	SessionService,
 	SignInService,
-	MatchService, UserService, UserDetailService, SignUpService, SessionService, JwtHelperService, SignOutService, AuthService, AuthGuardService,
+	MatchService, UserService, UserDetailService, SignUpService, SessionService, JwtHelperService, SignOutService, AuthService, AuthGuardService,QuestionService,
 	{provide: HTTP_INTERCEPTORS, useClass: DeepDiveInterceptor, multi: true}
 ];
 
