@@ -1,9 +1,8 @@
-
-	<!-- avatar url group -->
+<ng-container *ngFor="let question of questions; let index = index">
+	<form [formGroup]="questionForm"></form>
 	<div class="form-group">
-		<label for="questionGender" class="sr-only">Question Gender</label>
-		<input type="text" class="form-control" id="questionGender" name="questionGender" formControlName="questionGender" placeholder="Your answer"/>
-		<!--<div class="alert alert-danger" *ngIf="questionForm.controls.questionGender?.invalid && questionForm.controls.questionGender?.touched">-->
-			<p *ngIf="questionForm.controls.questionGender?.errors.required">An answer is required</p>
-		<!--</div>-->
+		<label>{{question.questionContent}}</label>
+		<input type="text" class="form-control"/>
+
 	</div>
+</ng-container>

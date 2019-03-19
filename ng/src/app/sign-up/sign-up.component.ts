@@ -23,12 +23,12 @@ export class SignUpComponent implements OnInit {
 				url: './api/image/',
 				headers: [
 					// you will also want to include a JWT-TOKEN
-					{name: 'X-XSRF-TOKEN', value: this.cookieService.get('XSRF-TOKEN')}
+					//{name: 'X-XSRF-TOKEN', value: this.cookieService.get('XSRF-TOKEN')}
 				],
 			}
 		);
 
-		constructor(private signUpService : SignUpService, private formBuilder : FormBuilder, private cookieService: CookieService, private router : Router) {}
+		constructor(private signUpService : SignUpService, private formBuilder : FormBuilder, private router : Router) {}
 
 	ngOnInit(): void {
 		this.signUpForm = this.formBuilder.group({

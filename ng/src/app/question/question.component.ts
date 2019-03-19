@@ -17,36 +17,39 @@ import {SignUpService} from "../shared/services/sign-up.service";
 	templateUrl: "./question.component.html"
 })
 
-export class QuestionComponent implements OnInit{
-	questionForm : FormGroup;
-	question : Question[] = [];
-	answer : Answer[] = [];
-	status : Status = {status: null, message: null, type: null};
+export class QuestionComponent implements OnInit {
+	questionForm: FormGroup;
+	questions: Question[] = [];
+	answer: Answer[] = [];
+	status: Status = {status: null, message: null, type: null};
+	questionFields: FormArray;
 
-	constructor(private userService : UserService, private questionService: QuestionService, private authService: AuthService, private answerService: AnswerService, private formBuilder : FormBuilder, private router : Router) {}
+
+	constructor(private userService: UserService, private questionService: QuestionService, private authService: AuthService, private answerService: AnswerService, private formBuilder: FormBuilder, private router: Router) {
+	}
 
 	ngOnInit() {
 		this.getQuestions();
 		return this.formBuilder.group({
-			questions: this.formBuilder.array([this.createQuestion()])
+			questionFields: this.formBuilder.array([this.createQuestion()])
 		})
 	}
 
 	createQuestion(): FormGroup {
-		return this.questionForm = this.formBuilder.group({
+		return this.formBuilder.group({
 			questionId: ['', [Validators.maxLength(32), Validators.required]],
 			answerValue: ['', [Validators.maxLength(32), Validators.required]],
 			questionAnswered: ['', [Validators.maxLength(32), Validators.required]]
 		})
 	}
 
-	getQuestions () {
-		this.questionService.getAllQuestions();
+	getQuestions() {
+		this.questionService.getAllQuestions().subscribe(reply => this.questions = reply);
 	}
 
 
 	postAnswer(): void {
-		let answer : Answer = null;
+		let answer: Answer = null;
 		this.answerService.createAnswer(answer).subscribe(status => {
 			this.status = status;
 
@@ -57,6 +60,7 @@ export class QuestionComponent implements OnInit{
 			}
 		})
 	}
+
 	getJwtUserId(): any {
 		if(this.authService.decodeJwt()) {
 			return this.authService.decodeJwt().auth.userId;
@@ -65,4 +69,10 @@ export class QuestionComponent implements OnInit{
 		}
 	}
 
+	createQuestionFormFields(questions: Question[]) {
+		this.questionFields = this.questionForm.get('questionFields') as FormArray;
+		questions.map(index => {this.questionFields.push(this.createQuestion())})
+
+	}
 }
+
