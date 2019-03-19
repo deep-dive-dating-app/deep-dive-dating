@@ -1,6 +1,9 @@
 <?php
 require_once dirname(__DIR__,3 ) .  "/php/lib/xsrf.php";
-use Edu\Cnm\DataDesign;
+require_once dirname(__DIR__,3 ) .  "/php/lib/jwt.php";
+require_once("/etc/apache2/capstone-mysql/Secrets.php");
+
+use DeepDiveDatingApp\DeepDiveDating;
 $reply = new stdClass();
 $reply->status = 200;
 $reply->data = null;
