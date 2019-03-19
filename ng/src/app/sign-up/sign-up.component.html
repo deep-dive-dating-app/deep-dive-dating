@@ -5,7 +5,7 @@
 					<!-- avatar url group -->
 					<div class="form-group">
 						<label for="userAvatarUrl" class="sr-only">Upload a photo of yourself</label>
-						<input type="file" class="form-control" id="userAvatarUrl" name="userAvatarUrl" formControlName="userAvatarUrl" placeholder="Upload a photo of yourself"/>
+						<input type="file" accept="image/*" ng2FileSelect [uploader]="uploader" aria-describedby="petHelp" class="form-control" id="userAvatarUrl" name="userAvatarUrl" formControlName="userAvatarUrl" placeholder="Upload a photo of yourself"/>
 						<div class="alert alert-danger" *ngIf="signUpForm.controls.userAvatarUrl?.invalid && signUpForm.controls.userAvatarUrl?.touched">
 							<p *ngIf="signUpForm.controls.userAvatarUrl?.errors.required">A profile image is required</p>
 						</div>
@@ -115,7 +115,7 @@
 
 					<!-- submit -->
 					<div class="form-group">
-						<button type="submit" class="btn btn-primary">Sign Up!</button>
+						<button type="submit" class="btn btn-primary" (click)="uploadImage()" [disabled]="!uploader.getNotUploadedItems().length">Sign Up!</button>
 					</div>
 				</form>
 

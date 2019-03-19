@@ -14,23 +14,23 @@ import {FileUploader} from "ng2-file-upload";
 })
 
 export class SignUpComponent implements OnInit {
-	signUpForm: FormGroup;
-	status : Status = {status: null, message: null, type: null};
+		signUpForm: FormGroup;
+		status : Status = {status: null, message: null, type: null};
 
-	public uploader: FileUploader = new FileUploader(
-		{
-			itemAlias: 'image',
-			url: './api/image/',
-			headers: [
-				// you will also want to include a JWT-TOKEN
-				//{name: 'X-XSRF-TOKEN', value: this.cookieService.get('XSRF-TOKEN')}
-			]
-		}
-	);
+		public uploader: FileUploader = new FileUploader(
+			{
+				itemAlias: 'image',
+				url: './api/image/',
+				headers: [
+					// you will also want to include a JWT-TOKEN
+					{name: 'X-XSRF-TOKEN', value: this.cookieService.get('XSRF-TOKEN')}
+				],
+			}
+		);
 
-	constructor(private signUpService : SignUpService, private formBuilder : FormBuilder, private cookieService: CookieService, private router : Router) {}
+		constructor(private signUpService : SignUpService, private formBuilder : FormBuilder, private cookieService: CookieService, private router : Router) {}
 
-	ngOnInit() {
+	ngOnInit(): void {
 		this.signUpForm = this.formBuilder.group({
 			userAvatarUrl: ["", [Validators.maxLength(255), Validators.required]],
 			userEmail: ["", [Validators.maxLength(128), Validators.required, Validators.email]],
