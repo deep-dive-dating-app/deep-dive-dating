@@ -16,6 +16,7 @@ import {AnswerService} from "../shared/services/answer.service";
 import {Answer} from "../shared/interfaces/answer";
 import {Match} from "../shared/interfaces/match";
 import {ActivatedRoute} from "@angular/router";
+import {UserWithUserDetailService} from "../shared/services/user-with-user-detail.service";
 
 //set the template url and the selector for the ng powered html tag
 @Component({
@@ -34,7 +35,7 @@ export class UserComponent implements OnInit{
 	// answer: Answer;
 	status: Status = {status:null, message:null, type:null};
 
-	constructor(private userService: UserService, private userDetailService: UserDetailService, private activatedRoute: ActivatedRoute, private jwt: JwtHelperService){}
+	constructor(private userService: UserService, private userDetailService: UserDetailService, private activatedRoute: ActivatedRoute, private jwt: JwtHelperService, private userWithUserDetialService: UserWithUserDetailService){}
 
 	ngOnInit() {
 		this.userService.getUserByUserId(this.userId).subscribe(user => this.user = user);
