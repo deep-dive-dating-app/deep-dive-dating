@@ -2,7 +2,8 @@
 
 @import url('https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css');
 
-.navbar, header, footer {
+
+header, footer {
 	background-color: whitesmoke;
 }
 
@@ -15,7 +16,7 @@ img {
 	height: 10rem;
 }
 
-i {
+i, .letterGrade, .fa-heart {
 	font-size: 10rem;
 	color: hotpink;
 }
@@ -38,6 +39,10 @@ button > i {
 #group-photo {
 	display: block;
 	margin: 0 auto;
+}
+
+.letterGrade, .fa-heart {
+	font-size: 10rem;
 }
 
 .footer {

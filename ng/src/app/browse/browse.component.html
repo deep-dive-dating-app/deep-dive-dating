@@ -1,8 +1,14 @@
+<div class="container my-2" >
+	<h1>Browse the Den for Someone New</h1>
+	<br>
+	<p><span class="pr-3">or Search for someone special...
+		<input [src]="" type="text" rel="">
+	</span><button class="btn btn-dark"><i class="fas fa-search">Submit</i></button></p>
+</div>
 <div id="browse" class="container" *ngFor = "let user of users">
-
 	<div class="row border rounded bg-light mt-4">
 		<div class="col-sm-3 p-0">
-			<div class="my-auto p-2 d-block d-flex justify-content-center" (click) = "getDetailedView(user)"
+			<div class="my-auto pt-4 d-flex justify-content-center" (click) = "getDetailedView(user)"
 			>
 				<img class="img-fluid" [src]="user.user.userAvatarUrl" alt="{{user.user.userAvatarUrl}}" >
 			</div>
@@ -15,13 +21,14 @@
 		</div>
 		<div class="col-sm-2">
 			<!--todo add letter grade-->
-			<div class="my-auto py-5">
-				<p class="letterGrade">a</p>
+			<div class="my-auto">
+				<p class="letterGrade">A</p>
 			</div>
 		</div>
 		<div class="col-sm-2">
 			<!--todo add matching ability to heart-->
-			<div class="my-auto py-5">
+			<div class="mt-5">
+				<fa-icon [icon]="faHeart"></fa-icon>
 			</div>
 		</div>
 	</div>

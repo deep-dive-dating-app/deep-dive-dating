@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 import {JwtModule} from "@auth0/angular-jwt";
 import {FileUploadModule} from 'ng2-file-upload';
 import {CookieModule} from "ngx-cookie";
+import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 
 
 const JwtHelper = JwtModule.forRoot({
@@ -25,7 +26,7 @@ const JwtHelper = JwtModule.forRoot({
 const moduleDeclarations = [AppComponent];
 
 @NgModule({
-  imports:      [BrowserModule, HttpClientModule, ReactiveFormsModule, FormsModule, routing, JwtHelper, FileUploadModule, CookieModule.forRoot()],
+  imports:      [BrowserModule, HttpClientModule, ReactiveFormsModule, FormsModule, routing, JwtHelper, FileUploadModule, CookieModule.forRoot(), FontAwesomeModule],
   declarations: [...moduleDeclarations, ...allAppComponents, AppComponent],
   bootstrap:    [AppComponent],
   providers:    [appRoutingProviders]

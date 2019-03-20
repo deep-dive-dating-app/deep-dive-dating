@@ -12,6 +12,7 @@ import {MatchService} from "../shared/services/match.service";
 import {UserDetail} from "../shared/interfaces/user-detail";
 import {UserDetailService} from "../shared/services/user-detail.service";
 import {UserWithUserDetail} from "../shared/interfaces/userWithUserDetail";
+import {faHeart} from "@fortawesome/fontawesome-free-regular";
 
 @Component({
 	templateUrl: "./browse.component.html"
@@ -45,6 +46,7 @@ export class BrowseComponent implements OnInit {
 		userDetailRace: null,
 		userDetailReligion: null
 	};
+	faHeart = faHeart;
 
 	constructor( private userService: UserService, private router: Router) {
 	}
