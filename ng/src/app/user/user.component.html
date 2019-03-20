@@ -1,6 +1,6 @@
 <div class="container">
 	<div class="card card-body my-3">
-		<h1 class="py-2">{{user.userHandle}}</h1>
+		<h1 class="py-2" *ngIf="user">{{user.userHandle}}</h1>
 		<div class="px-3">
 			<div class="row p-0">
 				<div class="col-3" >
@@ -28,7 +28,7 @@
 			<div class=" my-auto py-3">
 				<div class="aboutMe">
 					<h2>About Me:</h2>
-					<p>{{userDetail.userDetailAboutMe}}</p>
+					<p *ngIf="userDetail">{{userDetail.userDetailAboutMe}}</p>
 				</div>
 			</div>
 		</div>
@@ -40,7 +40,7 @@
 			<div class=" my-auto py-3">
 				<div class="interests">
 					<h2>Interests:</h2>
-					<p>{{userDetail.userDetailInterests}}</p>
+					<p *ngIf="userDetail">{{userDetail.userDetailInterests}}</p>
 				</div>
 			</div>
 		</div>
@@ -51,7 +51,7 @@
 	<div class="row">
 		<div class="col">
 			<div class=" my-auto py-3">
-				<div class="detailQuestionnaire">
+				<div class="detailQuestionnaire" *ngIf="userDetail">
 					<h2>Detail Questionnaire:</h2>
 					<h3></h3>
 					<div> <strong>Age: </strong> {{userDetail.userDetailAge}}</div>
