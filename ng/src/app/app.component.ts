@@ -5,6 +5,7 @@ import {User} from "./shared/interfaces/user";
 import {UserService} from "./shared/services/user.service";
 import {AuthService} from "./shared/services/auth-service";
 import {Router} from "@angular/router";
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-root',
@@ -13,12 +14,12 @@ import {Router} from "@angular/router";
 })
 
 export class AppComponent {
-	userId: null;
+	userId : null;
 	router: Router;
 	status : Status = null;
-	constructor(private sessionService: SessionService, private userService: UserService, private authService: AuthService){
+	constructor(private sessionService: SessionService, private userService: UserService, private authService: AuthService, private titleService: Title){
 		this.sessionService.setSession().subscribe(reply => this.status = reply);
-
+		this.titleService.setTitle( "Dan's Den" );
 	}
 
 	getUserId() {
