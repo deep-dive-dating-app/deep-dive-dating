@@ -27,6 +27,18 @@ $reply->data = null;
 
 try {
 
+	$questionInputs = [
+		"08570473-b224-4b4e-bb69-d537be2b96de" => "value",
+		"1630ed4d-9d0e-43b5-8a2d-310471dba230" => "value",
+		"21545d7c-5142-4452-a284-6624cb1b741e" => "value",
+		"2186bedc-3241-4a1a-938d-ebc91af7e785" => "value",
+		"28479627-4218-4898-b1d4-ffb2aad72eba" => "value",
+		"4664f9c0-eac3-41ac-aa75-4f64009a4b85" => "value",
+		"5bd43186-5ad9-4db6-bf53-c4d14e87ed53" => "value",
+		"79d4d031-1ad6-4e6e-8c0d-712e88164c32" => "value",
+		"c9aaa062-9c23-4bd6-a0a6-ac623d5839df" => "value",
+		"e0678ea3-c320-415e-983e-09c4caf26390" => "value"
+	];
 	// Grab the mySQL connection
 	$secrets = new \Secrets("/etc/apache2/capstone-mysql/cohort23/dateadan.ini");
 	$pdo = $secrets->getPdoObject();

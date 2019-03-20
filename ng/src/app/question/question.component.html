@@ -1,17 +1,19 @@
-<div class="container py-3 mb-5 mt-3 bg-light">
+<div class="container py-3 mb-5 mt-3 bg-light border rounded">
 	<div class="container py-2">
 		<h4>Please fill out our questionnaire.</h4>
 		<p>These questions will be used to calculate your DanScore.</p>
 	</div>
-	<form [formGroup]="questionForm"(submit)="getForm()">
-		<ng-container formArrayName="questions" *ngFor="let question of questions; index as bullshit	">
-			<div class="form-group"[formGroupName]="bullshit" >
-				<label>{{question.questionContent}}</label><br>
-				<input type="radio" name="pets" value="correct"/>answer a<br>
-				<input type="radio" name="pets" value="wrong"/>answer b<br>
-				<input type="radio" name="pets" value="wrong"/>answer c<br>
-			</div>
-		</ng-container>
-		<button type="submit">click me</button>
-	</form>
+	<div class="container">
+		<form [formGroup]="questionForm"(submit)="getForm()">
+			<ng-container formArrayName="questions" *ngFor="let question of questions; index as bullshit	">
+				<div class="form-group"[formGroupName]="bullshit" >
+					<label>{{question.questionContent}}</label><br>
+					<input type="radio" name="pets" value="correct"/>answer a<br>
+					<input type="radio" name="pets" value="wrong"/>answer b<br>
+					<input type="radio" name="pets" value="wrong"/>answer c<br>
+				</div>
+			</ng-container>
+			<button type="submit">click me</button>
+		</form>
+	</div>
 </div>
