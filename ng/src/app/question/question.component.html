@@ -4,16 +4,18 @@
 		<p>These questions will be used to calculate your DanScore.</p>
 	</div>
 	<div class="container">
-		<form [formGroup]="questionForm"(submit)="getForm()">
-			<ng-container formArrayName="questions" *ngFor="let question of questions; index as bullshit	">
-				<div class="form-group"[formGroupName]="bullshit" >
-					<label>{{question.questionContent}}</label><br>
-					<input type="radio" name="question" value="answerA"/>answer a<br>
-					<input type="radio" name="question" value="answerB"/>answer b<br>
-					<input type="radio" name="question" value="answerC"/>answer c<br>
-				</div>
-			</ng-container>
-			<button type="submit">click me</button>
-		</form>
+
+		<!--dynamic form commented out in and replaced with hardcoded form in order to get screenshots-->
+		<!--<form [formGroup]="questionForm"(submit)="getForm()">-->
+			<!--<ng-container formArrayName="questions" *ngFor="let question of questions; index as bullshit	">-->
+				<!--<div class="form-group"[formGroupName]="bullshit" >-->
+					<!--<label>{{question.questionContent}}</label><br>-->
+					<!--<input type="radio" name="question" value="answerA"/>answer a<br>-->
+					<!--<input type="radio" name="question" value="answerB"/>answer b<br>-->
+					<!--<input type="radio" name="question" value="answerC"/>answer c<br>-->
+				<!--</div>-->
+			<!--</ng-container>-->
+			<!--<button type="submit">click me</button>-->
+		<!--</form>-->
 	</div>
 </div>
