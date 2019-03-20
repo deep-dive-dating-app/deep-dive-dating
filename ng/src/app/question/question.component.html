@@ -1,8 +1,9 @@
-<ng-container *ngFor="let question of questions; let index = index">
-	<form [formGroup]="questionForm"></form>
-	<div class="form-group">
-		<label>{{question.questionContent}}</label>
-		<input type="text" class="form-control"/>
-
-	</div>
-</ng-container>
+<form [formGroup]="questionForm"(submit)="getForm()">
+	<ng-container formArrayName="questions" *ngFor="let question of questions; index as bullshit	">
+		<div class="form-group"[formGroupName]="bullshit" >
+			<label>{{question.questionContent}}</label>
+			<input formControlName="questionValue" type="text" class="form-control"/>
+		</div>
+	</ng-container>
+	<button type="submit">click me</button>
+</form>

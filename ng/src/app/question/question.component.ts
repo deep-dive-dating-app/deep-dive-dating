@@ -19,20 +19,24 @@ import {SignUpService} from "../shared/services/sign-up.service";
 
 export class QuestionComponent implements OnInit {
 	questionForm: FormGroup;
-	questions: Question[] = [];
+	questions: any[] = [];
 	answer: Answer[] = [];
 	status: Status = {status: null, message: null, type: null};
-	questionFields: FormArray;
+	questionFields: any;
 
 
 	constructor(private userService: UserService, private questionService: QuestionService, private authService: AuthService, private answerService: AnswerService, private formBuilder: FormBuilder, private router: Router) {
+
+
+		this.questionForm = this.formBuilder.group({
+			questions: this.formBuilder.array([this.questionForm])
+		});
+
 	}
 
 	ngOnInit() {
 		this.getQuestions();
-		return this.formBuilder.group({
-			questionFields: this.formBuilder.array([this.createQuestion()])
-		})
+		//this.createQuestionFormFields();
 	}
 
 	createQuestion(): FormGroup {
@@ -44,9 +48,15 @@ export class QuestionComponent implements OnInit {
 	}
 
 	getQuestions() {
-		this.questionService.getAllQuestions().subscribe(reply => this.questions = reply);
+		this.questionService.getAllQuestions().subscribe(reply => {
+			this.questions = reply;
+			this.createQuestionFormFields(reply);
+		});
 	}
 
+	getForm() {
+		console.log(this.questionForm)
+	}
 
 	postAnswer(): void {
 		let answer: Answer = null;
@@ -69,10 +79,29 @@ export class QuestionComponent implements OnInit {
 		}
 	}
 
-	createQuestionFormFields(questions: Question[]) {
-		this.questionFields = this.questionForm.get('questionFields') as FormArray;
-		questions.map(index => {this.questionFields.push(this.createQuestion())})
-
+	createQuestionFormFields(questions: any[]) {
+		for(let question of this.questions) {
+			let foo = this.questionForm.get("questions")as FormArray;
+			foo.push(this.createQuestion());
+		}
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
