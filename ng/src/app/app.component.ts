@@ -17,7 +17,6 @@ import {JwtHelperService} from "@auth0/angular-jwt";
 export class AppComponent {
 	user: User = null;
 	userId: string;
-	show: boolean = true;
 	router: Router;
 	status : Status = null;
 	constructor(private sessionService: SessionService, private userService: UserService, private authService: AuthService, private titleService: Title, private jwtHelper: JwtHelperService) {
