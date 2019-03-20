@@ -9,7 +9,7 @@
 	</div>
 	<ul class="nav justify-content-center">
 		<li class="nav-item">
-			<a class="nav-link"  (click)="getUserId()">My Profile</a>
+			<a class="nav-link" [routerLink]="['/user/', userId]" (click)="getUserId()" >My Profile</a>
 		</li>
 		<li class="nav-item">
 			<a class="nav-link" [routerLink]="['/browse']">Browse</a>
