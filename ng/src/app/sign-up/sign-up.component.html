@@ -1,5 +1,9 @@
-
-
+<div class="container my-4 py-4 bg-light border rounded">
+	<div class="container">
+		<h4>Please fill out these questions.</h4>
+		<p>These questions will be displayed on your profile page.</p>
+	</div>
+	<div class="container">
 				<form [formGroup]="signUpForm" id="signUpForm" action="" method="post" (submit)="postSignUp();" novalidate>
 
 					<!-- avatar url group -->
@@ -124,3 +128,5 @@
 						aria-hidden="true">&times;</span></button>
 					{{ status.message }}
 				</div>
+	</div>
+</div>
