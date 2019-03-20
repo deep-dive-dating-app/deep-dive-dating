@@ -4,14 +4,19 @@
 		<p>These questions will be displayed on your profile page.</p>
 	</div>
 	<div class="container">
-				<form [formGroup]="signUpForm" id="signUpForm" action="" method="post" (submit)="postSignUp();" novalidate>
+				<form [formGroup]="signUpForm" id="signUpForm" action="" method="post"  novalidate>
 
 					<!-- avatar url group -->
 					<div class="form-group">
+						<div class="input-group">
 						<label for="userAvatarUrl" class="sr-only">Upload a photo of yourself</label>
-						<input type="file" accept="image/*" ng2FileSelect [uploader]="uploader" aria-describedby="petHelp" class="form-control" id="userAvatarUrl" name="userAvatarUrl" formControlName="userAvatarUrl" placeholder="Upload a photo of yourself"/>
+						<input type="file" accept="image/*" ng2FileSelect [uploader]="uploader" aria-describedby="petHelp" class="form-control" id="userAvatarUrl" name="userAvatarUrl" placeholder="Upload a photo of yourself"/>
+							<div class="input-group-append">
+								<button class="btn btn-primary" (click)="uploadImage()" [disabled]="!uploader.getNotUploadedItems().length">Click Me</button>
+							</div>
 						<div class="alert alert-danger" *ngIf="signUpForm.controls.userAvatarUrl?.invalid && signUpForm.controls.userAvatarUrl?.touched">
 							<p *ngIf="signUpForm.controls.userAvatarUrl?.errors.required">A profile image is required</p>
+						</div>
 						</div>
 					</div>
 
@@ -118,9 +123,9 @@
 					</div>
 
 					<!-- submit -->
-					<div class="form-group">
-						<button type="submit" class="btn btn-primary" (click)="uploadImage()" [disabled]="!uploader.getNotUploadedItems().length">Sign Up!</button>
+					<div class="form-group"><button type="submit" class="btn btn-primary" (click)="postSignUp();" >Sign Up!</button>
 					</div>
+
 				</form>
 
 				<div *ngIf="status !== null" class="alert alert-dismissible" [ngClass]="status.type" role="alert">

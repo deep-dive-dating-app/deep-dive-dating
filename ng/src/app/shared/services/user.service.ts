@@ -16,6 +16,10 @@ export class UserService {
 		return(this.http.get<UserWithUserDetail[]>(this.userUrl));
 	}
 
+	//getUserAvatarUrl() : Observable<Status> {
+		//return(this.http.get<User>(this.userUrl + userAvatarUrl));
+	//}
+
 	getUserByUserId(userId: string) : Observable<User> {
 		return(this.http.get<User>(this.userUrl + userId));
 	}

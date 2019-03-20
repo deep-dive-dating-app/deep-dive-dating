@@ -7,6 +7,7 @@ import {Status} from "../shared/interfaces/status";
 import {SignUp} from "../shared/interfaces/sign-up";
 import {CookieService} from "ngx-cookie";
 import {FileUploader} from "ng2-file-upload";
+import {Observable, from} from "rxjs";
 
 
 @Component({
@@ -23,16 +24,19 @@ export class SignUpComponent implements OnInit {
 				url: './api/image/',
 				headers: [
 					// you will also want to include a JWT-TOKEN
-					//{name: 'X-XSRF-TOKEN', value: this.cookieService.get('XSRF-TOKEN')}
+					{name: 'X-XSRF-TOKEN', value: this.cookieService.get('XSRF-TOKEN')}
 				],
 			}
 		);
 
-		constructor(private signUpService : SignUpService, private formBuilder : FormBuilder, private router : Router) {}
+		cloudinarySecureUrl: string;
+		cloudinaryPublicObservable: Observable<string> = new Observable<string>();
+		imageUploaded: boolean;
+
+		constructor(private signUpService : SignUpService, private formBuilder : FormBuilder, private router : Router, private cookieService : CookieService) {}
 
 	ngOnInit(): void {
 		this.signUpForm = this.formBuilder.group({
-			userAvatarUrl: ["", [Validators.maxLength(255), Validators.required]],
 			userEmail: ["", [Validators.maxLength(128), Validators.required, Validators.email]],
 			userHandle: ["", [Validators.maxLength(32), Validators.required]],
 			userPassword: ["", [Validators.maxLength(36), Validators.required]],
@@ -47,12 +51,22 @@ export class SignUpComponent implements OnInit {
 	}
 
 	uploadImage(): void{
+		this.uploader.uploadAll();
+		this.cloudinaryPublicObservable.subscribe(cloudinaryUrl =>this.cloudinarySecureUrl= cloudinaryUrl );
+				this.uploader.onSuccessItem = (item: any, response: string, status: number, headers: any) => {
+					let reply = JSON.parse(response);
+					this.cloudinarySecureUrl = reply.message;
+					this.cloudinaryPublicObservable = from(this.cloudinarySecureUrl);
+					if (this.cloudinarySecureUrl) {
+						console.log("bullshot")
+					}
 
+				};
 	}
 
 	postSignUp(): void {
 
-		let signUp : SignUp = {userAvatarUrl: this.signUpForm.value.userAvatarUrl, userEmail: this.signUpForm.value.userEmail, userHandle: this.signUpForm.value.userHandle, userPassword: this.signUpForm.value.userPassword, userPasswordConfirm: this.signUpForm.value.userPasswordConfirm, userDetailAge: this.signUpForm.value.userDetailAge, userDetailCareer: this.signUpForm.value.userDetailCareer, userDetailEducation: this.signUpForm.value.userDetailEducation, userDetailGender: this.signUpForm.value.userDetailGender, userDetailRace: this.signUpForm.value.userDetailRace, userDetailReligion: this.signUpForm.value.userDetailReligion};
+		let signUp : SignUp = {userAvatarUrl: this.cloudinarySecureUrl, userEmail: this.signUpForm.value.userEmail, userHandle: this.signUpForm.value.userHandle, userPassword: this.signUpForm.value.userPassword, userPasswordConfirm: this.signUpForm.value.userPasswordConfirm, userDetailAge: this.signUpForm.value.userDetailAge, userDetailCareer: this.signUpForm.value.userDetailCareer, userDetailEducation: this.signUpForm.value.userDetailEducation, userDetailGender: this.signUpForm.value.userDetailGender, userDetailRace: this.signUpForm.value.userDetailRace, userDetailReligion: this.signUpForm.value.userDetailReligion};
 		this.signUpService.createUser(signUp)
 			.subscribe(status => {
 				this.status = status;
