@@ -6,7 +6,7 @@ require_once dirname(__DIR__, 3) . "/php/lib/xsrf.php";
 require_once dirname(__DIR__, 3) . "/php/lib/uuid.php";
 require_once dirname(__DIR__, 3) . "/php/lib/jwt.php";
 require_once("/etc/apache2/capstone-mysql/Secrets.php");
-use DeepDiveDatingApp\DeepDiveDating\User;
+use DeepDiveDatingApp\DeepDiveDating\{User};
 
 /**
  * Cloudinary Api for Images
@@ -23,51 +23,58 @@ $reply->status = 200;
 $reply->data = null;
 
 try {
-	// determine the HTTP method used (we only allow the POST method to be used for image uploading
-	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
+			// Grab the MySQL connection
+			$secrets = new \Secrets("/etc/apache2/capstone-mysql/cohort23/dateadan.ini");
+			$pdo = $secrets->getPdoObject();
+			$cloudinary = $secrets->getSecret("cloudinary");
 
-	if ($method !== "POST") {
-		throw(new \Exception("This HTTP method is not supported for image upload.", 405));
+			// determine the HTTP method used (we only allow the POST method to be used for image uploading
+			$method = $_SERVER["HTTP_X_HTTP_METHOD"] ?? $_SERVER["REQUEST_METHOD"];
+
+			\Cloudinary::config(["cloud_name" => $cloudinary->cloudName, "api_key" => $cloudinary->apiKey, "api_secret" => $cloudinary->apiSecret]);
+
+			// process Get requests
+			if($method === "GET") {
+				// set XSRF token
+				setXsrfCookie();
+				$reply->data = User::getAllImages($pdo)->toArray();
+			} elseif ($method !== "POST") {
+
+			// verify the SXRF-TOKEN is present
+			verifyXsrf();
+
+			//use $_POST super global to grab the needed Id
+			$userId = filter_input(INPUT_POST, "userId", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+
+			//assigning variable to the user image/avatar, add image extension
+			$tempUserFileName = $_FILES["image"]["tmp_name"];
+
+			// upload image to cloudinary and get public id
+			$cloudinaryResult = \Cloudinary\Uploader::upload($tempUserFileName, array("width" => 500, "crop" => "scale"));
+
+			//after sending the image to cloudinary, create a new image
+		 	//TODO find out which class needs to be called here and how to inject the cloudinary info
+			$image = new User(generateUuidV4(), $userId);
+			$image->insert($pdo);
+
+			//update reply
+			$reply->message = "Image uploaded ok";
 	}
-	
-	// verify the SXRF-TOKEN is present
-	verifyXsrf();
 
-	// make sure user is logged in before uploading a picture
-	if(empty($_SESSION["user"]) || empty($_SESSION["user"]->getUserId()->toString())) {
-		throw(new \InvalidArgumentException("You must be logged in to upload your image.", 403));
-	}
-
-	// validate header
-	validateJwtHeader();
 
 	//$config = readConfig("/etc/apache2/capstone-mysql/cohort23/dateadan.ini");
 
 
-	$secrets = new \Secrets("/etc/apache2/capstone-mysql/cohort23/dateadan.ini");
-	$pdo = $secrets->getPdoObject();
-	$cloudinary = $secrets->getSecret("cloudinary");
 	//$cloudinary = json_decode($config["cloudinary"]);
-	\Cloudinary::config(["cloud_name" => $cloudinary->cloudName, "api_key" => $cloudinary->apiKey, "api_secret" => $cloudinary->apiSecret]);
-	//assigning variable to the user image/avatar, add image extenstion
-	$tempUserFileName = $_FILES["image"]["tmp_name"];
-	// upload image to cloudinary and get public id
-	$cloudinaryResult = \Cloudinary\Uploader::upload($tempUserFileName, array("width" => 500, "crop" => "scale"));
-	$reply->data = $cloudinaryResult["secure_url"];
 
-	// update reply
-	$reply->message = "Image uploaded ok.";
 
-} catch(Exception | \TypeError $exception) {
-	$reply->status = $exception->getCode();
-	$reply->message = $exception->getMessage();
+} catch(Exception $exception) {
+		$reply->status = $exception->getCode();
+		$reply->message = $exception->getMessage();
 }
 
 //encode and return reply to the front-end caller
 header("Content-Type: application/json");
-if (!$reply->data) {
-	unset($reply->data);
-}
 
 // encode and return reply to front-end caller
 echo json_encode($reply);

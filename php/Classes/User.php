@@ -54,6 +54,16 @@ class User implements \JsonSerializable {
 	 * @var string userIpAddress
 	 */
 	private $userIpAddress;
+	/**
+	 * Cloudinary token for userAvatarUrl
+	 * @var string $userCloudinaryToken
+	 *
+	private $userCloudinaryToken;
+	/**
+	 * Cloudinary Url for userAvatarUrl
+	 * @var string $userCloudUrl
+	 *
+	 private $userCloudUrl;
 
 	/**
 	 * Constructor for this user profile
@@ -74,8 +84,10 @@ class User implements \JsonSerializable {
 	 * @throws  \ArgumentCountError is phpunit don't line up
 	 * @Documentation https://php.net/manual/en/language.oop5.decon.php
 	 */
+	//@param string $newUserCloudinaryToken string containing Cloudinary Token for this user
 
 	public function __construct($newUserId, ?string $newUserActivationToken, string $newuserAgent, string $newUserAvatarUrl, int $newUserBlocked, string $newUserEmail, string $newUserHandle, string $newUserHash, string $newUserIpAddress) {
+		//string $newUserCloudinaryToken, string $newUserCloudUrl
 		try {
 			$this->setUserId($newUserId);
 			$this->setUserActivationToken($newUserActivationToken);
@@ -86,6 +98,8 @@ class User implements \JsonSerializable {
 			$this->setUserHandle($newUserHandle);
 			$this->setUserHash($newUserHash);
 			$this->setUserIpAddress($newUserIpAddress);
+			//$this->>setUserCloudinaryToken($newUserCloudinaryToken);
+			//this->setUserCloudUrl($newUserCloudUrl);
  		}
 
 		catch (\InvalidArgumentException | \RangeException | \Exception | \TypeError | \ArgumentCountError $exception) {
@@ -168,7 +182,7 @@ class User implements \JsonSerializable {
 	 * @throws \TypeError if $newuserAgent is not a string
 	 * @throws \Exception
 	 */
-	public function setuserAgent (string $newuserAgent) : void {
+	public function setUserAgent (string $newuserAgent) : void {
 		//verify the the user Age is secure
 		$newuserAgent = trim($newuserAgent);
 		$newuserAgent = filter_var($newuserAgent, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
@@ -364,6 +378,49 @@ class User implements \JsonSerializable {
 		//store the ip address
 		$this->userIpAddress =$newUserIpAddress;
 	}
+
+	/**
+	 * mutator method for user cloudinary token
+	 *
+	 * @param string $newUserCloudinaryToken new value of image cloudinary token
+	 * @throws \InvalidArgumentException if $newUserCloudinaryToken is not a string or insecure
+	 * @throws \TypeError if $newUserCloudinaryToken is not a string
+	 */
+	//public function setUserCloudinaryToken(string $newUserCloudinaryToken): void {
+			// verify the user cloudinary token content is secure
+			//$newUserCloudinaryToken = filter_var($newUserCloudinaryToken, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+			//if(empty($newUserCloudinaryToken) === true) {
+					//throw(new \InvalidArgumentException("user cloudinary token is empty or insecure"));
+			//}
+
+			//store the user cloudinary token
+			//$this->userCloudinaryToken = $newUserCloudinaryToken;
+	//}
+
+	/**
+	 * accessor method for user cloud url
+	 *
+	 * @return string value user cloud url
+	 *
+	 */
+	//public function getUserCloudUrl(): string {
+			//return ($this->userCloudUrl);
+	//}
+
+	/*
+	 * mutator method for user cloud url
+	 *
+	 * @param string $newUserCloudUrl new value of user cloud url
+	 * @throws \InvalidArgumentException if $newUserCloudUrl is not a string or insecure
+	 * @throws \TypeError if $newUserCloudUrl is not a string
+	 */
+	//public function setUserCloudUrl(string $newUserCloudUrl): void {
+			//verify the user cloud url content is secure
+			//$newUserCloudUrl = filter_var($newUserCloudUrl, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+			//if(empty($newUserCloudUrl) === true) {
+					//throw(new \InvalidArgumentException("user cloud url is empty or insecure"));
+	//}
+
 	/**
 	 *inserts this user into mySQL
 	 *
@@ -375,6 +432,7 @@ class User implements \JsonSerializable {
 
 		// create query template
 		$query = "INSERT INTO `user`(userId, userActivationToken, userAgent, userAvatarUrl, userBlocked, userEmail, userHandle, userHash, userIpAddress) VALUES(:userId, :userActivationToken, :userAgent, :userAvatarUrl, :userBlocked, :userEmail, :userHandle, :userHash, :userIpAddress)";
+		//userCloudinaryToken, userCloudUrl             :userCloudinaryToken, :userCloudUrl
 		$statement = $pdo->prepare($query);
 
 		//bind the member variables to the placeholders in the template
@@ -384,6 +442,7 @@ class User implements \JsonSerializable {
 		 *
 		 */
 		$parameters = ["userId" => $this->userId->getBytes(), "userActivationToken" => $this->userActivationToken, "userAgent" => $this->userAgent, "userAvatarUrl" => $this->userAvatarUrl, "userBlocked" => $this->userBlocked, "userEmail" => $this->userEmail, "userHandle" => $this->userHandle, "userHash" => $this->userHash, "userIpAddress" => $this->userIpAddress];
+		//"userCloudinaryToken" => $this->userCloudinaryToken, "userCloudUrl" => $this->userCloudUrl
 		$statement->execute($parameters);
 	}
 
@@ -392,7 +451,7 @@ class User implements \JsonSerializable {
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @throws \PDOException when mySQL related errors occur
-	 * @throws \TypeError if $pdo is not a PDO connecti
+	 * @throws \TypeError if $pdo is not a PDO connection
 	 * on object
 	 */
 	public function delete(\PDO $pdo): void {
@@ -415,9 +474,11 @@ class User implements \JsonSerializable {
 	public function update(\PDO $pdo) : void {
 		//create query template
 		$query = "UPDATE `user` SET userActivationToken = :userActivationToken, userAgent = :userAgent, userAvatarUrl = :userAvatarUrl, userBlocked =:userBlocked, userEmail = :userEmail, userHandle = :userHandle, userHash = :userHash, userIpAddress = :userIpAddress WHERE userId = :userId";
+		//userCloudinaryToken, userCloudUrl             :userCloudinaryToken, :userCloudUrl
 		$statement = $pdo->prepare($query);
 
 		$parameters = ["userId" => $this->userId->getBytes(), "userActivationToken" => $this->userActivationToken, "userAgent" => $this->userAgent, "userAvatarUrl" => $this->userAvatarUrl, "userBlocked" => $this->userBlocked, "userEmail" => $this->userEmail, "userHandle" => $this->userHandle, "userHash" => $this->userHash, "userIpAddress" => $this->userIpAddress];
+		//"userCloudinaryToken" => $this->userCloudinaryToken, "userCloudUrl" => $this->userCloudUrl
 		$statement->execute($parameters);
 	}
 	/**
@@ -439,6 +500,7 @@ class User implements \JsonSerializable {
 
 		//create query template
 		$query = "SELECT userId, userActivationToken, userAgent, userAvatarUrl, userBlocked, userEmail,userHandle, userHash, userIpAddress FROM `user` WHERE userId=:userId";
+		//userCloudinaryToken, userCloudUrl
 		$statement = $pdo->prepare($query);
 
 		// bind the user id  to the placeholder in the template
@@ -453,6 +515,7 @@ class User implements \JsonSerializable {
 
 				if($row !== false) {
 							$user = new User($row["userId"], $row["userActivationToken"], $row["userAgent"], $row["userAvatarUrl"], $row["userBlocked"], $row["userEmail"], $row["userHandle"], $row["userHash"], $row["userIpAddress"]);
+							//$row["userCloudinaryToken"], $row["userCloudUrl"]
 			}
 		} catch(\Exception $exception) {
 			//if the row can't be converted, rethrow it
@@ -479,6 +542,7 @@ class User implements \JsonSerializable {
 		//create query template
 		/**$query = "SELECT user.userId, user.userActivationToken, user.userAgent, user.userAvatarUrl, user.userBlocked, user.userEmail, user.userHandle, user.userHash, user.userIpAddress FROM `user` INNER JOIN userDetail ON user.userId = userDetail.userDetailUserId WHERE userActivationToken = :userActivationToken";**/
 		$query = "SELECT userId, userActivationToken, userAgent, userAvatarUrl, userBlocked, userEmail, userHandle, userHash, userIpAddress FROM `user` WHERE userActivationToken = :userActivationToken";
+		////userCloudinaryToken, userCloudUrl
 		$statement = $pdo->prepare($query);
 
 		//bind activation token to placeholder in template
@@ -492,6 +556,7 @@ class User implements \JsonSerializable {
 				$row = $statement->fetch();
 				if($row !== false) {
 						$user = new User($row["userId"], $row["userActivationToken"], $row["userAgent"], $row["userAvatarUrl"], $row["userBlocked"], $row["userEmail"], $row["userHandle"], $row["userHash"], $row["userIpAddress"]);
+						//$row["userCloudinaryToken"], $row["userCloudUrl"]
 				}
 		} catch(\Exception $exception) {
 			//if the row couldn't be converted, rethrow it
@@ -521,6 +586,7 @@ class User implements \JsonSerializable {
 
 		//create query template
 		$query = "SELECT userId, userActivationToken, userAgent, userAvatarUrl, userBlocked, userEmail, userHandle, userHash, userIpAddress FROM `user` WHERE userHandle LIKE :userHandle";
+		//userCloudinaryToken, userCloudUrl
 		$statement = $pdo->prepare($query);
 
 		//bind the user handle to the placeholder in the template
@@ -534,6 +600,7 @@ class User implements \JsonSerializable {
 		while(($row = $statement->fetch()) !== false) {
 					try {
 						$user = new User($row["userId"], $row["userActivationToken"], $row["userAgent"], $row["userAvatarUrl"], $row["userBlocked"], $row["userEmail"], $row["userHandle"], $row["userHash"], $row["userIpAddress"]);
+						//$row["userCloudinaryToken"], $row["userCloudUrl"]
 						$users[$users->key()] = $user;
 						$users->next();
 					} catch(\Exception $exception) {
@@ -561,6 +628,7 @@ class User implements \JsonSerializable {
 		}
 		//create query template
 		$query = "SELECT userId, userActivationToken, userAgent, userAvatarUrl, userBlocked, userEmail, userHandle, userHash, userIpAddress FROM `user` WHERE userEmail = :userEmail";
+		//userCloudinaryToken, userCloudUrl
 		$statement = $pdo->prepare($query);
 
 		//bind the user email to the placeholder in the template
@@ -574,6 +642,7 @@ class User implements \JsonSerializable {
 			$row = $statement->fetch();
 			if($row !== false) {
 					$user = new User($row["userId"], $row["userActivationToken"], $row["userAgent"], $row["userAvatarUrl"], $row["userBlocked"], $row["userEmail"], $row["userHandle"], $row["userHash"], $row["userIpAddress"]);
+				//$row["userCloudinaryToken"], $row["userCloudUrl"]
 			}
 		} catch(\Exception $exception) {
 			//if the row couldn't be converted, rethrow it.
@@ -592,6 +661,7 @@ class User implements \JsonSerializable {
 	public static function getAllUsers(\PDO $pdo) : \SPLFixedArray {
 			//create query template
 			$query = " SELECT userId, userActivationToken, userAgent, userAvatarUrl, userBlocked, userEmail, userHandle, userHash, userIpAddress FROM `user`";
+			//userCloudinaryToken, userCloudUrl
 			$statement = $pdo->prepare($query);
 			$statement->execute();
 
@@ -601,6 +671,7 @@ class User implements \JsonSerializable {
 			while(($row = $statement->fetch()) !== false) {
 					try {
 						$user = new User($row["userId"], $row["userActivationToken"], $row["userAgent"], $row["userAvatarUrl"], $row["userBlocked"], $row["userEmail"], $row["userHandle"], $row["userHash"], $row["userIpAddress"]);
+						//$row["userCloudinaryToken"], $row["userCloudUrl"]
 						$usersWithUserDetail = (object)[
 						"user" => $user,
 						"userDetail" => UserDetail::getUserDetailByUserDetailUserId($pdo, $user->getUserId())
