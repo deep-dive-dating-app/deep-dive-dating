@@ -7,6 +7,7 @@ import {Router} from "@angular/router";
 import {UserWithUserDetail} from "../shared/interfaces/userWithUserDetail";
 import {UserDetail} from "../shared/interfaces/user-detail";
 import {UserService} from "../shared/services/user.service";
+import {faHeart} from "@fortawesome/fontawesome-free-solid";
 
 
 @Component({
@@ -38,7 +39,8 @@ export class MyMatchesComponent implements OnInit{
 		userDetailInterests: null,
 		userDetailRace: null,
 		userDetailReligion: null
-	}
+	};
+	faHeart = faHeart;
 	matches : Match[];
 	status : Status = {status: null, message: null, type: null};
 
@@ -46,6 +48,7 @@ export class MyMatchesComponent implements OnInit{
 
 	ngOnInit() {
 		this.matchService.getMatchByMatchUserId(this.user.userId).subscribe(reply=> this.matches = reply);
+		this.getUsers()
 	}
 	getUsers() {
 		this.userService.getAllUsers().subscribe(reply => this.users= reply)
