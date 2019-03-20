@@ -39,6 +39,7 @@ try {
 		"c9aaa062-9c23-4bd6-a0a6-ac623d5839df" => "value",
 		"e0678ea3-c320-415e-983e-09c4caf26390" => "value"
 	];
+
 	// Grab the mySQL connection
 	$secrets = new \Secrets("/etc/apache2/capstone-mysql/cohort23/dateadan.ini");
 	$pdo = $secrets->getPdoObject();
