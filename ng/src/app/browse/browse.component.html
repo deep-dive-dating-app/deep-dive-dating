@@ -8,7 +8,7 @@
 <div id="browse" class="container" *ngFor = "let user of users">
 	<div class="row border rounded bg-light mt-4">
 		<div class="col-sm-3 p-0">
-			<div class="my-auto pt-4 d-flex justify-content-center" (click) = "getDetailedView(user)"
+			<div class="p-4" (click) = "getDetailedView(user)"
 			>
 				<img class="img-fluid" [src]="user.user.userAvatarUrl" alt="{{user.user.userAvatarUrl}}" >
 			</div>
